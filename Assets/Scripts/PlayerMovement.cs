@@ -9,17 +9,16 @@ public class PlayerMovement : MonoBehaviour
     private BoxCollider2D collider;
     private Animator animator;
 
-
     [SerializeField] private LayerMask jumpableGround;
 
     [SerializeField] private float movementSpeed = 7f;
     [SerializeField] private float jumpForce = 14f;
     
-    private enum AnimationState { idle, running, jumping, falling }
+    private enum AnimationState { idle, running, jumping, falling, crouching}
+    private AnimationState state;
 
     // Start is called before the first frame update
-    private void Start()
-    {
+    private void Start() {
         playerRigidBody = GetComponent<Rigidbody2D>();
         playerSprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
@@ -27,8 +26,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    private void Update()
-    {
+    private void Update() {
         float dirX = Input.GetAxisRaw("Horizontal"); // Specifies direction user wants to move, 1 will move player to the right and -1 we will move left
         playerRigidBody.velocity = new Vector2(dirX * movementSpeed, playerRigidBody.velocity.y);
 
@@ -43,8 +41,6 @@ public class PlayerMovement : MonoBehaviour
     
     // Update/Refresh animation states for our player
     private void updateAnimations() {
-        AnimationState state;
-
         // Changes the player animation to start running or stop running 
         if (isRunning()) {
             state = AnimationState.running;
@@ -52,6 +48,12 @@ public class PlayerMovement : MonoBehaviour
             state = AnimationState.idle;
         }
 
+        // Changes the player animation to start crouching
+        if (Input.GetButtonDown("Vertical") && isGrounded()) {
+            state = AnimationState.crouching;
+        }
+
+        // Changes the player animation between jumping and falling
         if (isJumping()) {
             state = AnimationState.jumping;
         } else if (isFalling()) {
