@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Projectile
   layers:
   - Default
   - TransparentFX
@@ -38,6 +39,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Backgrounds
+    uniqueID: 361302219
+    locked: 0
   - name: TestBackground
     uniqueID: 315535861
     locked: 0
@@ -46,4 +50,7 @@ TagManager:
     locked: 0
   - name: TestTerrain
     uniqueID: 2848474563
+    locked: 0
+  - name: foreforegorund
+    uniqueID: 1990588685
     locked: 0
