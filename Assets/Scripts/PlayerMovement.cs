@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private static Rigidbody2D playerRigidBody;
     private SpriteRenderer playerSprite;
     private BoxCollider2D collider;
+    private PlayerUILogicScript gameLogic;
     private Animator animator;
 
     [SerializeField] private LayerMask jumpableGround;
@@ -16,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 14f;
     
     private PlayerInputActions playerInputActions;
-    private enum AnimationState { idle, running, jumping, falling, crouching, crouchShoot, standShoot }
+    private enum AnimationState { idle, running, jumping, falling, crouching, crouchShoot, standShoot, playerDeath }
     private AnimationState state;
     private static bool isCrouched = false;
 
@@ -24,20 +25,23 @@ public class PlayerMovement : MonoBehaviour
     private void Start() {
         playerRigidBody = GetComponent<Rigidbody2D>();
         playerSprite = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
         collider = GetComponent<BoxCollider2D>();
-
+        gameLogic = GameObject.FindGameObjectWithTag("Logic").GetComponent<PlayerUILogicScript>();
+        animator = GetComponent<Animator>();
+    
         animator.SetBool("hold_crouch", true); // This is permanent so that the player will stay crouched after shooting in crouched position
     }
 
     // Update is called once per frame
     private void Update() {
         // Continuously adding the force to keep the player moving in the correct direction we are reading in.
-        Vector2 inputDirectionVector = playerInputActions.Player.Movement.ReadValue<Vector2>();
-        playerRigidBody.velocity = new Vector2(inputDirectionVector.x * movementSpeed, playerRigidBody.velocity.y);
+        if (gameLogic.isPlayerAlive()) {
+            Vector2 inputDirectionVector = playerInputActions.Player.Movement.ReadValue<Vector2>();
+            playerRigidBody.velocity = new Vector2(inputDirectionVector.x * movementSpeed, playerRigidBody.velocity.y);
 
-        // Updating Animation States
-        updateAnimations();
+            // Updating Animation States
+            updateAnimations();
+        }
     }
 
     // Defines player input variables before game starts
@@ -129,26 +133,32 @@ public class PlayerMovement : MonoBehaviour
 
     // Makes the player jump when pressing jump control, "space" by default
     public void player_jump(InputAction.CallbackContext context) {
-        if (isGrounded()) {
-            playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, jumpForce);
+        if (gameLogic.isPlayerAlive()) {
+            if (isGrounded()) {
+                playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, jumpForce);
+            }
         }
     }
 
     // Makes the player crouch when pressing crouch control, "left-control" by default
     public void player_crouch(InputAction.CallbackContext context) {
-        if (isGrounded()) {
-            if (isCrouched) {
-                isCrouched = false;
-            } else {
-                isCrouched = true;
+        if (gameLogic.isPlayerAlive()) {
+            if (isGrounded()) {
+                if (isCrouched) {
+                    isCrouched = false;
+                } else {
+                    isCrouched = true;
+                }
             }
         }
     }
 
     // Makes the player move (left or right) when pressing movement controls, "a" and "d" by default
     public void player_movement(InputAction.CallbackContext context) {
-        Vector2 inputDirectionVector = context.ReadValue<Vector2>();
-        playerRigidBody.velocity = new Vector2(inputDirectionVector.x * movementSpeed, playerRigidBody.velocity.y);
+        if (gameLogic.isPlayerAlive()) {
+            Vector2 inputDirectionVector = context.ReadValue<Vector2>();
+            playerRigidBody.velocity = new Vector2(inputDirectionVector.x * movementSpeed, playerRigidBody.velocity.y);
+        }
     }
 
 }

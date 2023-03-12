@@ -14,6 +14,7 @@ public class PlayerShoot : MonoBehaviour
     
     [SerializeField] private GameObject bulletPF;
 
+    private PlayerUILogicScript gameLogic;
     private SpriteRenderer playerSprite;
     private Animator animator;
 
@@ -25,6 +26,7 @@ public class PlayerShoot : MonoBehaviour
     void Start()
     {
         playerSprite = GetComponent<SpriteRenderer>();
+        gameLogic = GameObject.FindGameObjectWithTag("Logic").GetComponent<PlayerUILogicScript>();
         animator  = GetComponent<Animator>();
     }
 
@@ -59,43 +61,43 @@ public class PlayerShoot : MonoBehaviour
 
     // This function will allow the bullet to spawn and be fired from barrel of gun
     public void playerShootProjectile(InputAction.CallbackContext context) {
-        Vector3 worldPosition;
-        Vector3 bulletPosVector;
-        bool flipBullet = false;
-        // First determine if the player is crouched, or running then based on the playerSprite we can determine which side to create the bullet on.
-        if (PlayerMovement.getCrouched()) {
-            if (playerSprite.flipX) {
-                worldPosition = endOfGunBarrelCrouchLeft.position;
-                flipBullet = true;
+        if (gameLogic.isPlayerAlive()) { 
+            Vector3 worldPosition;
+            Vector3 bulletPosVector;
+            bool flipBullet = false;
+            // First determine if the player is crouched, or running then based on the playerSprite we can determine which side to create the bullet on.
+            if (PlayerMovement.getCrouched()) {
+                if (playerSprite.flipX) {
+                    worldPosition = endOfGunBarrelCrouchLeft.position;
+                    flipBullet = true;
+                } else {
+                    worldPosition = endOfGunBarrelCrouchRight.position;
+                }
+                bulletPosVector = new Vector3(worldPosition.x, worldPosition.y, worldPosition.z); 
+            } else if (isRunning()) {
+                if (playerSprite.flipX) {
+                    worldPosition = endOfGunBarrelRunningLeft.position;
+                    flipBullet = true;
+                } else {
+                    worldPosition = endOfGunBarrelRunningRight.position;
+                }
+                bulletPosVector = new Vector3(worldPosition.x, worldPosition.y, worldPosition.z); 
             } else {
-                worldPosition = endOfGunBarrelCrouchRight.position;
+                if (playerSprite.flipX) {
+                    worldPosition = endOfGunBarrelStandingLeft.position;
+                    flipBullet = true;
+                } else {
+                    worldPosition = endOfGunBarrelStandingRight.position;
+                }
+                bulletPosVector = new Vector3(worldPosition.x, worldPosition.y, worldPosition.z); 
             }
-            bulletPosVector = new Vector3(worldPosition.x, worldPosition.y, worldPosition.z); 
-        } else if (isRunning()) {
-            if (playerSprite.flipX) {
-                worldPosition = endOfGunBarrelRunningLeft.position;
-                flipBullet = true;
-            } else {
-                worldPosition = endOfGunBarrelRunningRight.position;
-            }
-            bulletPosVector = new Vector3(worldPosition.x, worldPosition.y, worldPosition.z); 
-        } else {
-            if (playerSprite.flipX) {
-                worldPosition = endOfGunBarrelStandingLeft.position;
-                flipBullet = true;
-            } else {
-                worldPosition = endOfGunBarrelStandingRight.position;
-            }
-            bulletPosVector = new Vector3(worldPosition.x, worldPosition.y, worldPosition.z); 
+
+            isPlayerShooting = true; // Allow the player movement file to know the player is shooting
+
+            // Create our bullet in 2D space and flip it if neccessary
+            GameObject bullet = Instantiate(bulletPF, bulletPosVector, Quaternion.identity);
+            if (flipBullet) { bullet.GetComponent<SpriteRenderer>().flipX = true; }
         }
-
-        isPlayerShooting = true; // Allow the player movement file to know the player is shooting
-
-        // Create our bullet in 2D space and flip it if neccessary
-        GameObject bullet = Instantiate(bulletPF, bulletPosVector, Quaternion.identity);
-        if (flipBullet) { bullet.GetComponent<SpriteRenderer>().flipX = true; }
     }
-
-    
 
 }
