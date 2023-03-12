@@ -20,6 +20,8 @@ public class PlayerShoot : MonoBehaviour
 
     private PlayerInputActions playerInputActions;
 
+    [SerializeField] private float shootingDelay;
+    private float shootingDelayTimer;
     public static bool isPlayerShooting = false;
 
     // Start is called before the first frame update
@@ -33,7 +35,7 @@ public class PlayerShoot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        shootingDelayTimer += Time.deltaTime; // Timer  to track when the player can shoot again
     }
 
     // Defines player input variables before game starts
@@ -61,7 +63,8 @@ public class PlayerShoot : MonoBehaviour
 
     // This function will allow the bullet to spawn and be fired from barrel of gun
     public void playerShootProjectile(InputAction.CallbackContext context) {
-        if (gameLogic.isPlayerAlive()) { 
+        if (gameLogic.isPlayerAlive() && shootingDelayTimer > shootingDelay) { 
+            shootingDelayTimer = 0;
             Vector3 worldPosition;
             Vector3 bulletPosVector;
             bool flipBullet = false;
