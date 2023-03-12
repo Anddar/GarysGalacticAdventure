@@ -63,7 +63,7 @@ public class PlayerShoot : MonoBehaviour
 
     // This function will allow the bullet to spawn and be fired from barrel of gun
     public void playerShootProjectile(InputAction.CallbackContext context) {
-        if (gameLogic.isPlayerAlive() && shootingDelayTimer > shootingDelay) { 
+        if (gameLogic.isPlayerAlive() && shootingDelayTimer > shootingDelay) {
             shootingDelayTimer = 0;
             Vector3 worldPosition;
             Vector3 bulletPosVector;

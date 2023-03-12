@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerUILogicScript : MonoBehaviour
 {
+    private PlayerDeath playerDeath;
     private int playerHealth;
     private int playerShield;
     private int playerScore;
@@ -24,6 +25,7 @@ public class PlayerUILogicScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerDeath = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerDeath>();
         playerHealth = 100;
         playerShield = 100;
         playerScore = 0;
@@ -49,15 +51,18 @@ public class PlayerUILogicScript : MonoBehaviour
 
     // This function decreases the players health by a certain amount
     public void decreaseHealth(int amount) {
-        if (playerHealth - amount < 0) {
-            playerHealth = 0;
-        } else {
-            playerHealth -= amount;
+        if (!playerDeath.isPlayerInvincible()) {
+            playerDeath.tookDamage();
+            if (playerHealth - amount < 0) {
+                playerHealth = 0;
+            } else {
+                playerHealth -= amount;
+            }
+            if (playerHealth == 0) {
+                playerLivingState = false; // Here the players state is of living is false or "dead"
+            }
+            playerHealthText.text = playerHealth.ToString();
         }
-        if (playerHealth == 0) {
-            playerLivingState = false; // Here the players state is of living is false or "dead"
-        }
-        playerHealthText.text = playerHealth.ToString();
     }
 
     // This function increases the players shield by a certain amount
@@ -72,13 +77,16 @@ public class PlayerUILogicScript : MonoBehaviour
 
     // This function decreases the players shield by a certain amount
     public void decreaseShield(int amount) {
-        if (playerShield - amount < 0) {
-            decreaseHealth(amount - playerShield);
-            playerShield = 0;
-        } else {
-            playerShield -= amount;
+        if (!playerDeath.isPlayerInvincible()) {
+            if (playerShield - amount < 0) {
+                decreaseHealth(amount - playerShield);
+                playerShield = 0;
+            } else {
+                playerDeath.tookDamage();
+                playerShield -= amount;
+            }
+            playerShieldText.text = playerShield.ToString();
         }
-        playerShieldText.text = playerShield.ToString();
     }
 
     // This function increases the players score by a certain amount

@@ -51,12 +51,16 @@ public class BulletMovement : MonoBehaviour
     }
 
     // This trigger function will decide when a bullet hits another object in the game world (terrain, walls, etc..)
-    private void OnTriggerEnter2D(Collider2D collision) {
+    private void OnCollisionEnter2D(Collision2D collision) {
+        GameObject collidedObject = collision.gameObject;
+
         // If the bullet collides with a wall the animation should trigger, and we should destroy the bullet object since it hits a wall
-        if (collision.gameObject.layer != 3 && (collision.gameObject.layer == 6)) {
+        if (collidedObject.layer != 3 && (collidedObject.layer == 6)) {
             animator.SetBool("wall_collision", true);
             bulletSpeed = 0;
             Destroy(gameObject, 0.25f);
+        } else if (collidedObject.CompareTag("Enemy")) {
+            Destroy(gameObject);
         }
     }  
 }
