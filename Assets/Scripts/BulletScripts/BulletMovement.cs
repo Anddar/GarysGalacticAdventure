@@ -55,7 +55,7 @@ public class BulletMovement : MonoBehaviour
         GameObject collidedObject = collision.gameObject;
 
         // If the bullet collides with a wall the animation should trigger, and we should destroy the bullet object since it hits a wall
-        if (collidedObject.layer != 3 && (collidedObject.layer == 6)) {
+        if (collidedObject.layer != 3 && (collidedObject.layer == 8 || collidedObject.layer == 6)) {
             animator.SetBool("wall_collision", true);
             bulletSpeed = 0;
             Destroy(gameObject, 0.25f);

@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlimeMovement : MonoBehaviour
+public class RinoMovement : MonoBehaviour
 {
-    // Slime Game Components
-    private static Rigidbody2D slimeRigidBody;
-    private SpriteRenderer slimeSprite;
+    // Rino Game Components
+    private static Rigidbody2D rinoRigidBody;
+    private SpriteRenderer rinoSprite;
     private Animator animator;
-    private SlimeHealthLogic slimeHealthLogic;
+    private RinoHealthLogic rinoHealthLogic;
 
-    // Enemy Slime Attributes
-    [SerializeField] private float slimeMoveSpeed;
-    [SerializeField] private float randomAttackDelay;
-    private float randomAttackTimer = 0f;
-    
-    // Slime Pathfinding
+    // Enemy Rino Attributes
+    [SerializeField] private float rinoMoveSpeed;
+    [SerializeField] private float switchAnimDelay;
+    private float switchAnimTimer = 0f;
+    private bool isRolling = true;
+
+    // Rino Pathfinding
     private Vector3[] waypoints = new Vector3[2];
     private int waypoint_index = 1;
     [SerializeField] private float walkingPathDistance;
@@ -31,10 +32,10 @@ public class SlimeMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        slimeRigidBody = GetComponent<Rigidbody2D>();
-        slimeSprite = GetComponent<SpriteRenderer>();
+        rinoRigidBody = GetComponent<Rigidbody2D>();
+        rinoSprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
-        slimeHealthLogic = GetComponent<SlimeHealthLogic>();
+        rinoHealthLogic = GetComponent<RinoHealthLogic>();
         previousPosition = transform.position;
 
         // Waypoints (positions in space) for the slime to follow to walk left and right
@@ -47,13 +48,13 @@ public class SlimeMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (slimeHealthLogic.isSlimeAlive()) {
+        if (rinoHealthLogic.isRinoAlive()) {
             if (isChasing) {
-                if (transform.position.x > playerTransform.position.x) {
-                    transform.position += Vector3.left * slimeMoveSpeed * Time.deltaTime;
+                if (transform.position.x > playerTransform.position.x){
+                    transform.position += Vector3.left * rinoMoveSpeed * Time.deltaTime;
                 }
-                if (transform.position.x < playerTransform.position.x) {
-                    transform.position += Vector3.right * slimeMoveSpeed * Time.deltaTime;
+                if (transform.position.x < playerTransform.position.x){
+                    transform.position += Vector3.right * rinoMoveSpeed * Time.deltaTime;
                 }
 
                 // Stop chasing after player leaves chase distance
@@ -70,7 +71,7 @@ public class SlimeMovement : MonoBehaviour
                 FollowWaypoint(); // Start slime traversing to waypoint
             }
 
-            randomAttackTimer += Time.deltaTime;
+            switchAnimTimer += Time.deltaTime;
 
             UpdateAnimation(); // Update the slimes animation as it moves to the waypoint
         }
@@ -78,30 +79,28 @@ public class SlimeMovement : MonoBehaviour
 
     private void UpdateAnimation() {
         if (isMoving()) {
-            animator.SetBool("Run", true);
+            if (isRolling) {
+                animator.SetBool("Jump", false);
+                animator.SetBool("Rolling", true);
+            } else {
+                animator.SetBool("Rolling", false);
+                animator.SetBool("Jump", true);
+            }
         }
 
-        if (randomAttackTimer > randomAttackDelay) {
-            animator.SetBool("Run", false); // Stop enemy from running
-            animator.SetTrigger("Attack"); // Do random attack
-            randomAttackTimer = 0f;
+        if (switchAnimTimer > switchAnimDelay) {
+            if (isRolling) {
+                isRolling = false;
+            } else { isRolling = true; }
+            switchAnimTimer = 0f;
         }
     }
 
-    // This function makes the Slime follow its waypoint
+    // This function makes the Rino follow its waypoint
     private void FollowWaypoint() {
-        transform.position = Vector2.MoveTowards(transform.position, waypoints[waypoint_index], slimeMoveSpeed * Time.deltaTime);
-        if (transform.position == waypoints[waypoint_index]) {
-            if (waypoint_index == 1) {
-                waypoint_index = 0;
-            } else { waypoint_index = 1; }
-        }
-    }
+        transform.position = Vector2.MoveTowards(transform.position, waypoints[waypoint_index], rinoMoveSpeed * Time.deltaTime);
 
-    // This collision function will turn the enemy around if colliding with another enemy or wall
-    private void OnCollisionEnter2D(Collision2D collision) {
-        GameObject collidedObject = collision.gameObject;
-        if (collidedObject.layer == 8 || collidedObject.CompareTag("Enemy")) {
+        if (transform.position == waypoints[waypoint_index]) {
             if (waypoint_index == 1) {
                 waypoint_index = 0;
             } else { waypoint_index = 1; }
@@ -112,25 +111,18 @@ public class SlimeMovement : MonoBehaviour
     private bool isMoving() {
         if (previousPosition.x < transform.position.x) {
             previousPosition = transform.position;
-            slimeSprite.flipX = false;
+            transform.localScale = new Vector3(1f, 1f, 1f);
             return true;
         } else if (previousPosition.x > transform.position.x) {
             previousPosition = transform.position;
-            slimeSprite.flipX = true;
+            transform.localScale = new Vector3(-1f, 1f, 1f);
             return true;
         }
         return false;
     }
 
-    private int enemyDirection() {
-        if (slimeSprite.flipX) {
-            return -1;
-        }
-        return 1;
-    }
-
     public static bool isJumping() {
-        if (slimeRigidBody.velocity.y > 0.1f) {
+        if (rinoRigidBody.velocity.y > 0.1f) {
             return true;
         }
         return false;
@@ -138,9 +130,13 @@ public class SlimeMovement : MonoBehaviour
 
     // Helper function to determine if player is falling
     public static bool isFalling() {
-        if (slimeRigidBody.velocity.y < -0.1f) {
+        if (rinoRigidBody.velocity.y < -0.1f) {
             return true;
         }
         return false;
+    }
+
+    public bool isRinoRolling() {
+        return isRolling;
     }
 }

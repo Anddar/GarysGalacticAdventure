@@ -17,7 +17,7 @@ TagManager:
   - UI
   - Ground
   - Enemy
-  - 
+  - Wall
   - 
   - 
   - 
@@ -50,6 +50,9 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Walls
+    uniqueID: 2533789347
     locked: 0
   - name: TestTerrain
     uniqueID: 2848474563

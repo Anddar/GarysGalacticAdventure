@@ -2,30 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlimeHealthLogic : MonoBehaviour
+public class RinoHealthLogic : MonoBehaviour
 {
-    // Slime Game Components
-    private Rigidbody2D slimeRigidBody;
+    // Rino Game Components
+    private Rigidbody2D rinoRigidBody;
     private Collider2D[] colliders;
     private Animator animator;
     
-    // Slime Health Stats
+    // Rino Health Stats
     [SerializeField] private int numberHitsTillDead;
-    private bool slimeLivingState;
+    private bool rinoLivingState;
 
-    // Slime Death Fading Variables
+    // Rino Death Fading Variables
     private FadeGameObject fader;
     [SerializeField] private float delayBeforeFadedDeath;
-
 
     // Start is called before the first frame update
     void Start()
     {
-        slimeRigidBody = GetComponent<Rigidbody2D>();
+        rinoRigidBody = GetComponent<Rigidbody2D>();
         colliders = GetComponents<Collider2D>();
         animator = GetComponent<Animator>();
         fader = GetComponent<FadeGameObject>();
-        slimeLivingState = true;
+        rinoLivingState = true;
     }
 
     // Update is called once per frame
@@ -35,10 +34,11 @@ public class SlimeHealthLogic : MonoBehaviour
     }
 
     private void Die() {
-        animator.SetTrigger("Death");
         fader.startFadingObjectOut(delayBeforeFadedDeath, true);
-        // Make slime rigidbody static disable the enemies colliders after they die.
-        slimeRigidBody.bodyType = RigidbodyType2D.Static;
+        animator.SetBool("Rolling", false);
+        animator.SetBool("Jump", false);
+        // Make rino rigidbody static disable the enemies colliders after they die.
+        rinoRigidBody.bodyType = RigidbodyType2D.Static;
         for (int i=0; i < colliders.Length; ++i) {
             colliders[i].enabled = false;
         }
@@ -48,15 +48,14 @@ public class SlimeHealthLogic : MonoBehaviour
     public void enemyTakeHit() {
         numberHitsTillDead -= 1;
         if (numberHitsTillDead == 0) {
-            slimeLivingState = false;
+            rinoLivingState = false;
             Die();
         }
         fader.startBlinking();
     }
 
-    // Returns whether or not the slime is living
-    public bool isSlimeAlive() {
-        return slimeLivingState;
-    }    
-    
+    // Returns whether or not the Rino is living
+    public bool isRinoAlive() {
+        return rinoLivingState;
+    }
 }

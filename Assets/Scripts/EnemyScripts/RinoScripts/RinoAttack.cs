@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlimeAttack : MonoBehaviour
+public class RinoAttack : MonoBehaviour
 {
     // Slime Game Components
-    private SlimeHealthLogic slimeHealthLogic;
+    private RinoMovement rinoMovement;
+    private RinoHealthLogic rinoHealthLogic;
     private PlayerUILogicScript gameLogic;
     private Animator animator;
 
     // Slime Damage Values
-    [SerializeField] private int damageFromSpikesAbove;
+    [SerializeField] private int damageFromBiteAttack;
     [SerializeField] private int damageFromWalkingInto;
 
     public PlayerMovement playerMovement;
@@ -18,7 +19,8 @@ public class SlimeAttack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        slimeHealthLogic = GetComponent<SlimeHealthLogic>();
+        rinoMovement = GetComponent<RinoMovement>();
+        rinoHealthLogic = GetComponent<RinoHealthLogic>();
         gameLogic = GameObject.FindGameObjectWithTag("Logic").GetComponent<PlayerUILogicScript>();
         animator = GetComponent<Animator>();
     }
@@ -33,9 +35,11 @@ public class SlimeAttack : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         GameObject collidedObject = collision.gameObject;
         if (collidedObject.CompareTag("Player")) {
-            animator.SetBool("Run", false);
-            animator.SetTrigger("Ability");
-            gameLogic.decreaseShield(damageFromSpikesAbove);
+            if (rinoMovement.isRinoRolling()) {
+                animator.SetBool("Rolling", false);
+            } else { animator.SetBool("Jump", false); }
+            animator.SetTrigger("Attack");
+            gameLogic.decreaseShield(damageFromBiteAttack);
         }
     }
 
@@ -43,14 +47,14 @@ public class SlimeAttack : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision) {
         GameObject collidedObject = collision.gameObject;
         if (collidedObject.CompareTag("Bullet")) {
-            animator.SetBool("Run", false);
-            animator.SetTrigger("Hit");
-            slimeHealthLogic.enemyTakeHit();
+            rinoHealthLogic.enemyTakeHit();
         } else if (collidedObject.CompareTag("Player")) {
-            animator.SetBool("Run", false);
+            if (rinoMovement.isRinoRolling()) {
+                animator.SetBool("Rolling", false);
+            } else { animator.SetBool("Jump", false); }
             animator.SetTrigger("Attack");
             
-            // Player knockback function
+            // Player Knockback Function
             playerMovement.KBCounter = playerMovement.KBTotalTime;
             if (collision.transform.position.x <= transform.position.x) {
                 playerMovement.KnockFromRight = true;
@@ -67,8 +71,20 @@ public class SlimeAttack : MonoBehaviour
     private void OnCollisionStay2D(Collision2D collision) {
         GameObject collidedObject = collision.gameObject;
         if (collidedObject.CompareTag("Player")) {
-            animator.SetBool("Run", false);
+            if (rinoMovement.isRinoRolling()) {
+                animator.SetBool("Rolling", false);
+            } else { animator.SetBool("Jump", false); }
             animator.SetTrigger("Attack");
+
+            // Player Knockback Function
+            playerMovement.KBCounter = playerMovement.KBTotalTime;
+            if (collision.transform.position.x <= transform.position.x) {
+                playerMovement.KnockFromRight = true;
+            } 
+            if (collision.transform.position.x > transform.position.x) {
+                playerMovement.KnockFromRight = false;
+            }
+
             gameLogic.decreaseShield(damageFromWalkingInto);
         }
     }

@@ -62,7 +62,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update() {
         // Continuously adding the force to keep the player moving in the correct direction we are reading in.
-        
         if (gameLogic.isPlayerAlive()) {
             Vector2 inputDirectionVector = playerInputActions.Player.Movement.ReadValue<Vector2>();
             if (KBCounter <= 0) {
@@ -96,6 +95,7 @@ public class PlayerMovement : MonoBehaviour
         // Changes the player animation to start running or stop running 
         if (isRunning()) {
             isCrouched = false;
+            flipPlayerColliderSize();
             state = AnimationState.running;
         } else {
             footstepIndex = 0;
@@ -115,7 +115,6 @@ public class PlayerMovement : MonoBehaviour
         if (playerInAir && !isFalling() && !isJumping()) {
             playerInAir = false;
             jumpLand.Play();
-            Debug.Log("Landed");
         }
         
         // Changes the player animation to start crouching
@@ -134,10 +133,12 @@ public class PlayerMovement : MonoBehaviour
 
         // Changes the player animation between jumping and falling
         if (isJumping()) {
-            isCrouched = false;          
+            isCrouched = false;
+            flipPlayerColliderSize();          
             state = AnimationState.jumping;
         } else if (isFalling()) {
             isCrouched = false;
+            flipPlayerColliderSize();
             state = AnimationState.falling;
         }
 
@@ -186,6 +187,17 @@ public class PlayerMovement : MonoBehaviour
         return isCrouched;
     }
 
+    // Helper function to change size of player collider based on if he is crouching or not
+    private void flipPlayerColliderSize() {
+        if (isCrouched) {
+            collider.size = new Vector2(collider.size.x, 1.5f);
+            collider.offset = new Vector2(collider.offset.x, -0.65f);
+        } else {
+            collider.size = new Vector2(collider.size.x, 1.97f);
+            collider.offset = new Vector2(collider.offset.x, -0.41f);
+        }
+    }
+
     // --------------------- Player Actions After Input ---------------------
 
     // Makes the player jump when pressing jump control, "space" by default
@@ -204,8 +216,10 @@ public class PlayerMovement : MonoBehaviour
             if (isGrounded()) {
                 if (isCrouched) {
                     isCrouched = false;
+                    flipPlayerColliderSize();
                 } else {
                     isCrouched = true;
+                    flipPlayerColliderSize();
                 }
             }
         }
