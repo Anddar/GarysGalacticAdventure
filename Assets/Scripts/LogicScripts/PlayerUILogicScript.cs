@@ -70,7 +70,7 @@ public class PlayerUILogicScript : MonoBehaviour
         if (playerShield + amount > 100) {
             playerShield = 100;
         } else {
-            playerShield -= amount;
+            playerShield += amount;
         }
         playerShieldText.text = playerShield.ToString();
     }

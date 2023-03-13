@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 22266aad06f1c4c83adb0717c9054580
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - HealthPot: {fileID: 6394021507657393442, guid: 311540f61c30e490698cabdfe8de409c, type: 3}
+  - ShieldPot: {fileID: 6117906691672964201, guid: 00c83366906e34d009243e11ea3611c2, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

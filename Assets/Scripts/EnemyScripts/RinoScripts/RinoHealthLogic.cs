@@ -17,6 +17,9 @@ public class RinoHealthLogic : MonoBehaviour
     private FadeGameObject fader;
     [SerializeField] private float delayBeforeFadedDeath;
 
+    // Droppables
+    private PlaceDroppables drop;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +28,8 @@ public class RinoHealthLogic : MonoBehaviour
         animator = GetComponent<Animator>();
         fader = GetComponent<FadeGameObject>();
         rinoLivingState = true;
+
+        drop = GetComponent<PlaceDroppables>();
     }
 
     // Update is called once per frame
@@ -34,6 +39,7 @@ public class RinoHealthLogic : MonoBehaviour
     }
 
     private void Die() {
+        drop.dropDroppable(transform.position);
         fader.startFadingObjectOut(delayBeforeFadedDeath, true);
         animator.SetBool("Rolling", false);
         animator.SetBool("Jump", false);

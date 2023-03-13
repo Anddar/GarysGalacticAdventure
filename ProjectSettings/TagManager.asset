@@ -45,6 +45,9 @@ TagManager:
   - name: Backgrounds
     uniqueID: 361302219
     locked: 0
+  - name: BuildingBackdrop
+    uniqueID: 706000041
+    locked: 0
   - name: TestBackground
     uniqueID: 315535861
     locked: 0
@@ -59,4 +62,7 @@ TagManager:
     locked: 0
   - name: foreforegorund
     uniqueID: 1990588685
+    locked: 0
+  - name: Tutorial
+    uniqueID: 2399181181
     locked: 0

@@ -18,6 +18,9 @@ public class OctopusHealthLogic : MonoBehaviour
     [SerializeField] private float delayBeforeFadedDeath;
     [SerializeField] private float gravityOnDeath;
 
+    // Droppables
+    private PlaceDroppables drop;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +28,8 @@ public class OctopusHealthLogic : MonoBehaviour
         collider = GetComponent<PolygonCollider2D>();
         fader = GetComponent<FadeGameObject>();
         octoLivingState = true;
+
+        drop = GetComponent<PlaceDroppables>();
     }
 
     // Update is called once per frame
@@ -37,6 +42,7 @@ public class OctopusHealthLogic : MonoBehaviour
     }
 
     private void Die() {
+        drop.dropDroppable(transform.position);
         fader.startFadingObjectOut(delayBeforeFadedDeath, true);
         // Make slime rigidbody static disable the enemies colliders after they die.
         octoRigidBody.gravityScale = gravityOnDeath;

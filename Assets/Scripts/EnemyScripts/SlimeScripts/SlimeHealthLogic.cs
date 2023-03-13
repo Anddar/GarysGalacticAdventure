@@ -17,6 +17,8 @@ public class SlimeHealthLogic : MonoBehaviour
     private FadeGameObject fader;
     [SerializeField] private float delayBeforeFadedDeath;
 
+    // Droppables
+    private PlaceDroppables drop;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +28,8 @@ public class SlimeHealthLogic : MonoBehaviour
         animator = GetComponent<Animator>();
         fader = GetComponent<FadeGameObject>();
         slimeLivingState = true;
+
+        drop = GetComponent<PlaceDroppables>();
     }
 
     // Update is called once per frame
@@ -35,6 +39,7 @@ public class SlimeHealthLogic : MonoBehaviour
     }
 
     private void Die() {
+        drop.dropDroppable(transform.position);
         animator.SetTrigger("Death");
         fader.startFadingObjectOut(delayBeforeFadedDeath, true);
         // Make slime rigidbody static disable the enemies colliders after they die.

@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 9218428703219690519}
   - component: {fileID: 9218428703219690984}
   - component: {fileID: 9218428703219690516}
+  - component: {fileID: -5474534321944751676}
   m_Layer: 7
   m_Name: Octopus
   m_TagString: Enemy
@@ -230,6 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageFromLaserShot: 22
   damageFromWalkingInto: 14
+  playerMovement: {fileID: 0}
 --- !u!114 &9218428703219690516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,3 +244,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98031c7ef2b4d7d48986fc4daa8a8b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-5474534321944751676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9218428703219690989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22266aad06f1c4c83adb0717c9054580, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HealthPot: {fileID: 6394021507657393442, guid: 311540f61c30e490698cabdfe8de409c, type: 3}
+  ShieldPot: {fileID: 6117906691672964201, guid: 00c83366906e34d009243e11ea3611c2, type: 3}
