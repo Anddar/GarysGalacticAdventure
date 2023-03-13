@@ -13,6 +13,8 @@ public class SlimeAttack : MonoBehaviour
     [SerializeField] private int damageFromSpikesAbove;
     [SerializeField] private int damageFromWalkingInto;
 
+    public PlayerMovement playerMovement;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +49,15 @@ public class SlimeAttack : MonoBehaviour
         } else if (collidedObject.CompareTag("Player")) {
             animator.SetBool("Run", false);
             animator.SetTrigger("Attack");
+            
+            //player knockback function
+            playerMovement.KBCounter = playerMovement.KBTotalTime;
+            if (collision.transform.position.x <= transform.position.x){
+                playerMovement.KnockFromRight = true;
+            }if (collision.transform.position.x > transform.position.x){
+                playerMovement.KnockFromRight = false;
+            }
+
             gameLogic.decreaseShield(damageFromWalkingInto);
         }
     }

@@ -24,6 +24,9 @@ public class PlayerShoot : MonoBehaviour
     private float shootingDelayTimer;
     public static bool isPlayerShooting = false;
 
+    //Gun Sound Player Listener Slot
+    [SerializeField] private AudioSource garygunSoundEffect;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -99,6 +102,7 @@ public class PlayerShoot : MonoBehaviour
 
             // Create our bullet in 2D space and flip it if neccessary
             GameObject bullet = Instantiate(bulletPF, bulletPosVector, Quaternion.identity);
+            garygunSoundEffect.Play();
             if (flipBullet) { bullet.GetComponent<SpriteRenderer>().flipX = true; }
         }
     }

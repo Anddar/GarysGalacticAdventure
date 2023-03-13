@@ -24,6 +24,11 @@ public class SlimeMovement : MonoBehaviour
     // Previous Position
     private Vector3 previousPosition;
 
+    // Chase Vars
+    [SerializeField] private Transform playerTransform;
+    [SerializeField] private bool isChasing;
+    [SerializeField] private float chaseDistance;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,7 +47,27 @@ public class SlimeMovement : MonoBehaviour
     void Update()
     {
         if (slimeHealthLogic.isSlimeAlive()) {
-            FollowWaypoint(); // Start slime traversing to waypoint
+            if (isChasing) {
+                if (transform.position.x > playerTransform.position.x){
+                    transform.position += Vector3.left * slimeMoveSpeed * Time.deltaTime;
+                }
+                if (transform.position.x < playerTransform.position.x){
+                    transform.position += Vector3.right * slimeMoveSpeed * Time.deltaTime;
+                }
+
+                // Stop chasing after player leaves chase distance
+                if (Vector2.Distance(transform.position, playerTransform.position) > chaseDistance){
+                    isChasing = false;
+                    waypoints[0] = transform.position;
+                    waypoints[1] = new Vector3(waypoints[0].x + walkingPathDistance, waypoints[0].y, waypoints[0].z);
+                }
+            } else { 
+                // Start chasing after player is within chase distance
+                if (Vector2.Distance(transform.position, playerTransform.position) < chaseDistance){
+                    isChasing = true;
+                }
+                FollowWaypoint(); // Start slime traversing to waypoint
+            }
 
             randomAttackTimer += Time.deltaTime;
 

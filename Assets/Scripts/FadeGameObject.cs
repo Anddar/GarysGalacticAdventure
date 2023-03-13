@@ -19,7 +19,7 @@ public class FadeGameObject : MonoBehaviour
     }
 
     // Fades object into existence 
-    IEnumerator FadeObjectIn(float delayBeforeFade) {
+    private IEnumerator FadeObjectIn(float delayBeforeFade) {
         for (float a = 0.05f; a <= 1; a += 0.05f) {
             objectSprite.color = new Color(1f, 1f, 1f, a);
             yield return new WaitForSeconds(0.05f);
@@ -33,7 +33,7 @@ public class FadeGameObject : MonoBehaviour
     }
 
     // Fades object out of existence 
-    IEnumerator FadeObjectOut(float delayBeforeFade, bool destroyObjectAfterFade) {
+    private IEnumerator FadeObjectOut(float delayBeforeFade, bool destroyObjectAfterFade) {
         yield return new WaitForSeconds(delayBeforeFade);
         for (float a = 1f; a >= -0.05; a -= 0.05f) {
             objectSprite.color = new Color(1f, 1f, 1f, a);
@@ -51,7 +51,7 @@ public class FadeGameObject : MonoBehaviour
     }
 
     // On object injured or hit we will make the object blink white
-    IEnumerator BlinkObject() {
+    private IEnumerator BlinkObject() {
         int blinkAmt = 2;
         int blinkCount = 0;
         while (blinkCount < blinkAmt) {
