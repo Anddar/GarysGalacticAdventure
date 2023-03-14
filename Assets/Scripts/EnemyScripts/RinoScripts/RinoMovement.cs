@@ -100,7 +100,7 @@ public class RinoMovement : MonoBehaviour
     private void FollowWaypoint() {
         transform.position = Vector2.MoveTowards(transform.position, waypoints[waypoint_index], rinoMoveSpeed * Time.deltaTime);
 
-        if (transform.position == waypoints[waypoint_index]) {
+        if (transform.position.x == waypoints[waypoint_index].x) {
             if (waypoint_index == 1) {
                 waypoint_index = 0;
             } else { waypoint_index = 1; }
