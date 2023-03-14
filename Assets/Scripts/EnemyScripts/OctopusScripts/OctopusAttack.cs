@@ -19,6 +19,7 @@ public class OctopusAttack : MonoBehaviour
     {
         octoHealthLogic = GetComponent<OctopusHealthLogic>();
         gameLogic = GameObject.FindGameObjectWithTag("Logic").GetComponent<PlayerUILogicScript>();
+        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame

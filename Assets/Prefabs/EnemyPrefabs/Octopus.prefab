@@ -217,6 +217,7 @@ MonoBehaviour:
   numberHitsTillDead: 3
   delayBeforeFadedDeath: 0.5
   gravityOnDeath: 3
+  scoreGivenOnDeath: 120
 --- !u!114 &7233780624490634796
 MonoBehaviour:
   m_ObjectHideFlags: 0

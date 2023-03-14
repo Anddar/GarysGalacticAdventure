@@ -20,6 +20,7 @@ public class SlimeAttack : MonoBehaviour
     {
         slimeHealthLogic = GetComponent<SlimeHealthLogic>();
         gameLogic = GameObject.FindGameObjectWithTag("Logic").GetComponent<PlayerUILogicScript>();
+        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         animator = GetComponent<Animator>();
     }
 

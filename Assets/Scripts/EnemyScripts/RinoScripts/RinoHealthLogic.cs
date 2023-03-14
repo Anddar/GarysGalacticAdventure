@@ -8,6 +8,8 @@ public class RinoHealthLogic : MonoBehaviour
     private Rigidbody2D rinoRigidBody;
     private Collider2D[] colliders;
     private Animator animator;
+    private PlayerUILogicScript gameLogic;
+
     
     // Rino Health Stats
     [SerializeField] private int numberHitsTillDead;
@@ -18,6 +20,7 @@ public class RinoHealthLogic : MonoBehaviour
     [SerializeField] private float delayBeforeFadedDeath;
 
     // Droppables
+    [SerializeField] private int scoreGivenOnDeath;
     private PlaceDroppables drop;
 
     // Start is called before the first frame update
@@ -26,7 +29,9 @@ public class RinoHealthLogic : MonoBehaviour
         rinoRigidBody = GetComponent<Rigidbody2D>();
         colliders = GetComponents<Collider2D>();
         animator = GetComponent<Animator>();
+        gameLogic = GameObject.FindGameObjectWithTag("Logic").GetComponent<PlayerUILogicScript>();
         fader = GetComponent<FadeGameObject>();
+        
         rinoLivingState = true;
 
         drop = GetComponent<PlaceDroppables>();
@@ -40,6 +45,7 @@ public class RinoHealthLogic : MonoBehaviour
 
     private void Die() {
         drop.dropDroppable(transform.position);
+        gameLogic.increaseScore(scoreGivenOnDeath);
         fader.startFadingObjectOut(delayBeforeFadedDeath, true);
         animator.SetBool("Rolling", false);
         animator.SetBool("Jump", false);

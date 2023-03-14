@@ -255,6 +255,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberHitsTillDead: 5
   delayBeforeFadedDeath: 0.5
+  scoreGivenOnDeath: 180
 --- !u!114 &4447261010718298279
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6117906691672964205}
   - component: {fileID: 6117906691672964204}
   - component: {fileID: 6117906691672964203}
-  - component: {fileID: 6117906691672964202}
+  - component: {fileID: 4901325339913040265}
   - component: {fileID: -2219356564799591125}
   m_Layer: 0
   m_Name: ShieldPotion
@@ -174,7 +174,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!114 &6117906691672964202
+--- !u!114 &4901325339913040265
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drinkPotion: {fileID: -2219356564799591125}
-  potHealAmount: 0
+  potHealAmount: 15
 --- !u!82 &-2219356564799591125
 AudioSource:
   m_ObjectHideFlags: 0

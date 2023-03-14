@@ -8,6 +8,7 @@ public class SlimeHealthLogic : MonoBehaviour
     private Rigidbody2D slimeRigidBody;
     private Collider2D[] colliders;
     private Animator animator;
+    private PlayerUILogicScript gameLogic;
     
     // Slime Health Stats
     [SerializeField] private int numberHitsTillDead;
@@ -18,6 +19,7 @@ public class SlimeHealthLogic : MonoBehaviour
     [SerializeField] private float delayBeforeFadedDeath;
 
     // Droppables
+    [SerializeField] private int scoreGivenOnDeath;
     private PlaceDroppables drop;
 
     // Start is called before the first frame update
@@ -26,6 +28,7 @@ public class SlimeHealthLogic : MonoBehaviour
         slimeRigidBody = GetComponent<Rigidbody2D>();
         colliders = GetComponents<Collider2D>();
         animator = GetComponent<Animator>();
+        gameLogic = GameObject.FindGameObjectWithTag("Logic").GetComponent<PlayerUILogicScript>();
         fader = GetComponent<FadeGameObject>();
         slimeLivingState = true;
 
@@ -40,6 +43,7 @@ public class SlimeHealthLogic : MonoBehaviour
 
     private void Die() {
         drop.dropDroppable(transform.position);
+        gameLogic.increaseScore(scoreGivenOnDeath);
         animator.SetTrigger("Death");
         fader.startFadingObjectOut(delayBeforeFadedDeath, true);
         // Make slime rigidbody static disable the enemies colliders after they die.

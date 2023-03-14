@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drinkPotion: {fileID: -7506421853652703210}
-  potHealAmount: 0
+  potHealAmount: 20
 --- !u!82 &-7506421853652703210
 AudioSource:
   m_ObjectHideFlags: 0

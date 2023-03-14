@@ -22,6 +22,7 @@ public class RinoAttack : MonoBehaviour
         rinoMovement = GetComponent<RinoMovement>();
         rinoHealthLogic = GetComponent<RinoHealthLogic>();
         gameLogic = GameObject.FindGameObjectWithTag("Logic").GetComponent<PlayerUILogicScript>();
+        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         animator = GetComponent<Animator>();
     }
 

@@ -6,7 +6,7 @@ public class ShieldPotion : MonoBehaviour
 {
     // Potion Game Components
     private SpriteRenderer potionSprite;
-    private BoxCollider2D collider;
+    private PolygonCollider2D collider;
 
     private PlayerUILogicScript gameLogic;
     [SerializeField] private AudioSource drinkPotion;
@@ -17,7 +17,7 @@ public class ShieldPotion : MonoBehaviour
     void Start()
     {
         potionSprite = GetComponent<SpriteRenderer>();
-        collider = GetComponent<BoxCollider2D>();
+        collider = GetComponent<PolygonCollider2D>();
         gameLogic = GameObject.FindGameObjectWithTag("Logic").GetComponent<PlayerUILogicScript>();
     }
 
@@ -31,7 +31,7 @@ public class ShieldPotion : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.CompareTag("Player")) {
             drinkPotion.Play();
-            gameLogic.increaseHealth(potHealAmount);
+            gameLogic.increaseShield(potHealAmount);
 
             potionSprite.enabled = false;
             collider.enabled = false;

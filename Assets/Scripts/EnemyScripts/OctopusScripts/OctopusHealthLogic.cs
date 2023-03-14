@@ -7,6 +7,7 @@ public class OctopusHealthLogic : MonoBehaviour
     // Slime Game Components
     private Rigidbody2D octoRigidBody;
     private PolygonCollider2D collider;
+    private PlayerUILogicScript gameLogic;
     [SerializeField] private LayerMask ground;
     
     // Slime Health Stats
@@ -19,6 +20,7 @@ public class OctopusHealthLogic : MonoBehaviour
     [SerializeField] private float gravityOnDeath;
 
     // Droppables
+    [SerializeField] private int scoreGivenOnDeath;
     private PlaceDroppables drop;
 
     // Start is called before the first frame update
@@ -26,6 +28,7 @@ public class OctopusHealthLogic : MonoBehaviour
     {
         octoRigidBody = GetComponent<Rigidbody2D>();
         collider = GetComponent<PolygonCollider2D>();
+        gameLogic = GameObject.FindGameObjectWithTag("Logic").GetComponent<PlayerUILogicScript>();
         fader = GetComponent<FadeGameObject>();
         octoLivingState = true;
 
@@ -43,6 +46,7 @@ public class OctopusHealthLogic : MonoBehaviour
 
     private void Die() {
         drop.dropDroppable(transform.position);
+        gameLogic.increaseScore(scoreGivenOnDeath);
         fader.startFadingObjectOut(delayBeforeFadedDeath, true);
         // Make slime rigidbody static disable the enemies colliders after they die.
         octoRigidBody.gravityScale = gravityOnDeath;
