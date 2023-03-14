@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerDeath : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public class PlayerDeath : MonoBehaviour
         // Fader Tools
         fader = GetComponent<FadeGameObject>();
         fadedOut = false;
+
     }
 
     // Update is called once per frame
@@ -62,6 +64,11 @@ public class PlayerDeath : MonoBehaviour
     private void Die() {
         playerRigidBody.bodyType = RigidbodyType2D.Static;
         animator.SetTrigger("death");
+    }
+
+    //restarts levle w animation event caller
+    private void RestartLevel(){
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     // If the player collides with any type of other object (enemy, etc..)
@@ -98,5 +105,6 @@ public class PlayerDeath : MonoBehaviour
     public bool isPlayerFadedOut() {
         return fadedOut;
     }
+
 
 }

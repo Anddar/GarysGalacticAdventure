@@ -60,8 +60,7 @@ public class RinoMovement : MonoBehaviour
                 // Stop chasing after player leaves chase distance
                 if (Vector2.Distance(transform.position, playerTransform.position) > chaseDistance){
                     isChasing = false;
-                    waypoints[0] = new Vector2(transform.position.x, transform.position.y);
-                    waypoints[1] = new Vector2(waypoints[0].x + walkingPathDistance, waypoints[0].y);
+
                 }
             } else { 
                 // Start chasing after player is within chase distance

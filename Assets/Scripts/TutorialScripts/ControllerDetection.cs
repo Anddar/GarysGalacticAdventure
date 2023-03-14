@@ -30,6 +30,10 @@ public class ControllerDetection : MonoBehaviour
         
     }
 
+    void OnDestroy(){
+        InputSystem.DisableAllEnabledActions();
+    }
+
     // Switches between our tutorial button layouts by detecting where the input came from whether that be a gane controller or keyboard or mouse.
     private void inputActionChangeOnScreen(object obj, InputActionChange change) {
         if (change.Equals(InputActionChange.ActionPerformed)) {
