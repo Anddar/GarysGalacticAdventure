@@ -18,10 +18,6 @@ public class PlayerUILogicScript : MonoBehaviour
     // Players Status
     private bool playerLivingState;
 
-    // Game Status
-    private bool gameOverStatus;
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +26,6 @@ public class PlayerUILogicScript : MonoBehaviour
         playerShield = 100;
         playerScore = 0;
         playerLivingState = true;
-        gameOverStatus = false;
     }
 
     // Update is called once per frame

@@ -8,6 +8,7 @@ TagManager:
   - Logic
   - Enemy
   - Bullet
+  - LevelFade
   layers:
   - Default
   - TransparentFX
@@ -51,8 +52,14 @@ TagManager:
   - name: TestBackground
     uniqueID: 315535861
     locked: 0
+  - name: Backdrop Items
+    uniqueID: 2520440837
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: foreground items
+    uniqueID: 1856960871
     locked: 0
   - name: Walls
     uniqueID: 2533789347
@@ -60,8 +67,11 @@ TagManager:
   - name: TestTerrain
     uniqueID: 2848474563
     locked: 0
-  - name: foreforegorund
+  - name: building front items (LEVEL 1 ONLY)
     uniqueID: 1990588685
+    locked: 0
+  - name: Detail Rockface (LEVEL 2 ONLY)
+    uniqueID: 1550508461
     locked: 0
   - name: Tutorial
     uniqueID: 2399181181

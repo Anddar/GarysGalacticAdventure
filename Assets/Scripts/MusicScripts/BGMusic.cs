@@ -11,6 +11,7 @@ public class BGMusic : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
+        //DontDestroyOnLoad(gameObject);
         startWaitingForSong(introSoundEffect.clip.length);
         loopMidStarted = false;
     }
