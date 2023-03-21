@@ -66,7 +66,7 @@ public class PlayerDeath : MonoBehaviour
         animator.SetTrigger("death");
     }
 
-    //restarts levle w animation event caller
+    // Restarts level with animation event caller
     private void RestartLevel(){
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }

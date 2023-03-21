@@ -204,6 +204,7 @@ public class PlayerMovement : MonoBehaviour
     public void player_jump(InputAction.CallbackContext context) {
         if (gameLogic.isPlayerAlive()) {
             if (isGrounded()) {
+                Time.timeScale = 0;
                 jumpUp.Play();  
                 playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, jumpForce);
             }
