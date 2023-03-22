@@ -20,11 +20,13 @@ public class MainMenuController : MonoBehaviour
 
     [SerializeField] private int chooseLevelOnPlay;
     private bool currentSaves;
+    private bool buttonsMovedDown;
 
     // Start is called before the first frame update
     void Start()
     {
         currentSaves = anyCurrentSaves();
+        buttonsMovedDown = false;
 
         // Collect all button transforms
         continueTransform = continueButton.transform;
@@ -36,16 +38,20 @@ public class MainMenuController : MonoBehaviour
             continueButton.SetActive(false); // Deactivating the continue save button
 
             // Sliding the buttons up in the Main Menu
-            playTransform.position = new Vector3(playTransform.position.x, playTransform.position.y + 100, playTransform.position.z);
-            optionsTransform.position = new Vector3(optionsTransform.position.x, optionsTransform.position.y + 100, optionsTransform.position.z);
-            exitTransform.position = new Vector3(exitTransform.position.x, exitTransform.position.y + 100, exitTransform.position.z);
+            playTransform.localPosition = new Vector3(playTransform.localPosition.x, playTransform.localPosition.y + 100, playTransform.localPosition.z);
+            optionsTransform.localPosition = new Vector3(optionsTransform.localPosition.x, optionsTransform.localPosition.y + 100, optionsTransform.localPosition.z);
+            exitTransform.localPosition = new Vector3(exitTransform.localPosition.x, exitTransform.localPosition.y + 100, exitTransform.localPosition.z);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (anyCurrentSaves() && !buttonsMovedDown) {
+            buttonsMovedDown = true;
+
+            continueButton.SetActive(true); // Activating the continue save button
+        }
     }
 
     // ------------------ BUTTON FUNCTIONS ------------------

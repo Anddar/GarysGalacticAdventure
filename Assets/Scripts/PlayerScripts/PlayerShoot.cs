@@ -18,6 +18,7 @@ public class PlayerShoot : MonoBehaviour
     private SpriteRenderer playerSprite;
     private Animator animator;
 
+    [SerializeField] private ControllerDetection controllerDetection;
     private PlayerInputActions playerInputActions;
 
     [SerializeField] private float shootingDelay;
@@ -105,6 +106,8 @@ public class PlayerShoot : MonoBehaviour
             garygunSoundEffect.Play();
             if (flipBullet) { bullet.GetComponent<SpriteRenderer>().flipX = true; }
         }
+        // Determines if the input device changed
+        controllerDetection.inputDeviceChanged(context.control.device);
     }
 
 }

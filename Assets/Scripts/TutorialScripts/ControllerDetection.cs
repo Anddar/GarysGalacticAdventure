@@ -1,12 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 
 public class ControllerDetection : MonoBehaviour
 {
-    private InputDevice lastDevice;
-
+    
     // Tutorial Button Change Objects
     [SerializeField] private GameObject KeyboardButton;
     [SerializeField] private GameObject KeyboardOR1;
@@ -15,29 +16,27 @@ public class ControllerDetection : MonoBehaviour
     [SerializeField] private GameObject XboxButton;
 
     private bool tutorialActive;
+    private string prev_device;
 
 
     // Start is called before the first frame update
     void Start()
     {
         tutorialActive = true;
-        InputSystem.onActionChange += inputActionChangeOnScreen;
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         
     }
 
-    void OnDestroy(){
+    void OnDestroy() {
         InputSystem.DisableAllEnabledActions();
     }
 
-    // Switches between our tutorial button layouts by detecting where the input came from whether that be a gane controller or keyboard or mouse.
-    private void inputActionChangeOnScreen(object obj, InputActionChange change) {
-        if (change.Equals(InputActionChange.ActionPerformed)) {
-            string device_name = ((InputAction) obj).activeControl.device.name;
+    public void inputDeviceChanged(InputDevice device) {
+        string device_name = device.name;
+        if (device_name != prev_device) {
             if (device_name == "Keyboard" || device_name == "Mouse") {
                 if (tutorialActive) {
                     PlayStationButton.SetActive(false);

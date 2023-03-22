@@ -57,6 +57,7 @@ public class VideoManager : MonoBehaviour
             case "WINDOWED":
                 screen_mode = FullScreenMode.Windowed;
                 Screen.fullScreenMode = screen_mode;
+                
                 break;
         }
     }
