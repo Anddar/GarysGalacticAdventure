@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    
+    // Game Volumes
     private static double master_volume = 1;
     private static double sound_fx_volume = 1;
     private static double music_volume = 1;
@@ -32,23 +32,22 @@ public class AudioManager : MonoBehaviour
                 dialogue_volume = (value * 0.01) * master_volume;
                 break;
         }
-        //Debug.Log("Master: " + master_volume + ", SFX: " + sound_fx_volume + ", Music: " + music_volume + ", Dialogue: " + dialogue_volume);
     }
 
     // Volume Getter Methods
-    public static double getMasterVolume() {
-        return master_volume;
+    public static float getMasterVolume() {
+        return (float) master_volume;
     }
 
-    public static double getSoundFXVolume() {
-        return sound_fx_volume;
+    public static float getSoundFXVolume() {
+        return (float) sound_fx_volume;
     }
 
-    public static double getMusicVolume() {
-        return music_volume;
+    public static float getMusicVolume() {
+        return (float) music_volume;
     }
 
-    public static double getDialogueVolume() {
-        return dialogue_volume;
+    public static float getDialogueVolume() {
+        return (float) dialogue_volume;
     }
 }

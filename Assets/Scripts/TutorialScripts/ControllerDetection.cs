@@ -15,6 +15,8 @@ public class ControllerDetection : MonoBehaviour
     [SerializeField] private GameObject PlayStationButton;
     [SerializeField] private GameObject XboxButton;
 
+    PlayerInputActions playerInputActions;
+
     private bool tutorialActive;
     private string prev_device;
 
@@ -25,16 +27,18 @@ public class ControllerDetection : MonoBehaviour
         tutorialActive = true;
     }
 
-    // Update is called once per frame
-    void Update() {
-        
+    void Awake() {
+        // Enabling Controller Detection in the game
+        playerInputActions = new PlayerInputActions();
+        playerInputActions.ControllerDetect.Enable();
+        playerInputActions.ControllerDetect.Detect.performed += allInput;
     }
 
     void OnDestroy() {
         InputSystem.DisableAllEnabledActions();
     }
 
-    public void inputDeviceChanged(InputDevice device) {
+    private void inputDeviceChanged(InputDevice device) {
         string device_name = device.name;
         if (device_name != prev_device) {
             if (device_name == "Keyboard" || device_name == "Mouse") {
@@ -67,6 +71,12 @@ public class ControllerDetection : MonoBehaviour
             }
         }
     }
+
+    // For when a user presses a key on any control device it will come through here as well to determine the control type (Keyboard&Mouse or Gamepad)
+    private void allInput(InputAction.CallbackContext context) {
+        inputDeviceChanged(context.control.device);
+    }
+
 
     // This trigger function will decide when the player has passed through the point where we can remove the tutorial text
     private void OnTriggerEnter2D(Collider2D collision) {

@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
     // Main Menu Buttons & Game Components
     [SerializeField] private GameObject OptionsMenu;
+    [SerializeField] private GameObject UserSaveMenu;
 
     [SerializeField] private GameObject continueButton;
     [SerializeField] private GameObject playButton;
@@ -51,15 +53,18 @@ public class MainMenuController : MonoBehaviour
             buttonsMovedDown = true;
 
             continueButton.SetActive(true); // Activating the continue save button
+            playButton.GetComponentInChildren<Text>().text = "NEW GAME";
         }
     }
 
     // ------------------ BUTTON FUNCTIONS ------------------
     public void continueButtonAction() {
-
+        UserSaveMenu.SetActive(true); // Overlaying the Save Menu
     }
 
     public void playButtonAction() {
+        // UserSaveMenu.SetActive(true); // Overlaying the Save Menu
+
         if (chooseLevelOnPlay != -1) {
             // Allows devs to choose the level they want to start on when pressing the play button
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + chooseLevelOnPlay);
@@ -69,7 +74,7 @@ public class MainMenuController : MonoBehaviour
     }
 
     public void optionsButtonAction() {
-        OptionsMenu.SetActive(true); // Turning the options menu on
+        OptionsMenu.SetActive(true); // Overlaying the Options Menu
     }
 
     public void exitButtonAction() {

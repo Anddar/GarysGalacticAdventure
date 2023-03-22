@@ -219,7 +219,6 @@ MonoBehaviour:
     m_Bits: 64
   movementSpeed: 7
   jumpForce: 14
-  controllerDetection: {fileID: 0}
   KBForce: 6
   KBCounter: 0
   KBTotalTime: 0.2
@@ -249,7 +248,6 @@ MonoBehaviour:
   endOfGunBarrelCrouchLeft: {fileID: 4397416379906495248}
   endOfGunBarrelRunningLeft: {fileID: 4397416381031461964}
   bulletPF: {fileID: 2123497101807739313, guid: 577195a20ac1d7247b760269d4ba564d, type: 3}
-  controllerDetection: {fileID: 0}
   shootingDelay: 0.3
   garygunSoundEffect: {fileID: 4397416380340031039}
 --- !u!114 &4397416380340031025

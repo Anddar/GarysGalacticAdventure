@@ -19,7 +19,7 @@ public class BGMusic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!introSoundEffect.isPlaying && !loopMidStarted){
+        if (!introSoundEffect.isPlaying && !loopMidStarted) {
             loopMidSoundEffect.Play();
             loopMidStarted = true;
         }

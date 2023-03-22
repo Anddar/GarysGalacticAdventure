@@ -33,7 +33,6 @@ public class FinishLevel1 : MonoBehaviour
 
             playerRigidBody.bodyType = RigidbodyType2D.Static;
         }
-        
     }
 
     public void CompleteLevel(){
@@ -44,6 +43,7 @@ public class FinishLevel1 : MonoBehaviour
     private IEnumerator waitForSound(List<AudioSource> sounds, List<float> delayBetweenSounds) {
         int i = 0;
         while (i < sounds.Count) {
+            sounds[i].volume = AudioManager.getSoundFXVolume();
             sounds[i].Play();
             yield return new WaitForSeconds(sounds[i].clip.length);
             if (delayBetweenSounds != null && i < delayBetweenSounds.Count) {

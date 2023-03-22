@@ -30,6 +30,7 @@ public class ShieldPotion : MonoBehaviour
     // Adds shield to player and destroy pot
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.CompareTag("Player")) {
+            drinkPotion.volume = AudioManager.getSoundFXVolume();
             drinkPotion.Play();
             gameLogic.increaseShield(potHealAmount);
 

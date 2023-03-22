@@ -18,7 +18,6 @@ public class PlayerShoot : MonoBehaviour
     private SpriteRenderer playerSprite;
     private Animator animator;
 
-    [SerializeField] private ControllerDetection controllerDetection;
     private PlayerInputActions playerInputActions;
 
     [SerializeField] private float shootingDelay;
@@ -45,7 +44,7 @@ public class PlayerShoot : MonoBehaviour
     // Defines player input variables before game starts
     private void Awake() {
         playerInputActions = new PlayerInputActions();
-        playerInputActions.Player.Enable();
+        playerInputActions.Player.Shoot.Enable();
         playerInputActions.Player.Shoot.performed += playerShootProjectile;
     }
 
@@ -54,10 +53,8 @@ public class PlayerShoot : MonoBehaviour
         Vector2 directionVector = playerInputActions.Player.Movement.ReadValue<Vector2>();
         float dirX = directionVector.x;
         if (dirX > 0f) {
-            playerSprite.flipX = false;
             return true;
         } else if (dirX < 0f) {
-            playerSprite.flipX = true;
             return true;
         }
         return false;
@@ -103,11 +100,10 @@ public class PlayerShoot : MonoBehaviour
 
             // Create our bullet in 2D space and flip it if neccessary
             GameObject bullet = Instantiate(bulletPF, bulletPosVector, Quaternion.identity);
+            garygunSoundEffect.volume = AudioManager.getSoundFXVolume();
             garygunSoundEffect.Play();
             if (flipBullet) { bullet.GetComponent<SpriteRenderer>().flipX = true; }
         }
-        // Determines if the input device changed
-        controllerDetection.inputDeviceChanged(context.control.device);
     }
 
 }

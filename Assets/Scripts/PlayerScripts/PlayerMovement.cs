@@ -16,7 +16,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float movementSpeed = 7f;
     [SerializeField] private float jumpForce = 14f;
     
-    [SerializeField] private ControllerDetection controllerDetection;
     private PlayerInputActions playerInputActions;
     private enum AnimationState { idle, running, jumping, falling, crouching, crouchShoot, standShoot, playerDeath }
     private AnimationState state;
@@ -79,15 +78,22 @@ public class PlayerMovement : MonoBehaviour
 
             // Updating Animation States
             updateAnimations();
+
+            // Updates Player Control Settings - If Necessary
+            updatePlayerControlSettings();
         }
     }
 
     // Defines player input variables before game starts
     private void Awake() {
         playerInputActions = new PlayerInputActions();
-        playerInputActions.Player.Enable();
+        playerInputActions.Player.Jump.Enable();
+        playerInputActions.Player.Crouch.Enable();
+        playerInputActions.Player.Movement.Enable();
+
         playerInputActions.Player.Jump.performed += player_jump;
         playerInputActions.Player.Crouch.performed += player_crouch;
+        playerInputActions.Player.CrouchHold.performed += player_crouch;
         playerInputActions.Player.Movement.performed += player_movement;
     }
     
@@ -109,12 +115,14 @@ public class PlayerMovement : MonoBehaviour
             if (footstepIndex == footsteps.Length) {
                 footstepIndex = 0;
             }
+            footsteps[footstepIndex].volume = AudioManager.getSoundFXVolume();
             footsteps[footstepIndex].Play();
         }
 
         // When player lands we play landing sound
         if (playerInAir && !isFalling() && !isJumping()) {
             playerInAir = false;
+            jumpLand.volume = AudioManager.getSoundFXVolume();
             jumpLand.Play();
         }
         
@@ -144,6 +152,18 @@ public class PlayerMovement : MonoBehaviour
         }
 
         animator.SetInteger("state", (int) state);
+    }
+
+    // Update/Refresh Player Controls for the user, especially if settings/options were changed
+    private void updatePlayerControlSettings() {
+        // Updates players crouch toggle ability
+        if (GameplayManager.getToggleCrouchState()) {
+            playerInputActions.Player.Crouch.Disable();
+            playerInputActions.Player.CrouchHold.Enable();
+        } else {
+            playerInputActions.Player.Crouch.Enable();
+            playerInputActions.Player.CrouchHold.Disable();
+        }
     }
 
     // Determines if the player is running and flip the player correspondingly to the direction they are running
@@ -205,13 +225,11 @@ public class PlayerMovement : MonoBehaviour
     public void player_jump(InputAction.CallbackContext context) {
         if (gameLogic.isPlayerAlive()) {
             if (isGrounded()) {
+                jumpUp.volume = AudioManager.getSoundFXVolume();
                 jumpUp.Play();  
                 playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, jumpForce);
             }
         }
-
-        // Determines if the input device changed
-        controllerDetection.inputDeviceChanged(context.control.device);
     }
 
     // Makes the player crouch when pressing crouch control, "left-control" by default
@@ -227,9 +245,6 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        
-        // Determines if the input device changed
-        controllerDetection.inputDeviceChanged(context.control.device);
     }
 
     // Makes the player move (left or right) when pressing movement controls, "a" and "d" by default
@@ -238,9 +253,6 @@ public class PlayerMovement : MonoBehaviour
             Vector2 inputDirectionVector = context.ReadValue<Vector2>();
             playerRigidBody.velocity = new Vector2(inputDirectionVector.x * movementSpeed, playerRigidBody.velocity.y);
         }
-
-        // Determines if the input device changed
-        controllerDetection.inputDeviceChanged(context.control.device);
     }
 
 }

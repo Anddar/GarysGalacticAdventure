@@ -16,6 +16,12 @@ public class OptionsMenuController : MonoBehaviour
     [SerializeField] private GameObject audioTab;
     [SerializeField] private GameObject videoTab;
 
+    // Start is called before the first frame update
+    void Start() {}
+
+    // Update is called once per frame
+    void Update() {}
+
     // ------------------ BUTTON FUNCTIONS ------------------
     public void generalButtonAction() {
         audioTab.SetActive(false);

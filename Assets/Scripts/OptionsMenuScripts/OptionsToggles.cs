@@ -5,12 +5,17 @@ using UnityEngine.UI;
 
 public class OptionsToggles : MonoBehaviour
 {
-    [SerializeField] private GameObject crouchToggleSprite;
-    [SerializeField] private Image crouchToggle1;
-    [SerializeField] private Image crouchToggle2;
+    [SerializeField] private GameObject crouchToggleBackground;
+    [SerializeField] private Sprite crouchToggleChecked;
+    [SerializeField] private Sprite crouchToggleUnchecked;
 
     public void toggleCrouch(bool state) {
-        // set toggle crouch sprite here
-        
+        // Changes between checked and unchecked sprite when clicking the checkbox
+        if (state) {
+            crouchToggleBackground.GetComponent<Image>().sprite = crouchToggleChecked;
+        } else {
+            crouchToggleBackground.GetComponent<Image>().sprite = crouchToggleUnchecked;
+        }
+        GameplayManager.flipToggleCrouch();
     }
 }

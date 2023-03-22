@@ -21,7 +21,6 @@ public class VideoManager : MonoBehaviour
 
     // Allows the options menu handlers to set the game resolution in through the video manager
     public static void setGameResolution(string resolution) {
-        Debug.Log(resolution);
         switch(resolution) {
             case "1920 x 1080":
                 video_resolution = "1920 x 1080";

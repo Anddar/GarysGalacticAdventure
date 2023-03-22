@@ -11,10 +11,4 @@ public class ChangeSortingLayer : MonoBehaviour
     {
         GetComponent<Renderer>().sortingLayerName = layerToPushTo;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
