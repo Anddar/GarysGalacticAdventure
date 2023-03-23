@@ -49,6 +49,5 @@ public class OptionsMenuController : MonoBehaviour
 
         gameObject.SetActive(false); // Closes the game options menu
     }
-
     // ------------------------------------------------------
 }

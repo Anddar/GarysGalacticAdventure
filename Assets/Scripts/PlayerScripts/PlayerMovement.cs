@@ -90,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
         playerInputActions.Player.Jump.Enable();
         playerInputActions.Player.Crouch.Enable();
         playerInputActions.Player.Movement.Enable();
-
+        
         playerInputActions.Player.Jump.performed += player_jump;
         playerInputActions.Player.Crouch.performed += player_crouch;
         playerInputActions.Player.CrouchHold.performed += player_crouch;
