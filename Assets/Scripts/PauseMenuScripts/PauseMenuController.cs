@@ -10,8 +10,10 @@ public class PauseMenuController : MonoBehaviour
     // Getting PlayerInputActions
     private PlayerInputActions playerInputActions;
     
-    // Reference to Options Menu
+    // Reference to Menus
+    [SerializeField] private GameObject PauseMenu;
     [SerializeField] private GameObject OptionsMenu;
+    
 
     // Pause Menu Buttons
     [SerializeField] private Button resumeButton;
@@ -32,7 +34,7 @@ public class PauseMenuController : MonoBehaviour
     {
         // When player closes the options menu we want to open the original pause menu back up
         if (pauseStatus && !OptionsMenu.activeSelf) {
-            gameObject.SetActive(true);
+            PauseMenu.SetActive(true);
         }
     }
 
@@ -44,10 +46,18 @@ public class PauseMenuController : MonoBehaviour
 
     // This function allows us to open the pause menu from other scripts
     public void openPauseMenu(InputAction.CallbackContext context) {
-        AudioListener.pause = true; // Pauses all audio in the game
-        Time.timeScale = 0; // Set timescale to 0 to stop time hence stopping the game
-        pauseStatus = true;
-        gameObject.SetActive(true);
+        if (!pauseStatus) {
+            pauseStatus = true;
+            AudioListener.pause = true; // Pauses all audio in the game
+            Time.timeScale = 0; // Set timescale to 0 to stop time hence stopping the game
+            PauseMenu.SetActive(true);
+        } else if (pauseStatus) { 
+            // If pressing escape again we will close the pause menu
+            pauseStatus = false;
+            AudioListener.pause = false; // Unpause all the audio in the game
+            PauseMenu.SetActive(false);
+            Time.timeScale = 1; // Set timescale back to normal so the game starts again
+        }
     }
 
     // This function allows other scripts to check if the game is paused
@@ -57,13 +67,16 @@ public class PauseMenuController : MonoBehaviour
 
     // ------------------ BUTTON FUNCTIONS ------------------
     public void resumeButtonAction() {
-        pauseStatus = false;
-        AudioListener.pause = false; // Unpause all the audio in the game
-        Time.timeScale = 1; // Set timescale back to normal so the game starts again
+        if (pauseStatus) {
+            pauseStatus = false;
+            AudioListener.pause = false; // Unpause all the audio in the game
+            PauseMenu.SetActive(false);
+            Time.timeScale = 1; // Set timescale back to normal so the game starts again
+        }
     }
 
     public void optionsButtonAction() {
-        gameObject.SetActive(false); // Turn the pause menu off so options menu goes in front
+        PauseMenu.SetActive(false); // Turn the pause menu off so options menu goes in front
         OptionsMenu.SetActive(true); // Turn the options menu on
     }
 

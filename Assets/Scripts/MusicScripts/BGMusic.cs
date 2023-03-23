@@ -11,7 +11,6 @@ public class BGMusic : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
-        //DontDestroyOnLoad(gameObject);
         startWaitingForSong(introSoundEffect.clip.length);
         loopMidStarted = false;
     }
@@ -23,6 +22,10 @@ public class BGMusic : MonoBehaviour
             loopMidSoundEffect.Play();
             loopMidStarted = true;
         }
+
+        // Updating Music Volumes from AudioManager
+        introSoundEffect.volume = AudioManager.getMusicVolume();
+        loopMidSoundEffect.volume = AudioManager.getMusicVolume();
     }
 
     private IEnumerator waitForSong(float songLength) {

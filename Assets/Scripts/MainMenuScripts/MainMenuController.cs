@@ -24,6 +24,10 @@ public class MainMenuController : MonoBehaviour
     private bool currentSaves;
     private bool buttonsMovedDown;
 
+    // Fade Into Playing Components
+    [SerializeField] private Animator transition;
+    [SerializeField] private float transitionIntoPlayTime = 1f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -65,11 +69,12 @@ public class MainMenuController : MonoBehaviour
     public void playButtonAction() {
         // UserSaveMenu.SetActive(true); // Overlaying the Save Menu
 
+        transition.SetTrigger("Start");
         if (chooseLevelOnPlay != -1) {
             // Allows devs to choose the level they want to start on when pressing the play button
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + chooseLevelOnPlay);
+            StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + chooseLevelOnPlay));
         } else {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
         }
     }
 
@@ -85,5 +90,12 @@ public class MainMenuController : MonoBehaviour
     // Determine if there are any current saves
     private bool anyCurrentSaves() {
         return false;
+    }
+
+    // Load player into the proper level in the game
+    private IEnumerator LoadLevel(int levelIndex){
+        transition.SetTrigger("Start");
+        yield return new WaitForSeconds(transitionIntoPlayTime);
+        SceneManager.LoadScene(levelIndex);
     }
 }

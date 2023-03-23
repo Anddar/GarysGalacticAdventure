@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update() {
         // Continuously adding the force to keep the player moving in the correct direction we are reading in.
-        if (gameLogic.isPlayerAlive()) {
+        if (gameLogic.isPlayerAlive() && !PauseMenuController.getPauseStatus()) {
             Vector2 inputDirectionVector = playerInputActions.Player.Movement.ReadValue<Vector2>();
             if (KBCounter <= 0) {
                 playerRigidBody.velocity = new Vector2(inputDirectionVector.x * movementSpeed, playerRigidBody.velocity.y);
@@ -223,7 +223,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Makes the player jump when pressing jump control, "space" by default
     public void player_jump(InputAction.CallbackContext context) {
-        if (gameLogic.isPlayerAlive()) {
+        if (gameLogic.isPlayerAlive() && !PauseMenuController.getPauseStatus()) {
             if (isGrounded()) {
                 jumpUp.volume = AudioManager.getSoundFXVolume();
                 jumpUp.Play();  
@@ -234,7 +234,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Makes the player crouch when pressing crouch control, "left-control" by default
     public void player_crouch(InputAction.CallbackContext context) {
-        if (gameLogic.isPlayerAlive()) {
+        if (gameLogic.isPlayerAlive() && !PauseMenuController.getPauseStatus()) {
             if (isGrounded() && !isRunning() && !isJumping() && !isFalling()) {
                 if (isCrouched) {
                     isCrouched = false;
@@ -249,7 +249,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Makes the player move (left or right) when pressing movement controls, "a" and "d" by default
     public void player_movement(InputAction.CallbackContext context) {
-        if (gameLogic.isPlayerAlive()) {
+        if (gameLogic.isPlayerAlive() && !PauseMenuController.getPauseStatus()) {
             Vector2 inputDirectionVector = context.ReadValue<Vector2>();
             playerRigidBody.velocity = new Vector2(inputDirectionVector.x * movementSpeed, playerRigidBody.velocity.y);
         }
