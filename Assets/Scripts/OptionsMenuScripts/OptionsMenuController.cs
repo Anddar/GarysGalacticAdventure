@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class OptionsMenuController : MonoBehaviour
 {
@@ -48,6 +49,9 @@ public class OptionsMenuController : MonoBehaviour
         videoTab.SetActive(false);
 
         gameObject.SetActive(false); // Closes the game options menu
+
+        // Save options when closing the Options menu
+        OptionsDataPersistenceManager.instance.SaveOptions();
     }
     // ------------------------------------------------------
 }

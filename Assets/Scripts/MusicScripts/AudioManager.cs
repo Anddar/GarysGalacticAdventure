@@ -2,52 +2,83 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : MonoBehaviour, IOptionsDataPersistence
 {
     // Game Volumes
-    private static double master_volume = 1;
-    private static double sound_fx_volume = 1;
-    private static double music_volume = 1;
-    private static double dialogue_volume = 1;
+    private static int master_volume;
+    private static int sound_fx_volume;
+    private static int music_volume;
+    private static int dialogue_volume;
 
     // This function can be called when player updates audio settings to change volumes.
-    public static void updateAudioLevel(string audioSource, double value) {
+    public static void updateAudioLevel(string audioSource, int value) {
         switch (audioSource) {
             case "MASTER VOLUME":
-                master_volume = value * 0.01;
-                sound_fx_volume = (value * 0.01) * master_volume;
-                music_volume = (value * 0.01) * master_volume;
-                dialogue_volume = (value * 0.01) * master_volume;
+                master_volume = value;
                 break;
 
             case "SOUND FX VOLUME":
-                sound_fx_volume = (value * 0.01) * master_volume;
+                sound_fx_volume = value;
                 break;
 
             case "MUSIC VOLUME":
-                music_volume = (value * 0.01) * master_volume;
+                music_volume = value;
                 break;
 
             case "DIALOGUE VOLUME":
-                dialogue_volume = (value * 0.01) * master_volume;
+                dialogue_volume = value;
                 break;
         }
     }
 
     // Volume Getter Methods
     public static float getMasterVolume() {
-        return (float) master_volume;
+        return (float) (master_volume * 0.01);
     }
 
     public static float getSoundFXVolume() {
-        return (float) sound_fx_volume;
+        return (float) ((sound_fx_volume * 0.01) * (master_volume * 0.01));
     }
 
     public static float getMusicVolume() {
-        return (float) music_volume;
+        return (float) ((music_volume * 0.01) * (master_volume * 0.01));
     }
 
     public static float getDialogueVolume() {
-        return (float) dialogue_volume;
+        return (float) ((dialogue_volume * 0.01) * (master_volume * 0.01));
+    }
+
+    // Returns the raw sound value that is set in the Options Menu
+    public static int getRawMasterVolume() {
+        return master_volume;
+    }
+
+    public static int getRawSoundFXVolume() {
+        return sound_fx_volume;
+    }
+
+    public static int getRawMusicVolume() {
+        return music_volume;
+    }
+
+    public static int getRawDialogueVolume() {
+        return dialogue_volume;
+    }
+
+    // Options Data Persistence
+    public void LoadData(OptionsData optionsData)
+    {
+        AudioManager.master_volume = optionsData.master_volume;
+        AudioManager.sound_fx_volume = optionsData.sound_fx_volume;
+        AudioManager.music_volume = optionsData.music_volume;
+        AudioManager.dialogue_volume = optionsData.dialogue_volume;
+    }
+
+    public void SaveData(ref OptionsData optionsData)
+    {
+        optionsData.master_volume = AudioManager.master_volume;
+        optionsData.sound_fx_volume = AudioManager.sound_fx_volume;
+        optionsData.music_volume = AudioManager.music_volume;
+        optionsData.dialogue_volume = AudioManager.dialogue_volume;
     }
 }

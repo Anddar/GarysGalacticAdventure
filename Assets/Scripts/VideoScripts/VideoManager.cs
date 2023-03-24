@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VideoManager : MonoBehaviour
+public class VideoManager : MonoBehaviour, IOptionsDataPersistence
 {
     private static string video_resolution;
     private static FullScreenMode screen_mode;
@@ -28,7 +28,6 @@ public class VideoManager : MonoBehaviour
                 break;
 
             case "1366 x 768":
-                Debug.Log("changed");
                 video_resolution = "1366 x 768";
                 Screen.SetResolution(1366, 768, screen_mode);
                 break;
@@ -56,20 +55,68 @@ public class VideoManager : MonoBehaviour
             case "WINDOWED":
                 screen_mode = FullScreenMode.Windowed;
                 Screen.fullScreenMode = screen_mode;
-                
                 break;
         }
     }
 
+    private static string convertIntScreenModeToString(int constant) {
+        switch(constant) {
+            case 0:
+                return "FULLSCREEN";
+            case 1:
+                return "FULLSCREEN (BORDERLESS)";
+            case 2:
+                return "MAXIMIZED WINDOW";
+            case 3:
+                return "WINDOWED";
+        }
+        return "";
+    }
+
+    private static FullScreenMode convertIntToScreenMode(int constant) {
+        switch(constant) {
+            case 0:
+                return FullScreenMode.ExclusiveFullScreen;
+            case 1:
+                return FullScreenMode.FullScreenWindow;
+            case 2:
+                return FullScreenMode.MaximizedWindow;
+            case 3:
+                return FullScreenMode.Windowed;
+        }
+        return FullScreenMode.ExclusiveFullScreen;
+    }
     
     // Resolution & Screen Mode Getter Methods
     public static string getCurrentResolution() {
         return video_resolution;
     }
 
-    
     public static FullScreenMode getCurrentScreenMode() {
         return screen_mode;
     }
-    
+
+    public static string getCurrentScreenModeString() {
+        return convertIntScreenModeToString((int) screen_mode);
+    }
+
+    // Options Data Persistence
+    public void LoadData(OptionsData optionsData)
+    {
+        video_resolution = optionsData.GameResolution;
+        screen_mode = convertIntToScreenMode(optionsData.GameWindowMode);
+
+        // Set Game Resolution and Screen Mode accordingly, if not default, to the Read Options File, if not default options are applied by the OptionsData Class
+        setGameResolution(video_resolution);
+        
+        if (screen_mode != Screen.fullScreenMode) {
+            setScreenMode(convertIntScreenModeToString(optionsData.GameWindowMode));
+        }
+    }
+
+    public void SaveData(ref OptionsData optionsData)
+    {
+        optionsData.GameResolution = video_resolution;
+        optionsData.GameWindowMode = (int) screen_mode;
+    }
 }

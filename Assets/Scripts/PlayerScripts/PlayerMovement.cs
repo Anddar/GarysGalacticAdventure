@@ -157,12 +157,12 @@ public class PlayerMovement : MonoBehaviour
     // Update/Refresh Player Controls for the user, especially if settings/options were changed
     private void updatePlayerControlSettings() {
         // Updates players crouch toggle ability
-        if (GameplayManager.getToggleCrouchState()) {
+        if (!GameplayManager.getToggleCrouchState()) {
             playerInputActions.Player.Crouch.Disable();
             playerInputActions.Player.CrouchHold.Enable();
         } else {
-            playerInputActions.Player.Crouch.Enable();
             playerInputActions.Player.CrouchHold.Disable();
+            playerInputActions.Player.Crouch.Enable();
         }
     }
 

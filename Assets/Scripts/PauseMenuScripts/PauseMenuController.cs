@@ -51,7 +51,7 @@ public class PauseMenuController : MonoBehaviour
             AudioListener.pause = true; // Pauses all audio in the game
             Time.timeScale = 0; // Set timescale to 0 to stop time hence stopping the game
             PauseMenu.SetActive(true);
-        } else if (pauseStatus) { 
+        } else if (pauseStatus && !OptionsMenu.activeSelf) { 
             // If pressing escape again we will close the pause menu
             pauseStatus = false;
             AudioListener.pause = false; // Unpause all the audio in the game
@@ -81,9 +81,10 @@ public class PauseMenuController : MonoBehaviour
     }
 
     public void saveAndQuitButtonAction() {
-        // Save Game Here
+        // Saving Game
+        OptionsDataPersistenceManager.instance.SaveOptions(); // Saving Options
 
-        Time.timeScale = 1; // Set time back to normal so the game starts againTime.timeScale = 1; // Set time back to normal so the game starts again
+        Time.timeScale = 1; // Set time back to normal so the game starts again
 
         SceneManager.LoadScene(0); // Loads the main menu screen
     }
