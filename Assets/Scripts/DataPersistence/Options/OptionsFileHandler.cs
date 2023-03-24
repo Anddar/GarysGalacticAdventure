@@ -9,9 +9,14 @@ public class OptionsFileHandler
     private string optionsDirectoryPath = "";
     private string optionsFileName = "";
 
-    public OptionsFileHandler(string optionsDirectoryPath, string optionsFileName) {
+    // Options File Encryption
+    private bool encryptFile = false;
+    private readonly string encryptReadPassword = "74fdda1bdc06613492e14a44bc6a7e21";
+
+    public OptionsFileHandler(string optionsDirectoryPath, string optionsFileName, bool encryptFile) {
         this.optionsDirectoryPath = optionsDirectoryPath;
         this.optionsFileName = optionsFileName;
+        this.encryptFile = encryptFile;
     }
 
     // Loads our past options from the existing options file
@@ -28,6 +33,11 @@ public class OptionsFileHandler
                     using (StreamReader optionsFileReader = new StreamReader(optionsFile)) {
                         dataComingIn = optionsFileReader.ReadToEnd();
                     }
+                }
+
+                // Decryption Process if EncryptFile is True
+                if (encryptFile) {
+                    dataComingIn = EncryptDecryptOptions(dataComingIn);
                 }
                 
                 // Convert our read data back into an options data object to be used in our game
@@ -51,6 +61,11 @@ public class OptionsFileHandler
             // Format and convert our data to JSON to be saved in the options file
             string optionsToSave = JsonUtility.ToJson(data, true);
 
+            // Encryption Process if EncryptFile is True
+            if (encryptFile) {
+                optionsToSave = EncryptDecryptOptions(optionsToSave);
+            }
+
             // Create options file and write options into file to be saved
             using (FileStream optionsFile = new FileStream(complete_path, FileMode.Create)) {
                 using (StreamWriter optionsFileWriter = new StreamWriter(optionsFile)) {
@@ -62,5 +77,17 @@ public class OptionsFileHandler
             Debug.LogError("Error saving the options data to file, " + complete_path + "\n" + e);
         }
 
+    }
+
+    // This function will encrypt and decrypt the saved Options in the Options File
+    private string EncryptDecryptOptions(string data) {
+        string encrypted_decrypted_data = "";
+
+        // Encrypting/Dycrypting data using XOR Encryption
+        for (int i=0; i < data.Length; i++) {
+            encrypted_decrypted_data += (char) (data[i] ^ encryptReadPassword[i % encryptReadPassword.Length]);
+        }
+
+        return encrypted_decrypted_data;
     }
 }

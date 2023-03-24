@@ -21,7 +21,9 @@ public class PlayerUILogicScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerDeath = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerDeath>();
+        if (SceneManager.GetActiveScene().buildIndex != 0) {
+            playerDeath = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerDeath>();
+        }
         playerHealth = 100;
         playerShield = 100;
         playerScore = 0;
@@ -110,4 +112,8 @@ public class PlayerUILogicScript : MonoBehaviour
         return playerShield > 0;
     }
 
+    // Returns the current player score for the level
+    public int getPlayerScore() {
+        return playerScore;
+    }
 }

@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Bullet
   - LevelFade
+  - Saves
   layers:
   - Default
   - TransparentFX

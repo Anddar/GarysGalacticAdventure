@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class FinishLevel1 : MonoBehaviour
+public class FinishLevel1 : MonoBehaviour, IPlayerDataPersistence
 {
     //Sounds for car end flag in first level
     [SerializeField] private AudioSource doorOpen;
     [SerializeField] private AudioSource doorClose;
 
     private Rigidbody2D playerRigidBody;
+    private PlayerUILogicScript gameLogic;
 
     static private Animator transition;
     [SerializeField] private float transitionTime = 1f;
@@ -17,14 +18,19 @@ public class FinishLevel1 : MonoBehaviour
     private List<AudioSource> sounds = new List<AudioSource>();
     private List<float> delayBetweenSounds = new List<float>();
     
+    private bool levelCompleted;
+
     // Start is called before the first frame update
     private void Start()
     {
         playerRigidBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
+        gameLogic = GameObject.FindGameObjectWithTag("Logic").GetComponent<PlayerUILogicScript>();
         sounds.Add(doorOpen);
         delayBetweenSounds.Add(2f); // Delay between doorOpen and doorClose
         sounds.Add(doorClose);
         transition = GameObject.FindGameObjectWithTag("LevelFade").GetComponent<Animator>();
+
+        levelCompleted = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision){
@@ -36,6 +42,8 @@ public class FinishLevel1 : MonoBehaviour
     }
 
     public void CompleteLevel(){
+        levelCompleted = true;
+        PlayerDataPersistenceManager.instance.SavePlayer(PlayerSave.getCurrentSave());
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
     }
 
@@ -64,4 +72,13 @@ public class FinishLevel1 : MonoBehaviour
         IEnumerator waitForSoundCoroutine = waitForSound(sounds, delayBetweenSounds);
         StartCoroutine(waitForSoundCoroutine);
     }
+
+    public void LoadData(PlayerData playerData) {}
+
+    public void SaveData(ref PlayerData playerData) {
+        if (levelCompleted) {
+            playerData.totalScore += gameLogic.getPlayerScore();
+        }
+    }
+        
 }

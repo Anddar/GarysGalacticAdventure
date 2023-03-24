@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+
 
 public class MainMenuController : MonoBehaviour
 {
@@ -24,21 +27,17 @@ public class MainMenuController : MonoBehaviour
     private bool currentSaves;
     private bool buttonsMovedDown;
 
-    // Fade Into Playing Components
-    [SerializeField] private Animator transition;
-    [SerializeField] private float transitionIntoPlayTime = 1f;
-
     // Start is called before the first frame update
     void Start()
     {
-        currentSaves = anyCurrentSaves();
-        buttonsMovedDown = false;
-
         // Collect all button transforms
         continueTransform = continueButton.transform;
         playTransform = playButton.transform;
         optionsTransform = optionsButton.transform;
         exitTransform = exitButton.transform;
+
+        currentSaves = anyCurrentSaves();
+        buttonsMovedDown = false;
 
         if (!currentSaves) {
             continueButton.SetActive(false); // Deactivating the continue save button
@@ -67,15 +66,7 @@ public class MainMenuController : MonoBehaviour
     }
 
     public void playButtonAction() {
-        // UserSaveMenu.SetActive(true); // Overlaying the Save Menu
-
-        transition.SetTrigger("Start");
-        if (chooseLevelOnPlay != -1) {
-            // Allows devs to choose the level they want to start on when pressing the play button
-            StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + chooseLevelOnPlay));
-        } else {
-            StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
-        }
+        UserSaveMenu.SetActive(true); // Overlaying the Save Menu
     }
 
     public void optionsButtonAction() {
@@ -89,13 +80,18 @@ public class MainMenuController : MonoBehaviour
 
     // Determine if there are any current saves
     private bool anyCurrentSaves() {
+        string complete_path;
+        foreach (string saveName in SaveMenuController.getSaveFileNames()) {
+            complete_path = Path.Combine(Application.persistentDataPath, "player_saves");
+            complete_path = Path.Combine(complete_path, saveName);
+            if (Directory.Exists(complete_path)) {
+                complete_path = Path.Combine(complete_path, saveName + ".game");
+                if (File.Exists(complete_path)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
-    // Load player into the proper level in the game
-    private IEnumerator LoadLevel(int levelIndex){
-        transition.SetTrigger("Start");
-        yield return new WaitForSeconds(transitionIntoPlayTime);
-        SceneManager.LoadScene(levelIndex);
-    }
 }

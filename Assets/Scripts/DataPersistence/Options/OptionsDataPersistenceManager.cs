@@ -7,6 +7,7 @@ public class OptionsDataPersistenceManager : MonoBehaviour
 {
     [Header("File Storage Config")]
     [SerializeField] private string optionsFileName;
+    [SerializeField] private bool ecryptOptionsData;
 
 
     // Data Variables
@@ -19,7 +20,7 @@ public class OptionsDataPersistenceManager : MonoBehaviour
     private List<IOptionsDataPersistence> optionsDataPersistenceObjects; // Holds all the objects that are using the data persistence
 
     private void Start() {
-        this.optionsFileHandler = new OptionsFileHandler(Application.persistentDataPath, optionsFileName);
+        this.optionsFileHandler = new OptionsFileHandler(Application.persistentDataPath, optionsFileName, ecryptOptionsData);
         this.optionsDataPersistenceObjects = FindAllOptionsDataPersistenceObjects();
         
         LoadOptions();
