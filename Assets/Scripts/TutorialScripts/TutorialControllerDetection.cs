@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
 
-public class ControllerDetection : MonoBehaviour
+public class TutorialControllerDetection : MonoBehaviour
 {
     
     // Tutorial Button Change Objects

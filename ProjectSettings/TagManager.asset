@@ -9,7 +9,11 @@ TagManager:
   - Enemy
   - Bullet
   - LevelFade
-  - Saves
+  - MainMenu
+  - SaveMenu
+  - OptionsMenu
+  - OverwriteBox
+  - PauseMenu
   layers:
   - Default
   - TransparentFX
