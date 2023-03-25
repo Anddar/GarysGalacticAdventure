@@ -48,6 +48,11 @@ public class PlayerShoot : MonoBehaviour
         playerInputActions.Player.Shoot.performed += playerShootProjectile;
     }
 
+    private void onDestroy() {
+        playerInputActions.Player.Shoot.performed -= playerShootProjectile;
+        playerInputActions.Dispose();
+    }
+
     // Determines if the player is running and flip the player correspondingly to the direction they are running
     public bool isRunning() {
         Vector2 directionVector = playerInputActions.Player.Movement.ReadValue<Vector2>();
@@ -64,7 +69,7 @@ public class PlayerShoot : MonoBehaviour
 
     // This function will allow the bullet to spawn and be fired from barrel of gun
     public void playerShootProjectile(InputAction.CallbackContext context) {
-        if (gameLogic.isPlayerAlive() && shootingDelayTimer > shootingDelay && !PauseMenuController.getPauseStatus()) {
+        if (gameLogic.isPlayerAlive() && shootingDelayTimer > shootingDelay && playerSprite != null && !PauseMenuController.getPauseStatus()) {
             shootingDelayTimer = 0;
             Vector3 worldPosition;
             Vector3 bulletPosVector;
@@ -105,5 +110,7 @@ public class PlayerShoot : MonoBehaviour
             if (flipBullet) { bullet.GetComponent<SpriteRenderer>().flipX = true; }
         }
     }
+
+
 
 }

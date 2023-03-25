@@ -59,15 +59,19 @@ public class PlayerDataPersistenceManager : MonoBehaviour
         }
     }
 
-    public void SavePlayer(string player_save_num) {
+    public bool SavePlayer(string player_save_num) {
+        // If the objects in Scene are not ready we tell the script that is trying to save that we are not ready so it will try to save again.
+        if (playerDataPersistenceObjects == null) { return false; }        
+
         // Pass data to other scripts so they update properly
         foreach (IPlayerDataPersistence playerDataPersistenceObject in playerDataPersistenceObjects) {
             playerDataPersistenceObject.SaveData(ref playerData);
         }
-        Debug.Log(playerDataPersistenceObjects.Count);
 
         // Saving our Users Player Data to a file
         playerFileHandler.Save(playerData, player_save_num);
+
+        return true;
     }
 
     // If player closes game all Player will still be saved

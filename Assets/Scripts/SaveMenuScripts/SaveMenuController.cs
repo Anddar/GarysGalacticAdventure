@@ -19,6 +19,11 @@ public class SaveMenuController : MonoBehaviour, IPlayerDataPersistence
     private static string save3Name;
     private static string save4Name;
 
+    // Overwrite Dialog Box Components
+    [SerializeField] private GameObject overwriteDialogBox;
+    [SerializeField] private Button yesButton;
+    [SerializeField] private Button noButton;
+
     // Fade Into Playing Components
     private Animator transition;
     [SerializeField] private float transitionIntoPlayTime = 1f;
@@ -31,6 +36,9 @@ public class SaveMenuController : MonoBehaviour, IPlayerDataPersistence
 
     // Start is called before the first frame update
     void Start() {
+        setSaveButtonUseableState(true);
+        setOverwriteButtonUseableState(true);
+
         save1Name = "PlayerSave1";
         save2Name = "PlayerSave2";
         save3Name = "PlayerSave3";
@@ -68,6 +76,7 @@ public class SaveMenuController : MonoBehaviour, IPlayerDataPersistence
 
             PlayerSave.setCurrentSave(""); // Make sure to reset the current save after finished initializing
             PlayerDataPersistenceManager.instance.NewGame(); // Reset the PlayerData to be a NewGame
+            scene_index_toLoad = 1;
 
             initialized = true;
         }
@@ -75,79 +84,114 @@ public class SaveMenuController : MonoBehaviour, IPlayerDataPersistence
 
     // ------------------ BUTTON FUNCTIONS ------------------
     public void save1ButtonAction() {
-        save2Button.interactable = false;
-        save3Button.interactable = false;
-        save4Button.interactable = false;
+        setSaveButtonUseableState(false);
 
         // Define which save was selected
         PlayerSave.setCurrentSave(save1Name);
 
-        if (PlayerDataPersistenceManager.instance.saveExists(save1Name)) {
-            PlayerDataPersistenceManager.instance.LoadPlayer(save1Name);
-        } else {
-            PlayerDataPersistenceManager.instance.SavePlayer(save1Name);
-        }
-
-        // Start Save 1
-        StartCoroutine(LoadLevel(scene_index_toLoad));
+        // Start Save 1 - If it is a prexisting (loaded) or new save
+        if (onSaveSelected(save1Name)) { StartCoroutine(LoadLevel(scene_index_toLoad)); }
     }
 
     public void save2ButtonAction() {
-        save1Button.interactable = false;
-        save3Button.interactable = false;
-        save4Button.interactable = false;
+        setSaveButtonUseableState(false);
 
         // Define which save was selected
         PlayerSave.setCurrentSave(save2Name);
 
-        if (PlayerDataPersistenceManager.instance.saveExists(save2Name)) {
-            PlayerDataPersistenceManager.instance.LoadPlayer(save2Name);
-        } else {
-            PlayerDataPersistenceManager.instance.SavePlayer(save2Name);
-        }
-
-        // Start Save 2
-        StartCoroutine(LoadLevel(scene_index_toLoad));
+        // Start Save 2 - If it is a prexisting (loaded) or new save
+        if (onSaveSelected(save2Name)) { StartCoroutine(LoadLevel(scene_index_toLoad)); }
     }
 
     public void save3ButtonAction() {
-        save1Button.interactable = false;
-        save2Button.interactable = false;
-        save4Button.interactable = false;
+        setSaveButtonUseableState(false);
 
         // Define which save was selected
         PlayerSave.setCurrentSave(save3Name);
 
-        if (PlayerDataPersistenceManager.instance.saveExists(save3Name)) {
-            PlayerDataPersistenceManager.instance.LoadPlayer(save3Name);
-        } else {
-            PlayerDataPersistenceManager.instance.SavePlayer(save3Name);
-        }
-
-        // Start Save 3
-        StartCoroutine(LoadLevel(scene_index_toLoad));
+        // Start Save 3 - If it is a prexisting (loaded) or new save
+        if (onSaveSelected(save3Name)) { StartCoroutine(LoadLevel(scene_index_toLoad)); }
     }
 
     public void save4ButtonAction() {
-        save1Button.interactable = false;
-        save2Button.interactable = false;
-        save3Button.interactable = false;
+        setSaveButtonUseableState(false);
 
         // Define which save was selected
         PlayerSave.setCurrentSave(save4Name);
-        
-        if (PlayerDataPersistenceManager.instance.saveExists(save4Name)) {
-            PlayerDataPersistenceManager.instance.LoadPlayer(save4Name);
-        } else {
-            PlayerDataPersistenceManager.instance.SavePlayer(save4Name);
-        }
 
-        // Start Save 4
+        // Start Save 4 - If it is a prexisting (loaded) or new save
+        if (onSaveSelected(save4Name)) { StartCoroutine(LoadLevel(scene_index_toLoad)); }
+    }
+
+    public void overwriteYesButtonAction() {
+        // Handling Closing the Overwrite Dialog Box
+        setOverwriteButtonUseableState(false);
+        overwriteDialogBox.SetActive(false);
+        setOverwriteButtonUseableState(true);
+
+        // Overwriting Save File
+        PlayerDataPersistenceManager.instance.SavePlayer(PlayerSave.getCurrentSave());
+
+        // Handling Closing the Saves Menu (behind dialog box)
+        GameObject.FindGameObjectWithTag("Saves").SetActive(false);
+        setSaveButtonUseableState(true);
+
+        // Load level with overwrite
         StartCoroutine(LoadLevel(scene_index_toLoad));
+    }
+
+    public void overwriteNoButtonAction() {
+        // Handling Closing the Overwrite Dialog Box
+        setOverwriteButtonUseableState(false);
+        overwriteDialogBox.SetActive(false);
+        setOverwriteButtonUseableState(true);
+
+        setSaveButtonUseableState(true); // Turn save menu buttons back on after dialog box closed
     }
 
     public void exitButtonAction() {
         GameObject.FindGameObjectWithTag("Saves").SetActive(false); // Closes the game saves menu
+    }
+
+    public bool onSaveSelected(string saveName) {
+        if (MainMenuController.GameStartState == "CONTINUE") {
+            if (PlayerDataPersistenceManager.instance.saveExists(saveName)) {
+                PlayerDataPersistenceManager.instance.LoadPlayer(saveName);
+            } else { 
+                setSaveButtonUseableState(true);
+                return false; 
+            }
+        } else if (MainMenuController.GameStartState == "NEW GAME") {
+            if (PlayerDataPersistenceManager.instance.saveExists(saveName)) {
+                // Ask player if they would like to overwrite save. If true overwrite otherwise do not.
+                overwriteDialogBox.SetActive(true);
+                return false;
+            } else {
+                PlayerDataPersistenceManager.instance.SavePlayer(saveName);
+            }
+        }
+
+        // Handling Closing the Saves Menu
+        GameObject.FindGameObjectWithTag("Saves").SetActive(false);
+        setSaveButtonUseableState(true);
+
+        // Turn off Main Menu Buttons
+        MainMenuController.setMenuButtonState(false);
+
+        return true;
+    }
+
+    public void setSaveButtonUseableState(bool state) {
+        save1Button.interactable = state;
+        save2Button.interactable = state;
+        save3Button.interactable = state;
+        save4Button.interactable = state;
+        exitButton.interactable = state;
+    }
+
+    public void setOverwriteButtonUseableState(bool state) {
+        yesButton.interactable = state;
+        noButton.interactable = state;
     }
     // ------------------------------------------------------
 
@@ -192,6 +236,9 @@ public class SaveMenuController : MonoBehaviour, IPlayerDataPersistence
 
     // Load player into the proper level in the game
     private IEnumerator LoadLevel(int levelIndex){
+        // Turn off Main Menu Buttons
+        MainMenuController.setMenuButtonState(false);
+
         transition.SetTrigger("Start");
         yield return new WaitForSeconds(transitionIntoPlayTime);
         SceneManager.LoadScene(levelIndex);

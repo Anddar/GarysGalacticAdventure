@@ -46,17 +46,19 @@ public class PauseMenuController : MonoBehaviour
 
     // This function allows us to open the pause menu from other scripts
     public void openPauseMenu(InputAction.CallbackContext context) {
-        if (!pauseStatus) {
-            pauseStatus = true;
-            AudioListener.pause = true; // Pauses all audio in the game
-            Time.timeScale = 0; // Set timescale to 0 to stop time hence stopping the game
-            PauseMenu.SetActive(true);
-        } else if (pauseStatus && !OptionsMenu.activeSelf) { 
-            // If pressing escape again we will close the pause menu
-            pauseStatus = false;
-            AudioListener.pause = false; // Unpause all the audio in the game
-            PauseMenu.SetActive(false);
-            Time.timeScale = 1; // Set timescale back to normal so the game starts again
+        if (PauseMenu != null) {
+            if (!pauseStatus) {
+                pauseStatus = true;
+                AudioListener.pause = true; // Pauses all audio in the game
+                Time.timeScale = 0; // Set timescale to 0 to stop time hence stopping the game
+                PauseMenu.SetActive(true);
+            } else if (pauseStatus && !OptionsMenu.activeSelf) { 
+                // If pressing escape again we will close the pause menu
+                pauseStatus = false;
+                AudioListener.pause = false; // Unpause all the audio in the game
+                PauseMenu.SetActive(false);
+                Time.timeScale = 1; // Set timescale back to normal so the game starts again
+            }
         }
     }
 
@@ -83,8 +85,13 @@ public class PauseMenuController : MonoBehaviour
     public void saveAndQuitButtonAction() {
         // Saving Game
         OptionsDataPersistenceManager.instance.SaveOptions(); // Saving Options
+        PlayerDataPersistenceManager.instance.SavePlayer(PlayerSave.getCurrentSave()); // Saving Player
 
         Time.timeScale = 1; // Set time back to normal so the game starts again
+
+        PlayerSave.setCurrentSave("");
+
+        AudioListener.pause = false; // Turning Music back on before leaving scene
 
         SceneManager.LoadScene(0); // Loads the main menu screen
     }

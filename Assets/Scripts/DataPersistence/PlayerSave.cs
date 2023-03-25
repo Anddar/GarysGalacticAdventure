@@ -8,22 +8,23 @@ public class PlayerSave : MonoBehaviour, IPlayerDataPersistence
     private static string playerSave;
     private static int currentLevel;
 
-    private bool needsToSave;
+    private static bool trySaveLater;
 
     // Start is called before the first frame update
     void Start()
     {
+        trySaveLater = false;
+
         currentLevel = 1;
         DontDestroyOnLoad(gameObject); // So we can keep and understand which player save we are working with
     }
 
     void Update() {
-        if (needsToSave && PlayerDataPersistenceManager.instance != null) {
-            PlayerDataPersistenceManager.instance.SavePlayer(playerSave);
-            needsToSave = false;
+        // Trys to save again since the objects were not fully ready when scene was loaded
+        if (trySaveLater) {
+            trySaveLater = !PlayerDataPersistenceManager.instance.SavePlayer(playerSave);
         }
     }
-
 
     void OnEnable()
     {
@@ -33,10 +34,7 @@ public class PlayerSave : MonoBehaviour, IPlayerDataPersistence
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         if (SceneManager.GetActiveScene().buildIndex != 0) {
             currentLevel = SceneManager.GetActiveScene().buildIndex;
-            if (PlayerDataPersistenceManager.instance != null) {
-                PlayerDataPersistenceManager.instance.SavePlayer(playerSave);
-                needsToSave = false;
-            } else { needsToSave = true; } 
+            trySaveLater = !PlayerDataPersistenceManager.instance.SavePlayer(playerSave);
         }
     }
 

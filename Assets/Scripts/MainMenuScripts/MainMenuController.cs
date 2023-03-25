@@ -13,17 +13,18 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private GameObject OptionsMenu;
     [SerializeField] private GameObject UserSaveMenu;
 
-    [SerializeField] private GameObject continueButton;
-    [SerializeField] private GameObject playButton;
-    [SerializeField] private GameObject optionsButton;
-    [SerializeField] private GameObject exitButton;
+    [SerializeField] private Button continueButton;
+    [SerializeField] private Button playButton;
+    [SerializeField] private Button optionsButton;
+    [SerializeField] private Button exitButton;
 
     private Transform continueTransform;
     private Transform playTransform;
     private Transform optionsTransform;
     private Transform exitTransform;
 
-    [SerializeField] private int chooseLevelOnPlay;
+    public static string GameStartState;
+    public static bool menuButtonState;
     private bool currentSaves;
     private bool buttonsMovedDown;
 
@@ -36,11 +37,13 @@ public class MainMenuController : MonoBehaviour
         optionsTransform = optionsButton.transform;
         exitTransform = exitButton.transform;
 
+        GameStartState = "";
+        menuButtonState = true; // True Meaning Active
         currentSaves = anyCurrentSaves();
         buttonsMovedDown = false;
 
         if (!currentSaves) {
-            continueButton.SetActive(false); // Deactivating the continue save button
+            continueButton.gameObject.SetActive(false); // Deactivating the continue save button
 
             // Sliding the buttons up in the Main Menu
             playTransform.localPosition = new Vector3(playTransform.localPosition.x, playTransform.localPosition.y + 100, playTransform.localPosition.z);
@@ -55,17 +58,28 @@ public class MainMenuController : MonoBehaviour
         if (anyCurrentSaves() && !buttonsMovedDown) {
             buttonsMovedDown = true;
 
-            continueButton.SetActive(true); // Activating the continue save button
+            continueButton.gameObject.SetActive(true); // Activating the continue save button
             playButton.GetComponentInChildren<Text>().text = "NEW GAME";
+        }
+
+        if (!menuButtonState) {
+            continueButton.interactable = false;
+            playButton.interactable = false;
+            optionsButton.interactable = false;
+            exitButton.interactable = false;
         }
     }
 
     // ------------------ BUTTON FUNCTIONS ------------------
     public void continueButtonAction() {
+        GameStartState = "CONTINUE";
+
         UserSaveMenu.SetActive(true); // Overlaying the Save Menu
     }
 
     public void playButtonAction() {
+        GameStartState = "NEW GAME";
+
         UserSaveMenu.SetActive(true); // Overlaying the Save Menu
     }
 
@@ -77,6 +91,11 @@ public class MainMenuController : MonoBehaviour
         Application.Quit(); // Quits the game application
     }
     // ------------------------------------------------------
+
+    // Setter Function to set the menuButtonState variable
+    public static void setMenuButtonState(bool state) {
+        menuButtonState = state;
+    }
 
     // Determine if there are any current saves
     private bool anyCurrentSaves() {

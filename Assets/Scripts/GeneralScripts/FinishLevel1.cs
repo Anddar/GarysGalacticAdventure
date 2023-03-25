@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class FinishLevel1 : MonoBehaviour, IPlayerDataPersistence
 {
-    //Sounds for car end flag in first level
+    // Sounds for car end flag in first level
     [SerializeField] private AudioSource doorOpen;
     [SerializeField] private AudioSource doorClose;
 
