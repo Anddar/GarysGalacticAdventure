@@ -96,6 +96,10 @@ public class ControlDetection : MonoBehaviour
             return;
         }
 
+        if (menu.tag == "Saves" && EventSystem.current.currentSelectedGameObject.tag == "SaveMenu") {
+            return;
+        }
+        
         if (EventSystem.current.currentSelectedGameObject != obj && menu.tag != EventSystem.current.currentSelectedGameObject.tag) {
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(obj);
