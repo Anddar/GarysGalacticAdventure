@@ -26,6 +26,11 @@ public class ControlDetection : MonoBehaviour
     PlayerInputActions playerInputActions;
 
     private string current_device;
+    private string previous_selected_object;
+    private string previous_open_menu;
+
+    // Audio Menu Move Click Sound
+    [SerializeField] private AudioSource menu_move_click;
 
     void Start()
     {
@@ -39,12 +44,19 @@ public class ControlDetection : MonoBehaviour
         OptionsVideoNavDown = OptionsVideoButton.navigation.selectOnDown;
 
         if (MainMenuFirstButtonContinue != null && MainMenuFirstButtonPlay != null) {
+            previous_open_menu = "MenuArea"; // Main Menu Object Name
             if (MainMenuFirstButtonContinue) {
                 MainMenuFirstButton = MainMenuFirstButtonContinue;
+                previous_selected_object = "ContinueButton";
             } else {
                 MainMenuFirstButton = MainMenuFirstButtonPlay;
+                previous_selected_object = "PlayButton";
             }
-        } else { MainMenuFirstButton = null; }
+        } else { 
+            previous_selected_object = "ResumeButton";
+            previous_open_menu = "PauseMenu";
+            MainMenuFirstButton = null; 
+        }
     }
 
     void Update() {
@@ -100,8 +112,10 @@ public class ControlDetection : MonoBehaviour
 
     private void inputDeviceChanged(InputDevice device) {
         string device_name = device.name;
-        if (device_name == "Keyboard" || device_name == "Mouse") {
+        if (device_name == "Keyboard") {
             current_device = "Keyboard";
+        } else if (device_name == "Mouse") {
+            current_device = "Mouse";
         } else if (device_name == "DualSenseGamepadHID" || device_name == "DualShock4GamepadHID") {
             current_device = "Playstation";
         } else if (device_name == "XInputControllerWindows") {
@@ -153,24 +167,39 @@ public class ControlDetection : MonoBehaviour
     }
 
     private void setSelectedObject(GameObject obj, GameObject menu) {
-        if (obj == null && menu == null) {
-            EventSystem.current.SetSelectedGameObject(null);
-            return;
+        // This if statement will check if the currently selected game object is different than the previously selected object, making a sound when moving between menu buttons
+        if (EventSystem.current.currentSelectedGameObject != null && menu != null) {
+            if (menu.name != previous_open_menu) {
+                menu_move_click.volume = AudioManager.getUIVolume();
+                menu_move_click.Play();
+                previous_open_menu = menu.name;
+            } else if (EventSystem.current.currentSelectedGameObject.name != previous_selected_object) {
+                menu_move_click.volume = AudioManager.getUIVolume();
+                menu_move_click.Play();
+                previous_selected_object = EventSystem.current.currentSelectedGameObject.name;
+            }
         }
 
-        if (EventSystem.current.currentSelectedGameObject == null) {
-            EventSystem.current.SetSelectedGameObject(obj);
-            return;
-        }
+        if (current_device != "Mouse") {
+            if (obj == null && menu == null) {
+                EventSystem.current.SetSelectedGameObject(null);
+                return;
+            }
 
-        if (menu.tag == "Saves" && EventSystem.current.currentSelectedGameObject.tag == "SaveMenu") {
-            return;
-        }
-        
-        if (EventSystem.current.currentSelectedGameObject != obj && menu.tag != EventSystem.current.currentSelectedGameObject.tag) {
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(obj);
-        }
+            if (EventSystem.current.currentSelectedGameObject == null) {
+                EventSystem.current.SetSelectedGameObject(obj);
+                return;
+            }
+
+            if (menu.tag == "Saves" && EventSystem.current.currentSelectedGameObject.tag == "SaveMenu") {
+                return;
+            }
+            
+            if (EventSystem.current.currentSelectedGameObject != obj && menu.tag != EventSystem.current.currentSelectedGameObject.tag) {
+                EventSystem.current.SetSelectedGameObject(null);
+                EventSystem.current.SetSelectedGameObject(obj);
+            }
+        } else { EventSystem.current.SetSelectedGameObject(null); }
     }
 
     // Changes the options navigation so that any of the four tab buttons can go down into any options tab menu

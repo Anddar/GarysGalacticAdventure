@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour, IOptionsDataPersistence
     private static int sound_fx_volume;
     private static int music_volume;
     private static int dialogue_volume;
+    private static int ui_volume;
 
     // This function can be called when player updates audio settings to change volumes.
     public static void updateAudioLevel(string audioSource, int value) {
@@ -27,6 +28,10 @@ public class AudioManager : MonoBehaviour, IOptionsDataPersistence
 
             case "DIALOGUE VOLUME":
                 dialogue_volume = value;
+                break;
+
+            case "UI VOLUME":
+                ui_volume = value;
                 break;
         }
     }
@@ -48,6 +53,10 @@ public class AudioManager : MonoBehaviour, IOptionsDataPersistence
         return (float) ((dialogue_volume * 0.01) * (master_volume * 0.01));
     }
 
+    public static float getUIVolume() {
+        return (float) (ui_volume * 0.01);
+    }
+
     // Returns the raw sound value that is set in the Options Menu
     public static int getRawMasterVolume() {
         return master_volume;
@@ -65,6 +74,10 @@ public class AudioManager : MonoBehaviour, IOptionsDataPersistence
         return dialogue_volume;
     }
 
+    public static int getRawUIVolume() {
+        return ui_volume;
+    }
+
     // Options Data Persistence
     public void LoadData(OptionsData optionsData)
     {
@@ -72,6 +85,7 @@ public class AudioManager : MonoBehaviour, IOptionsDataPersistence
         AudioManager.sound_fx_volume = optionsData.sound_fx_volume;
         AudioManager.music_volume = optionsData.music_volume;
         AudioManager.dialogue_volume = optionsData.dialogue_volume;
+        AudioManager.ui_volume = optionsData.ui_volume;
     }
 
     public void SaveData(ref OptionsData optionsData)
@@ -80,5 +94,6 @@ public class AudioManager : MonoBehaviour, IOptionsDataPersistence
         optionsData.sound_fx_volume = AudioManager.sound_fx_volume;
         optionsData.music_volume = AudioManager.music_volume;
         optionsData.dialogue_volume = AudioManager.dialogue_volume;
+        optionsData.ui_volume = AudioManager.ui_volume;
     }
 }

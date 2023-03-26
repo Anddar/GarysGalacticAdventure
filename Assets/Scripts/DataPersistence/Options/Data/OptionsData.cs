@@ -14,6 +14,7 @@ public class OptionsData
     public int sound_fx_volume;
     public int music_volume;
     public int dialogue_volume;
+    public int ui_volume;
 
     public OptionsData() {
         // Default Options when there is currently no user_options.game file storing past options data
@@ -26,6 +27,7 @@ public class OptionsData
         sound_fx_volume = 100;
         music_volume = 100;
         dialogue_volume = 100;
+        ui_volume = 15;
     }
 
 }

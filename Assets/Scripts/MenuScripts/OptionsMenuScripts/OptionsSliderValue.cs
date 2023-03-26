@@ -25,6 +25,9 @@ public class OptionsSliderValue : MonoBehaviour
             case "DIALOGUE VOLUME":
                 gameObject.GetComponent<Slider>().value = AudioManager.getRawDialogueVolume();
                 break;
+            case "UI VOLUME":
+                gameObject.GetComponent<Slider>().value = AudioManager.getRawUIVolume();
+                break;
         }
     }
 
