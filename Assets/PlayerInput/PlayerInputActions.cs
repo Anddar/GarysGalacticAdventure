@@ -324,6 +324,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""PauseMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8a7cda44-40a0-48a2-b6ea-c8c578a37126"",
+                    ""path"": ""<Gamepad>/capture"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PauseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -335,6 +346,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""Detect"",
                     ""type"": ""Button"",
                     ""id"": ""539f031c-6a57-42eb-9219-248221731f3c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""f55b60f6-eaba-45bd-bcbd-e7fb9510814e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Back"",
+                    ""type"": ""Button"",
+                    ""id"": ""7dd333f6-5f92-45e8-b20d-def94ff68089"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -770,6 +799,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Detect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8a4d69ac-1048-4a93-8398-0bac6e5c6a2c"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""71e29b69-db93-4c78-a746-857abdacd824"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -815,6 +866,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         // ControllerDetect
         m_ControllerDetect = asset.FindActionMap("ControllerDetect", throwIfNotFound: true);
         m_ControllerDetect_Detect = m_ControllerDetect.FindAction("Detect", throwIfNotFound: true);
+        m_ControllerDetect_Select = m_ControllerDetect.FindAction("Select", throwIfNotFound: true);
+        m_ControllerDetect_Back = m_ControllerDetect.FindAction("Back", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -963,11 +1016,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_ControllerDetect;
     private List<IControllerDetectActions> m_ControllerDetectActionsCallbackInterfaces = new List<IControllerDetectActions>();
     private readonly InputAction m_ControllerDetect_Detect;
+    private readonly InputAction m_ControllerDetect_Select;
+    private readonly InputAction m_ControllerDetect_Back;
     public struct ControllerDetectActions
     {
         private @PlayerInputActions m_Wrapper;
         public ControllerDetectActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Detect => m_Wrapper.m_ControllerDetect_Detect;
+        public InputAction @Select => m_Wrapper.m_ControllerDetect_Select;
+        public InputAction @Back => m_Wrapper.m_ControllerDetect_Back;
         public InputActionMap Get() { return m_Wrapper.m_ControllerDetect; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -980,6 +1037,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Detect.started += instance.OnDetect;
             @Detect.performed += instance.OnDetect;
             @Detect.canceled += instance.OnDetect;
+            @Select.started += instance.OnSelect;
+            @Select.performed += instance.OnSelect;
+            @Select.canceled += instance.OnSelect;
+            @Back.started += instance.OnBack;
+            @Back.performed += instance.OnBack;
+            @Back.canceled += instance.OnBack;
         }
 
         private void UnregisterCallbacks(IControllerDetectActions instance)
@@ -987,6 +1050,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Detect.started -= instance.OnDetect;
             @Detect.performed -= instance.OnDetect;
             @Detect.canceled -= instance.OnDetect;
+            @Select.started -= instance.OnSelect;
+            @Select.performed -= instance.OnSelect;
+            @Select.canceled -= instance.OnSelect;
+            @Back.started -= instance.OnBack;
+            @Back.performed -= instance.OnBack;
+            @Back.canceled -= instance.OnBack;
         }
 
         public void RemoveCallbacks(IControllerDetectActions instance)
@@ -1034,5 +1103,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     public interface IControllerDetectActions
     {
         void OnDetect(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
+        void OnBack(InputAction.CallbackContext context);
     }
 }

@@ -33,6 +33,10 @@ public class SaveMenuController : MonoBehaviour, IPlayerDataPersistence
     // Tells us if the save menu has been fully initialized
     private bool initialized;
 
+    // Gamepad Overlays
+    private static GameObject xboxOverlay;
+    private static GameObject playstationOverlay;
+
 
     // Start is called before the first frame update
     void Start() {
@@ -48,6 +52,9 @@ public class SaveMenuController : MonoBehaviour, IPlayerDataPersistence
 
         scene_index_toLoad = 1;
         initialized = false;
+
+        xboxOverlay = findChildWithTag("Xbox");
+        playstationOverlay = findChildWithTag("Playstation");
     }
 
     // Update is called once per frame
@@ -79,6 +86,11 @@ public class SaveMenuController : MonoBehaviour, IPlayerDataPersistence
             scene_index_toLoad = 1;
 
             initialized = true;
+        }
+
+        if (xboxOverlay == null || playstationOverlay == null) {
+            xboxOverlay = findChildWithTag("Xbox");
+            playstationOverlay = findChildWithTag("Playstation");
         }
     }
 
@@ -242,5 +254,42 @@ public class SaveMenuController : MonoBehaviour, IPlayerDataPersistence
         transition.SetTrigger("Start");
         yield return new WaitForSeconds(transitionIntoPlayTime);
         SceneManager.LoadScene(levelIndex);
+    }
+
+    public static void setGamePadHintState(string controller_type) {
+        if (xboxOverlay == null || playstationOverlay == null) {
+            return;
+        }
+
+        switch(controller_type) {
+            case "Xbox":
+                playstationOverlay.SetActive(false);
+                xboxOverlay.SetActive(true);
+                break;
+            case "Playstation":
+                xboxOverlay.SetActive(false);
+                playstationOverlay.SetActive(true);
+                break;
+            case "Keyboard":
+                xboxOverlay.SetActive(false);
+                playstationOverlay.SetActive(false);
+                break;
+            default:
+                xboxOverlay.SetActive(false);
+                playstationOverlay.SetActive(false);
+                break;
+        }
+    }
+
+    private GameObject findChildWithTag(string tag) {
+        if (GameObject.FindGameObjectWithTag("Saves") == null) {
+            return null;
+        }
+
+        foreach (Transform child in GameObject.FindGameObjectWithTag("Saves").transform) {
+            if (child.tag == tag)
+                return child.gameObject;
+        }
+        return null;
     }
 }

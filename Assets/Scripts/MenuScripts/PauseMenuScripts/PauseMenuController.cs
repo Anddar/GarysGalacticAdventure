@@ -23,10 +23,17 @@ public class PauseMenuController : MonoBehaviour
     // Pause State
     private static bool pauseStatus; 
 
+    // Gamepad Overlays
+    private static GameObject xboxOverlay;
+    private static GameObject playstationOverlay;
+
     // Start is called before the first frame update
     void Start()
     {
         pauseStatus = false;
+
+        xboxOverlay = findChildWithTag("Xbox");
+        playstationOverlay = findChildWithTag("Playstation");
     }
 
     // Update is called once per frame
@@ -35,6 +42,11 @@ public class PauseMenuController : MonoBehaviour
         // When player closes the options menu we want to open the original pause menu back up
         if (pauseStatus && !OptionsMenu.activeSelf) {
             PauseMenu.SetActive(true);
+        }
+
+        if (xboxOverlay == null || playstationOverlay == null) {
+            xboxOverlay = findChildWithTag("Xbox");
+            playstationOverlay = findChildWithTag("Playstation");
         }
     }
 
@@ -62,6 +74,11 @@ public class PauseMenuController : MonoBehaviour
         }
     }
 
+    // This function allows other scripts to set if the game is paused from another location
+    public static void setPauseStatus(bool state) {
+        pauseStatus = state;
+    }
+
     // This function allows other scripts to check if the game is paused
     public static bool getPauseStatus() {
         return pauseStatus;
@@ -78,11 +95,15 @@ public class PauseMenuController : MonoBehaviour
     }
 
     public void optionsButtonAction() {
+        setPauseMenuButtonState(false);
         PauseMenu.SetActive(false); // Turn the pause menu off so options menu goes in front
+        setPauseMenuButtonState(true);
         OptionsMenu.SetActive(true); // Turn the options menu on
     }
 
     public void saveAndQuitButtonAction() {
+        setPauseMenuButtonState(false);
+
         // Saving Game
         OptionsDataPersistenceManager.instance.SaveOptions(); // Saving Options
         PlayerDataPersistenceManager.instance.SavePlayer(PlayerSave.getCurrentSave()); // Saving Player
@@ -93,9 +114,53 @@ public class PauseMenuController : MonoBehaviour
 
         AudioListener.pause = false; // Turning Music back on before leaving scene
 
+        setPauseMenuButtonState(true);
+
         SceneManager.LoadScene(0); // Loads the main menu screen
+    }
+
+    private void setPauseMenuButtonState(bool state) {
+        resumeButton.interactable = state;
+        optionsButton.interactable = state;
+        saveAndQuitButton.interactable = state;
     }
     // ------------------------------------------------------
 
+    public static void setGamePadHintState(string controller_type) {
+        if (xboxOverlay == null || playstationOverlay == null) {
+            return;
+        }
+
+        switch(controller_type) {
+            case "Xbox":
+                playstationOverlay.SetActive(false);
+                xboxOverlay.SetActive(true);
+                break;
+            case "Playstation":
+                xboxOverlay.SetActive(false);
+                playstationOverlay.SetActive(true);
+                break;
+            case "Keyboard":
+                xboxOverlay.SetActive(false);
+                playstationOverlay.SetActive(false);
+                break;
+            default:
+                xboxOverlay.SetActive(false);
+                playstationOverlay.SetActive(false);
+                break;
+        }
+    }
+
+    private GameObject findChildWithTag(string tag) {
+        if (PauseMenu == null) {
+            return null;
+        }
+
+        foreach (Transform child in PauseMenu.transform) {
+            if (child.tag == tag)
+                return child.gameObject;
+        }
+        return null;
+    }
 
 }

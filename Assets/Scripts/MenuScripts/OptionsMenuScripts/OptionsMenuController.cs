@@ -17,11 +17,23 @@ public class OptionsMenuController : MonoBehaviour
     [SerializeField] private GameObject audioTab;
     [SerializeField] private GameObject videoTab;
 
+    // Gamepad Overlays
+    private static GameObject xboxOverlay;
+    private static GameObject playstationOverlay;
+
     // Start is called before the first frame update
-    void Start() {}
+    void Start() {
+        xboxOverlay = findChildWithTag("Xbox");
+        playstationOverlay = findChildWithTag("Playstation");
+    }
 
     // Update is called once per frame
-    void Update() {}
+    void Update() {
+        if (xboxOverlay == null || playstationOverlay == null) {
+            xboxOverlay = findChildWithTag("Xbox");
+            playstationOverlay = findChildWithTag("Playstation");
+        }
+    }
 
     // ------------------ BUTTON FUNCTIONS ------------------
     public void generalButtonAction() {
@@ -54,4 +66,37 @@ public class OptionsMenuController : MonoBehaviour
         OptionsDataPersistenceManager.instance.SaveOptions();
     }
     // ------------------------------------------------------
+
+    public static void setGamePadHintState(string controller_type) {
+        if (xboxOverlay == null || playstationOverlay == null) {
+            return;
+        }
+
+        switch(controller_type) {
+            case "Xbox":
+                playstationOverlay.SetActive(false);
+                xboxOverlay.SetActive(true);
+                break;
+            case "Playstation":
+                xboxOverlay.SetActive(false);
+                playstationOverlay.SetActive(true);
+                break;
+            case "Keyboard":
+                xboxOverlay.SetActive(false);
+                playstationOverlay.SetActive(false);
+                break;
+            default:
+                xboxOverlay.SetActive(false);
+                playstationOverlay.SetActive(false);
+                break;
+        }
+    }
+
+    private GameObject findChildWithTag(string tag) {
+        foreach (Transform child in gameObject.transform) {
+            if (child.tag == tag)
+                return child.gameObject;
+        }
+        return null;
+    }
 }

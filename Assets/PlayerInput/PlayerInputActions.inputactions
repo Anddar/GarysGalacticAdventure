@@ -302,6 +302,17 @@
                     "action": "PauseMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8a7cda44-40a0-48a2-b6ea-c8c578a37126",
+                    "path": "<Gamepad>/capture",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "PauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -313,6 +324,24 @@
                     "name": "Detect",
                     "type": "Button",
                     "id": "539f031c-6a57-42eb-9219-248221731f3c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "f55b60f6-eaba-45bd-bcbd-e7fb9510814e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Back",
+                    "type": "Button",
+                    "id": "7dd333f6-5f92-45e8-b20d-def94ff68089",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -746,6 +775,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Detect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8a4d69ac-1048-4a93-8398-0bac6e5c6a2c",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "71e29b69-db93-4c78-a746-857abdacd824",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Back",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

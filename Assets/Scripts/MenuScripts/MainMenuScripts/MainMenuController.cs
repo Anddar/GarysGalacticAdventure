@@ -28,6 +28,10 @@ public class MainMenuController : MonoBehaviour
     private bool currentSaves;
     private bool buttonsMovedDown;
 
+    // Gamepad Overlays
+    private static GameObject xboxOverlay;
+    private static GameObject playstationOverlay;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,6 +54,9 @@ public class MainMenuController : MonoBehaviour
             optionsTransform.localPosition = new Vector3(optionsTransform.localPosition.x, optionsTransform.localPosition.y + 100, optionsTransform.localPosition.z);
             exitTransform.localPosition = new Vector3(exitTransform.localPosition.x, exitTransform.localPosition.y + 100, exitTransform.localPosition.z);
         }
+
+        xboxOverlay = findChildWithTag("Xbox");
+        playstationOverlay = findChildWithTag("Playstation");
     }
 
     // Update is called once per frame
@@ -111,6 +118,35 @@ public class MainMenuController : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public static void setGamePadHintState(string controller_type) {
+        switch(controller_type) {
+            case "Xbox":
+                playstationOverlay.SetActive(false);
+                xboxOverlay.SetActive(true);
+                break;
+            case "Playstation":
+                xboxOverlay.SetActive(false);
+                playstationOverlay.SetActive(true);
+                break;
+            case "Keyboard":
+                xboxOverlay.SetActive(false);
+                playstationOverlay.SetActive(false);
+                break;
+            default:
+                xboxOverlay.SetActive(false);
+                playstationOverlay.SetActive(false);
+                break;
+        }
+    }
+
+    private GameObject findChildWithTag(string tag) {
+        foreach (Transform child in gameObject.transform) {
+            if (child.tag == tag)
+                return child.gameObject;
+        }
+        return null;
     }
 
 }
