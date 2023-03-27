@@ -46,13 +46,19 @@ public class MainMenuController : MonoBehaviour
         currentSaves = anyCurrentSaves();
         buttonsMovedDown = false;
 
-        if (!currentSaves) {
-            continueButton.gameObject.SetActive(false); // Deactivating the continue save button
+        if (currentSaves) {
+            continueButton.gameObject.SetActive(true); // Deactivating the continue save button
 
-            // Sliding the buttons up in the Main Menu
-            playTransform.localPosition = new Vector3(playTransform.localPosition.x, playTransform.localPosition.y + 100, playTransform.localPosition.z);
-            optionsTransform.localPosition = new Vector3(optionsTransform.localPosition.x, optionsTransform.localPosition.y + 100, optionsTransform.localPosition.z);
-            exitTransform.localPosition = new Vector3(exitTransform.localPosition.x, exitTransform.localPosition.y + 100, exitTransform.localPosition.z);
+            // Sliding the buttons down in the Main Menu
+            playTransform.localPosition = new Vector3(playTransform.localPosition.x, playTransform.localPosition.y - 100, playTransform.localPosition.z);
+            optionsTransform.localPosition = new Vector3(optionsTransform.localPosition.x, optionsTransform.localPosition.y - 100, optionsTransform.localPosition.z);
+            exitTransform.localPosition = new Vector3(exitTransform.localPosition.x, exitTransform.localPosition.y - 100, exitTransform.localPosition.z);
+            playButton.GetComponentInChildren<Text>().text = "NEW GAME";
+            buttonsMovedDown = true;
+        } else {
+            // Fix the navigation of playButton.
+            updateMenuNavigation(playButton, false);
+            updateMenuNavigation(exitButton, false);
         }
 
         xboxOverlay = findChildWithTag("Xbox");
@@ -63,7 +69,15 @@ public class MainMenuController : MonoBehaviour
     void Update()
     {
         if (anyCurrentSaves() && !buttonsMovedDown) {
+            // Sliding the buttons down in the Main Menu
+            playTransform.localPosition = new Vector3(playTransform.localPosition.x, playTransform.localPosition.y - 100, playTransform.localPosition.z);
+            optionsTransform.localPosition = new Vector3(optionsTransform.localPosition.x, optionsTransform.localPosition.y - 100, optionsTransform.localPosition.z);
+            exitTransform.localPosition = new Vector3(exitTransform.localPosition.x, exitTransform.localPosition.y - 100, exitTransform.localPosition.z);
             buttonsMovedDown = true;
+
+            // Fix the navigation of playButton and exitButton.
+            updateMenuNavigation(playButton, true);
+            updateMenuNavigation(exitButton, true);
 
             continueButton.gameObject.SetActive(true); // Activating the continue save button
             playButton.GetComponentInChildren<Text>().text = "NEW GAME";
@@ -102,6 +116,26 @@ public class MainMenuController : MonoBehaviour
     // Setter Function to set the menuButtonState variable
     public static void setMenuButtonState(bool state) {
         menuButtonState = state;
+    }
+
+    private void updateMenuNavigation(Button button, bool continueButtonExists) {
+        if (button.name == "PlayButton") {
+            Navigation playButtonNav = new Navigation();
+            playButtonNav.mode = Navigation.Mode.Explicit;
+            if (continueButtonExists) {
+                playButtonNav.selectOnUp = continueButton;
+            } else { playButtonNav.selectOnUp = exitButton; }
+            playButtonNav.selectOnDown = button.navigation.selectOnDown;
+            button.navigation = playButtonNav;
+        } else if (button.name == "QuitButton") {
+            Navigation exitButtonNav = new Navigation();
+            exitButtonNav.mode = Navigation.Mode.Explicit;
+            exitButtonNav.selectOnUp = button.navigation.selectOnUp;
+            if (continueButtonExists) {
+                exitButtonNav.selectOnDown = continueButton;
+            } else { exitButtonNav.selectOnDown = playButton; }
+            button.navigation = exitButtonNav;
+        }
     }
 
     // Determine if there are any current saves

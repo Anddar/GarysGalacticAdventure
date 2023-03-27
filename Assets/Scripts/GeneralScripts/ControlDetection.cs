@@ -43,24 +43,29 @@ public class ControlDetection : MonoBehaviour
         OptionsAudioNavDown = OptionsAudioButton.navigation.selectOnDown;
         OptionsVideoNavDown = OptionsVideoButton.navigation.selectOnDown;
 
-        if (MainMenuFirstButtonContinue != null && MainMenuFirstButtonPlay != null) {
-            previous_open_menu = "MenuArea"; // Main Menu Object Name
-            if (MainMenuFirstButtonContinue) {
-                MainMenuFirstButton = MainMenuFirstButtonContinue;
-                previous_selected_object = "ContinueButton";
-            } else {
-                MainMenuFirstButton = MainMenuFirstButtonPlay;
-                previous_selected_object = "PlayButton";
-            }
-        } else { 
+        if (MainMenuFirstButtonContinue == null && MainMenuFirstButtonPlay == null) { 
             previous_selected_object = "ResumeButton";
             previous_open_menu = "PauseMenu";
             MainMenuFirstButton = null; 
+        } else {
+            if (MainMenuFirstButtonContinue.activeInHierarchy) {
+                previous_open_menu = "MenuArea"; // Main Menu Object Name      
+                MainMenuFirstButton = MainMenuFirstButtonContinue;
+                previous_selected_object = "ContinueButton";
+            } else if (MainMenuFirstButtonPlay.activeInHierarchy) { 
+                previous_open_menu = "MenuArea";
+                MainMenuFirstButton = MainMenuFirstButtonPlay;
+                previous_selected_object = "PlayButton";
+            } 
         }
     }
 
     void Update() {
         if (MainMenu != null) {
+            if (MainMenuFirstButtonContinue.activeInHierarchy) {
+                MainMenuFirstButton = MainMenuFirstButtonContinue;
+            }
+
             // If were in the Main Menu we will work in this button selection process
             if (OverwriteDialogBox.activeInHierarchy) {
                 setSelectedObject(OverwriteDialogFirstButton, OverwriteDialogBox);
