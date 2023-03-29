@@ -44,6 +44,7 @@ public class PlayerShoot : MonoBehaviour
     // Defines player input variables before game starts
     private void Awake() {
         playerInputActions = new PlayerInputActions();
+        playerInputActions.Player.Movement.Enable();
         playerInputActions.Player.Shoot.Enable();
         playerInputActions.Player.Shoot.performed += playerShootProjectile;
     }
@@ -69,7 +70,7 @@ public class PlayerShoot : MonoBehaviour
 
     // This function will allow the bullet to spawn and be fired from barrel of gun
     public void playerShootProjectile(InputAction.CallbackContext context) {
-        if (gameLogic.isPlayerAlive() && shootingDelayTimer > shootingDelay && playerSprite != null && !PauseMenuController.getPauseStatus()) {
+        if (gameLogic.isPlayerAlive() && shootingDelayTimer > shootingDelay && playerSprite != null && !PauseMenuController.getPauseStatus() && !LevelCompletionStates.isLevelComplete()) {
             shootingDelayTimer = 0;
             Vector3 worldPosition;
             Vector3 bulletPosVector;
@@ -104,7 +105,7 @@ public class PlayerShoot : MonoBehaviour
             isPlayerShooting = true; // Allow the player movement file to know the player is shooting
 
             // Create our bullet in 2D space and flip it if neccessary
-            GameObject bullet = Instantiate(bulletPF, bulletPosVector, Quaternion.identity);
+            GameObject bullet = Instantiate(PlayerBulletCycler.getBulletType(), bulletPosVector, Quaternion.identity);
             garygunSoundEffect.volume = AudioManager.getSoundFXVolume();
             garygunSoundEffect.Play();
             if (flipBullet) { bullet.GetComponent<SpriteRenderer>().flipX = true; }

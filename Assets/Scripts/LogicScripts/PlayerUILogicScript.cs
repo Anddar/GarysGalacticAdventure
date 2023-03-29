@@ -15,12 +15,31 @@ public class PlayerUILogicScript : MonoBehaviour
     [SerializeField] private Text playerShieldText;
     [SerializeField] private Text playerScoreText;
 
+    // On-Screen Bullet Cycler
+    [SerializeField] private GameObject bulletCycler;
+    [SerializeField] private Sprite regularBullet;
+    [SerializeField] private Sprite blueBullet;
+    [SerializeField] private Sprite greenBullet;
+    [SerializeField] private Sprite purpleBullet;
+    private static List<Sprite> bullet_sprite_cycler = new List<Sprite>();
+    private Image currentBulletInCycler;
+
     // Players Status
     private bool playerLivingState;
 
     // Start is called before the first frame update
     void Start()
     {
+        bullet_sprite_cycler.Add(regularBullet);
+        bullet_sprite_cycler.Add(blueBullet);
+        bullet_sprite_cycler.Add(greenBullet);
+        bullet_sprite_cycler.Add(purpleBullet);
+
+        if (PlayerBulletCycler.bulletCyclerActive) {
+            bulletCycler.SetActive(true);
+            currentBulletInCycler = GameObject.FindGameObjectWithTag("CurrentCyclerBullet").GetComponent<Image>();
+        }
+        
         if (SceneManager.GetActiveScene().buildIndex != 0) {
             playerDeath = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerDeath>();
         }
@@ -33,7 +52,13 @@ public class PlayerUILogicScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (PlayerBulletCycler.bulletCyclerActive) {
+            bulletCycler.SetActive(true);
+            if (currentBulletInCycler == null) {
+                currentBulletInCycler = GameObject.FindGameObjectWithTag("CurrentCyclerBullet").GetComponent<Image>();
+            }
+            currentBulletInCycler.sprite = bullet_sprite_cycler[PlayerBulletCycler.bulletIndex];
+        }
     }
 
     // This function increases the players health by a certain amount

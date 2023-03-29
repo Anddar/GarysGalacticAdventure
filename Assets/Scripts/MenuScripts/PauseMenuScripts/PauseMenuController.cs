@@ -22,6 +22,9 @@ public class PauseMenuController : MonoBehaviour
 
     // Pause State
     private static bool pauseStatus; 
+    
+    // Save & Quit State
+    private bool savingAndQuiting;
 
     // Gamepad Overlays
     private static GameObject xboxOverlay;
@@ -31,6 +34,7 @@ public class PauseMenuController : MonoBehaviour
     void Start()
     {
         pauseStatus = false;
+        savingAndQuiting = false;
 
         xboxOverlay = findChildWithTag("Xbox");
         playstationOverlay = findChildWithTag("Playstation");
@@ -58,7 +62,7 @@ public class PauseMenuController : MonoBehaviour
 
     // This function allows us to open the pause menu from other scripts
     public void openPauseMenu(InputAction.CallbackContext context) {
-        if (PauseMenu != null) {
+        if (PauseMenu != null && !savingAndQuiting && !LevelCompletionStates.isLevelComplete()) {
             if (!pauseStatus) {
                 pauseStatus = true;
                 AudioListener.pause = true; // Pauses all audio in the game
@@ -102,6 +106,8 @@ public class PauseMenuController : MonoBehaviour
     }
 
     public void saveAndQuitButtonAction() {
+        savingAndQuiting = true;
+
         setPauseMenuButtonState(false);
 
         // Saving Game

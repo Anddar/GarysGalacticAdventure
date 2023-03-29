@@ -25,7 +25,7 @@ public class ControlDetection : MonoBehaviour
 
     PlayerInputActions playerInputActions;
 
-    private string current_device;
+    private static string current_device;
     private string previous_selected_object;
     private string previous_open_menu;
 
@@ -126,6 +126,10 @@ public class ControlDetection : MonoBehaviour
         } else if (device_name == "XInputControllerWindows") {
             current_device = "Xbox";
         }  
+    }
+
+    public static string getCurrentDevice() {
+        return current_device;
     }
 
     // Moves user back out of a particular menu

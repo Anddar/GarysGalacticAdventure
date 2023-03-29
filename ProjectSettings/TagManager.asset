@@ -17,6 +17,10 @@ TagManager:
   - Saves
   - Xbox
   - Playstation
+  - BlueBullet
+  - GreenBullet
+  - PurpleBullet
+  - CurrentCyclerBullet
   layers:
   - Default
   - TransparentFX

@@ -63,18 +63,23 @@ public class PlayerMovement : MonoBehaviour
     private void Update() {
         // Continuously adding the force to keep the player moving in the correct direction we are reading in.
         if (gameLogic.isPlayerAlive() && !PauseMenuController.getPauseStatus() && playerInputActions != null) {
-            Vector2 inputDirectionVector = playerInputActions.Player.Movement.ReadValue<Vector2>();
-            if (KBCounter <= 0) {
-                playerRigidBody.velocity = new Vector2(inputDirectionVector.x * movementSpeed, playerRigidBody.velocity.y);
-            } else {
-                if (KnockFromRight == true){
-                    playerRigidBody.velocity = new Vector2(-KBForce, KBForce);
-                }
-                if (KnockFromRight == false) {
-                    playerRigidBody.velocity = new Vector2(KBForce, KBForce);
-                }
-                KBCounter -= Time.deltaTime;
-            }  
+            if (!LevelCompletionStates.isLevelComplete()) {
+                Vector2 inputDirectionVector = playerInputActions.Player.Movement.ReadValue<Vector2>();
+                if (KBCounter <= 0) {
+                    playerRigidBody.velocity = new Vector2(inputDirectionVector.x * movementSpeed, playerRigidBody.velocity.y);
+                } else {
+                    if (KnockFromRight == true){
+                        playerRigidBody.velocity = new Vector2(-KBForce, KBForce);
+                    }
+                    if (KnockFromRight == false) {
+                        playerRigidBody.velocity = new Vector2(KBForce, KBForce);
+                    }
+                    KBCounter -= Time.deltaTime;
+                }  
+
+            } else { 
+                playerRigidBody.velocity = new Vector2(0, 0); 
+            }
 
             // Updating Animation States
             updateAnimations();
@@ -108,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
     // Update/Refresh animation states for our player
     private void updateAnimations() {
         // Changes the player animation to start running or stop running 
-        if (isRunning()) {
+        if (isRunning() && !LevelCompletionStates.isLevelComplete()) {
             isCrouched = false;
             flipPlayerColliderSize();
             state = AnimationState.running;
@@ -231,7 +236,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Makes the player jump when pressing jump control, "space" by default
     public void player_jump(InputAction.CallbackContext context) {
-        if (gameLogic.isPlayerAlive() && !PauseMenuController.getPauseStatus() && collider != null) {
+        if (gameLogic.isPlayerAlive() && !PauseMenuController.getPauseStatus() && !LevelCompletionStates.isLevelComplete() && collider != null) {
             if (isGrounded()) {
                 jumpUp.volume = AudioManager.getSoundFXVolume();
                 jumpUp.Play();  
@@ -242,7 +247,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Makes the player crouch when pressing crouch control, "left-control" by default
     public void player_crouch(InputAction.CallbackContext context) {
-        if (gameLogic.isPlayerAlive() && !PauseMenuController.getPauseStatus() && collider != null) {
+        if (gameLogic.isPlayerAlive() && !PauseMenuController.getPauseStatus() && !LevelCompletionStates.isLevelComplete() && collider != null) {
             if (isGrounded() && !isRunning() && !isJumping() && !isFalling()) {
                 if (isCrouched) {
                     isCrouched = false;
@@ -257,10 +262,10 @@ public class PlayerMovement : MonoBehaviour
 
     // Makes the player move (left or right) when pressing movement controls, "a" and "d" by default
     public void player_movement(InputAction.CallbackContext context) {
-        if (gameLogic.isPlayerAlive() && !PauseMenuController.getPauseStatus() && playerRigidBody != null) {
+        if (gameLogic.isPlayerAlive() && !PauseMenuController.getPauseStatus() && !LevelCompletionStates.isLevelComplete() && playerRigidBody != null) {
             Vector2 inputDirectionVector = context.ReadValue<Vector2>();
             playerRigidBody.velocity = new Vector2(inputDirectionVector.x * movementSpeed, playerRigidBody.velocity.y);
-        }
+        } else { playerRigidBody.velocity = new Vector2(0, 0); }
     }
 
 }

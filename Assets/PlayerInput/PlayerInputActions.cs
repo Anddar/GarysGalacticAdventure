@@ -80,6 +80,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BulletCyclerRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""3130afe7-df2c-489a-a0d7-94ca12b147fc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BulletCyclerLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""6ba15ac2-e61d-444c-b1b2-a9b9a8574f8c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -333,6 +351,50 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""PauseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eda4f576-7c9e-4e95-9eb4-fd095804997f"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""BulletCyclerRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3feaf2fd-aafb-4b49-97fe-f724966f050e"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""BulletCyclerRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""69ba16f9-0651-415d-9db9-af0e20806adb"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""BulletCyclerLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cd73bad2-2244-48db-8df7-d7a9137e28a6"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""BulletCyclerLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -863,6 +925,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_PauseMenu = m_Player.FindAction("PauseMenu", throwIfNotFound: true);
+        m_Player_BulletCyclerRight = m_Player.FindAction("BulletCyclerRight", throwIfNotFound: true);
+        m_Player_BulletCyclerLeft = m_Player.FindAction("BulletCyclerLeft", throwIfNotFound: true);
         // ControllerDetect
         m_ControllerDetect = asset.FindActionMap("ControllerDetect", throwIfNotFound: true);
         m_ControllerDetect_Detect = m_ControllerDetect.FindAction("Detect", throwIfNotFound: true);
@@ -935,6 +999,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_PauseMenu;
+    private readonly InputAction m_Player_BulletCyclerRight;
+    private readonly InputAction m_Player_BulletCyclerLeft;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -945,6 +1011,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @PauseMenu => m_Wrapper.m_Player_PauseMenu;
+        public InputAction @BulletCyclerRight => m_Wrapper.m_Player_BulletCyclerRight;
+        public InputAction @BulletCyclerLeft => m_Wrapper.m_Player_BulletCyclerLeft;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -972,6 +1040,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @PauseMenu.started += instance.OnPauseMenu;
             @PauseMenu.performed += instance.OnPauseMenu;
             @PauseMenu.canceled += instance.OnPauseMenu;
+            @BulletCyclerRight.started += instance.OnBulletCyclerRight;
+            @BulletCyclerRight.performed += instance.OnBulletCyclerRight;
+            @BulletCyclerRight.canceled += instance.OnBulletCyclerRight;
+            @BulletCyclerLeft.started += instance.OnBulletCyclerLeft;
+            @BulletCyclerLeft.performed += instance.OnBulletCyclerLeft;
+            @BulletCyclerLeft.canceled += instance.OnBulletCyclerLeft;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -994,6 +1068,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @PauseMenu.started -= instance.OnPauseMenu;
             @PauseMenu.performed -= instance.OnPauseMenu;
             @PauseMenu.canceled -= instance.OnPauseMenu;
+            @BulletCyclerRight.started -= instance.OnBulletCyclerRight;
+            @BulletCyclerRight.performed -= instance.OnBulletCyclerRight;
+            @BulletCyclerRight.canceled -= instance.OnBulletCyclerRight;
+            @BulletCyclerLeft.started -= instance.OnBulletCyclerLeft;
+            @BulletCyclerLeft.performed -= instance.OnBulletCyclerLeft;
+            @BulletCyclerLeft.canceled -= instance.OnBulletCyclerLeft;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1099,6 +1179,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnPauseMenu(InputAction.CallbackContext context);
+        void OnBulletCyclerRight(InputAction.CallbackContext context);
+        void OnBulletCyclerLeft(InputAction.CallbackContext context);
     }
     public interface IControllerDetectActions
     {
