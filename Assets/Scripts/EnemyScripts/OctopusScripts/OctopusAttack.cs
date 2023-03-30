@@ -32,7 +32,7 @@ public class OctopusAttack : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision) {
         GameObject collidedObject = collision.gameObject;
         if (octoHealthLogic.isOctopusAlive()) {
-            if (collidedObject.CompareTag("Bullet")) {
+            if (collidedObject.tag.Contains("Bullet")) {
                 octoHealthLogic.enemyTakeHit();   
             } else if (collidedObject.CompareTag("Player")) {
                 // Player knockback function

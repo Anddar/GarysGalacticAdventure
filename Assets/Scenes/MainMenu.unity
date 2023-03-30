@@ -11687,6 +11687,11 @@ MonoBehaviour:
   playerHealthText: {fileID: 0}
   playerShieldText: {fileID: 0}
   playerScoreText: {fileID: 0}
+  bulletCycler: {fileID: 0}
+  regularBullet: {fileID: 0}
+  blueBullet: {fileID: 0}
+  greenBullet: {fileID: 0}
+  purpleBullet: {fileID: 0}
 --- !u!1 &1778230669
 GameObject:
   m_ObjectHideFlags: 0

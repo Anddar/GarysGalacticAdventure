@@ -47,7 +47,7 @@ public class RinoAttack : MonoBehaviour
     // This collision function is for all other purposes of colliding with the enemy including (getting hit, player walking into slime and getting hit, etc...)
     private void OnCollisionEnter2D(Collision2D collision) {
         GameObject collidedObject = collision.gameObject;
-        if (collidedObject.CompareTag("Bullet")) {
+        if (collidedObject.tag.Contains("Bullet")) {
             rinoHealthLogic.enemyTakeHit();
         } else if (collidedObject.CompareTag("Player")) {
             if (rinoMovement.isRinoRolling()) {

@@ -21,7 +21,7 @@ public class PlayerUILogicScript : MonoBehaviour
     [SerializeField] private Sprite blueBullet;
     [SerializeField] private Sprite greenBullet;
     [SerializeField] private Sprite purpleBullet;
-    private static List<Sprite> bullet_sprite_cycler = new List<Sprite>();
+    private List<Sprite> bullet_sprite_cycler = new List<Sprite>();
     private Image currentBulletInCycler;
 
     // Players Status
@@ -57,6 +57,7 @@ public class PlayerUILogicScript : MonoBehaviour
             if (currentBulletInCycler == null) {
                 currentBulletInCycler = GameObject.FindGameObjectWithTag("CurrentCyclerBullet").GetComponent<Image>();
             }
+            
             currentBulletInCycler.sprite = bullet_sprite_cycler[PlayerBulletCycler.bulletIndex];
         }
     }

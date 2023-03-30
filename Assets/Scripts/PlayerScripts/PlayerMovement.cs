@@ -17,7 +17,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 14f;
     
     private static PlayerInputActions playerInputActions;
-    private enum AnimationState { idle, running, jumping, falling, crouching, crouchShoot, standShoot, playerDeath }
+    private enum AnimationState { idle, running, jumping, falling, crouching, crouchShoot, standShoot, playerDeath, crouchShootBlue, crouchShootGreen, crouchShootPurple,
+    standShootBlue, standShootGreen, standShootPurple }
     private AnimationState state;
     private static bool isCrouched = false;
 
@@ -147,10 +148,40 @@ public class PlayerMovement : MonoBehaviour
         // Changes player animation for when the player is shooting
         if (isCrouched && PlayerShoot.isPlayerShooting) {
             PlayerShoot.isPlayerShooting = false;
-            state = AnimationState.crouchShoot;
+            if (PlayerBulletCycler.bulletCyclerActive) {
+                switch (PlayerBulletCycler.bulletIndex) {
+                    case 0:
+                        state = AnimationState.crouchShoot;
+                        break;
+                    case 1:
+                        state = AnimationState.crouchShootBlue;
+                        break;
+                    case 2:
+                        state = AnimationState.crouchShootGreen;
+                        break;
+                    case 3:
+                        state = AnimationState.crouchShootPurple;
+                        break;
+                }
+            } else { state = AnimationState.crouchShoot; }
         } else if (!isJumping() && !isFalling() && PlayerShoot.isPlayerShooting) {
             PlayerShoot.isPlayerShooting = false;
-            state = AnimationState.standShoot;
+            if (PlayerBulletCycler.bulletCyclerActive) {
+                switch (PlayerBulletCycler.bulletIndex) {
+                    case 0:
+                        state = AnimationState.standShoot;
+                        break;
+                    case 1:
+                        state = AnimationState.standShootBlue;
+                        break;
+                    case 2:
+                        state = AnimationState.standShootGreen;
+                        break;
+                    case 3:
+                        state = AnimationState.standShootPurple;
+                        break;
+                }
+            } else { state = AnimationState.standShoot; }
         }
 
         // Changes the player animation between jumping and falling
