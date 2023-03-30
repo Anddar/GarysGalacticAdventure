@@ -267,6 +267,10 @@ MonoBehaviour:
   blueBullet: {fileID: 2123497101807739313, guid: 92ec6384421054ca5abb374522c719dc, type: 3}
   greenBullet: {fileID: 2123497101807739313, guid: 80917284a367e4ab59135220e73fdba4, type: 3}
   purpleBullet: {fileID: 2123497101807739313, guid: 9560802c3a26c4ca9a2d7e62b641faa2, type: 3}
+  regularSpriteBullet: {fileID: 21300000, guid: 4d6ee911bee78450faf8d856f9d20bc7, type: 3}
+  blueSpriteBullet: {fileID: 21300000, guid: e328066becc3d414fa80137d9bbed52a, type: 3}
+  greenSpriteBullet: {fileID: 21300000, guid: 8a8de2fa5338848e9a802c1c0ced3a66, type: 3}
+  purpleSpriteBullet: {fileID: 21300000, guid: aaec715e152cb417081e5cc54ca1892e, type: 3}
 --- !u!114 &4397416380340031025
 MonoBehaviour:
   m_ObjectHideFlags: 0

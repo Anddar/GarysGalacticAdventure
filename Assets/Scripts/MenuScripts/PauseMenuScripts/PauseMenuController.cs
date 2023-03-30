@@ -114,6 +114,8 @@ public class PauseMenuController : MonoBehaviour
         OptionsDataPersistenceManager.instance.SaveOptions(); // Saving Options
         PlayerDataPersistenceManager.instance.SavePlayer(PlayerSave.getCurrentSave()); // Saving Player
 
+        PlayerBulletCycler.turnOffBulletCycler();
+
         Time.timeScale = 1; // Set time back to normal so the game starts again
 
         PlayerSave.setCurrentSave("");

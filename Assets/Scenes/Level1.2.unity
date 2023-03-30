@@ -19968,6 +19968,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8403366059935359066, guid: 2ed494e6167502a43a656c3d71ecc386, type: 3}
+      propertyPath: m_Text
+      value: 'Level 1.2
+
+        Earth'
+      objectReference: {fileID: 0}
     - target: {fileID: 8403366060519972606, guid: 2ed494e6167502a43a656c3d71ecc386, type: 3}
       propertyPath: m_TagString
       value: CurrentCyclerBullet

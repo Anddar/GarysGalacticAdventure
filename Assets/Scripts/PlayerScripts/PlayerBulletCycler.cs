@@ -19,6 +19,12 @@ public class PlayerBulletCycler : MonoBehaviour
     [SerializeField] private GameObject greenBullet;
     [SerializeField] private GameObject purpleBullet;
 
+    private List<Sprite> bullet_sprite_cycler = new List<Sprite>();
+    [SerializeField] private Sprite regularSpriteBullet;
+    [SerializeField] private Sprite blueSpriteBullet;
+    [SerializeField] private Sprite greenSpriteBullet;
+    [SerializeField] private Sprite purpleSpriteBullet;
+
     // Bullet Cycler Attributes
     public static bool bulletCyclerActive;
     public static int bulletIndex;
@@ -26,6 +32,13 @@ public class PlayerBulletCycler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        bullet_cycler = new List<GameObject>();
+
+        bullet_sprite_cycler.Add(regularSpriteBullet);
+        bullet_sprite_cycler.Add(blueSpriteBullet);
+        bullet_sprite_cycler.Add(greenSpriteBullet);
+        bullet_sprite_cycler.Add(purpleSpriteBullet);
+
         bulletIndex = 0;
 
         // If the player is past level 1.2 then 
@@ -73,17 +86,24 @@ public class PlayerBulletCycler : MonoBehaviour
         bulletCyclerActive = true;
     }
 
+    // This function turns off the bullet cycler, this is used when saving an quiting
+    public static void turnOffBulletCycler() {
+        bulletCyclerActive = false;
+    }
+
     // Player Input Action to cycler through the bullet cycler
     private void CycleBulletLeft(InputAction.CallbackContext context) {
         if (bulletIndex - 1 < 0) {
             bulletIndex = bullet_cycler.Count - 1;
         } else { --bulletIndex; }
+        PlayerUILogicScript.setUIBullet(bullet_sprite_cycler[bulletIndex]);
     }
 
     private void CycleBulletRight(InputAction.CallbackContext context) {
         if (bulletIndex + 1 == bullet_cycler.Count) {
             bulletIndex = 0;
         } else { ++bulletIndex; }
+        PlayerUILogicScript.setUIBullet(bullet_sprite_cycler[bulletIndex]);
     }
 
 }
