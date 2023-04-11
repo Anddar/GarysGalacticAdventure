@@ -25,6 +25,11 @@ public class OctopusMovement : MonoBehaviour
     private Transform playerTransform;
     [SerializeField] private bool isChasing;
     [SerializeField] private float chaseDistance;
+
+    //Shooting variables
+    [SerializeField] GameObject bullet;
+    [SerializeField] Transform bulletPos;
+    private float timer;
     
     // Start is called before the first frame update
     void Start()
@@ -45,6 +50,8 @@ public class OctopusMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float distance = Vector2.Distance(transform.position, playerTransform.position); //distance of enemy to player
+
         if (octoHealthLogic.isOctopusAlive()) {
             if (isChasing) {
                 if (transform.position.x > playerTransform.position.x) {
@@ -69,6 +76,16 @@ public class OctopusMovement : MonoBehaviour
             }
 
             UpdateAnimation(); // Update the slimes animation as it moves to the waypoint
+
+            //if the player is within 10M of the enemy, the time will count up to 2 seconds then shoot at the player
+            if(distance < 10){
+                timer += Time.deltaTime;
+
+                if(timer > 2){
+                    timer = 0;
+                    shoot();
+                }
+            }
         }
     }
 
@@ -117,6 +134,10 @@ public class OctopusMovement : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    void shoot(){
+        Instantiate(bullet, bulletPos.position, Quaternion.identity);
     }
 
 }
