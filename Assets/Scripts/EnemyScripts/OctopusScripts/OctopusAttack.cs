@@ -7,6 +7,7 @@ public class OctopusAttack : MonoBehaviour
     // Octopus Game Components
     private OctopusHealthLogic octoHealthLogic;
     private PlayerUILogicScript gameLogic;
+    private EnemyWeakness weaknessObj;
 
     // Octopus Damage Values
     [SerializeField] private int damageFromLaserShot;
@@ -20,6 +21,7 @@ public class OctopusAttack : MonoBehaviour
         octoHealthLogic = GetComponent<OctopusHealthLogic>();
         gameLogic = GameObject.FindGameObjectWithTag("Logic").GetComponent<PlayerUILogicScript>();
         playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        weaknessObj = gameObject.GetComponentInChildren<EnemyWeakness>();
     }
 
     // Update is called once per frame
@@ -33,7 +35,20 @@ public class OctopusAttack : MonoBehaviour
         GameObject collidedObject = collision.gameObject;
         if (octoHealthLogic.isOctopusAlive()) {
             if (collidedObject.tag.Contains("Bullet")) {
-                octoHealthLogic.enemyTakeHit();   
+                if (weaknessObj.getWeakness() != "") {
+                    string weakness = weaknessObj.getWeakness();
+                    if (collidedObject.tag.Equals("Bullet") && weakness == "Orange") {
+                        octoHealthLogic.enemyTakeHit();
+                    } else if (collidedObject.tag.Contains("Blue") && weakness == "Blue") {
+                        octoHealthLogic.enemyTakeHit();
+                    } else if (collidedObject.tag.Contains("Green") && weakness == "Green") {
+                        octoHealthLogic.enemyTakeHit();
+                    } else if (collidedObject.tag.Contains("Purple") && weakness == "Purple") {
+                        octoHealthLogic.enemyTakeHit();
+                    }
+                } else {
+                    octoHealthLogic.enemyTakeHit();
+                }
             } else if (collidedObject.CompareTag("Player")) {
                 // Player knockback function
                 playerMovement.KBCounter = playerMovement.KBTotalTime;

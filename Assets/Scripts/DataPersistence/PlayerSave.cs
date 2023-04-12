@@ -22,6 +22,7 @@ public class PlayerSave : MonoBehaviour, IPlayerDataPersistence
     void Update() {
         // Trys to save again since the objects were not fully ready when scene was loaded
         if (trySaveLater) {
+            PlayerDataPersistenceManager.instance.LoadPlayer(playerSave);
             trySaveLater = !PlayerDataPersistenceManager.instance.SavePlayer(playerSave);
         }
     }
@@ -34,6 +35,7 @@ public class PlayerSave : MonoBehaviour, IPlayerDataPersistence
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         if (SceneManager.GetActiveScene().buildIndex != 0) {
             currentLevel = SceneManager.GetActiveScene().buildIndex;
+            PlayerDataPersistenceManager.instance.LoadPlayer(playerSave);
             trySaveLater = !PlayerDataPersistenceManager.instance.SavePlayer(playerSave);
         }
     }

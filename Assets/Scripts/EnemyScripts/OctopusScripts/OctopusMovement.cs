@@ -72,10 +72,10 @@ public class OctopusMovement : MonoBehaviour
                 if (Vector2.Distance(transform.position, playerTransform.position) < chaseDistance){
                     isChasing = true;
                 }
-                FollowWaypoint(); // Start slime traversing to waypoint
+                FollowWaypoint(); // Start octopus traversing to waypoint
             }
 
-            UpdateAnimation(); // Update the slimes animation as it moves to the waypoint
+            UpdateAnimation(); // Update the octopus animation as it moves to the waypoint
 
             //if the player is within 10M of the enemy, the time will count up to 2 seconds then shoot at the player
             if(distance < 10){

@@ -45,6 +45,8 @@ public class PlayerDataPersistenceManager : MonoBehaviour
     }
 
     public void LoadPlayer(string player_save_num) {
+        if (playerDataPersistenceObjects == null) { return; }
+
         this.playerData = playerFileHandler.Load(player_save_num); // Try to load data, this will determine if there is anything we should update before starting game
 
         // When no data can be found we start a new game data
@@ -52,6 +54,8 @@ public class PlayerDataPersistenceManager : MonoBehaviour
             Debug.Log("No data found. Creating default player, starting on level 1.");
             NewGame();
         }
+
+        Debug.Log("Player Data being loaded: " + this.playerData.level + " score: " + this.playerData.totalScore);
 
         // Loads the data into each script using the player data persistence script
         foreach (IPlayerDataPersistence playerDataPersistenceObject in playerDataPersistenceObjects) {
@@ -69,6 +73,7 @@ public class PlayerDataPersistenceManager : MonoBehaviour
         }
 
         // Saving our Users Player Data to a file
+        Debug.Log("Player Data being saved: " + playerData.level + " score: " + playerData.totalScore);
         playerFileHandler.Save(playerData, player_save_num);
 
         return true;

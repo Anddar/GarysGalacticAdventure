@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class FinishLevel1 : MonoBehaviour, IPlayerDataPersistence
+public class FinishLevel1 : MonoBehaviour
 {
     // Sounds for car end flag in first level
     [SerializeField] private AudioSource doorOpen;
@@ -38,7 +38,6 @@ public class FinishLevel1 : MonoBehaviour, IPlayerDataPersistence
             startWaitingSound(sounds, delayBetweenSounds);
             
             levelCompleted = true;
-            //playerRigidBody.bodyType = RigidbodyType2D.Static;
         }
     }
 
@@ -72,20 +71,9 @@ public class FinishLevel1 : MonoBehaviour, IPlayerDataPersistence
         SceneManager.LoadScene(levelIndex);
     }
 
-    
-
     // This Function is used by the LevelCompletionStates Script
     public static bool isLevelComplete() {
         return levelCompleted;
-    }
-
-    // Data Persistence Stuff
-    public void LoadData(PlayerData playerData) {}
-
-    public void SaveData(ref PlayerData playerData) {
-        if (levelCompleted) {
-            playerData.totalScore += gameLogic.getPlayerScore();
-        }
     }
         
 }

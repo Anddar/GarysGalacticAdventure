@@ -17954,7 +17954,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &750605706 stripped
 Transform:
@@ -18608,7 +18608,7 @@ Transform:
   m_Children:
   - {fileID: 911930059}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &845555813 stripped
 Transform:
@@ -19604,7 +19604,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5763522225708637240, guid: 1f80d56239219e840864e79db21d3f9d, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5763522225708637240, guid: 1f80d56239219e840864e79db21d3f9d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -19871,7 +19871,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1435972413
 PrefabInstance:
@@ -20506,6 +20506,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6055217237195159796, guid: 2ed494e6167502a43a656c3d71ecc386, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6237860879126510907, guid: 2ed494e6167502a43a656c3d71ecc386, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8403366059935359066, guid: 2ed494e6167502a43a656c3d71ecc386, type: 3}
       propertyPath: m_Text
       value: 'Level 1.2
@@ -20513,12 +20521,20 @@ PrefabInstance:
         Earth'
       objectReference: {fileID: 0}
     - target: {fileID: 8403366060519972606, guid: 2ed494e6167502a43a656c3d71ecc386, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8403366060519972606, guid: 2ed494e6167502a43a656c3d71ecc386, type: 3}
       propertyPath: m_TagString
       value: CurrentCyclerBullet
       objectReference: {fileID: 0}
     - target: {fileID: 8403366060983341461, guid: 2ed494e6167502a43a656c3d71ecc386, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8403366060986731611, guid: 2ed494e6167502a43a656c3d71ecc386, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8633808129485683543, guid: 2ed494e6167502a43a656c3d71ecc386, type: 3}
       propertyPath: m_Name
@@ -22271,7 +22287,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4115124717705071390, guid: 02a1b6094872c4940b70ac71823defae, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4115124717705071390, guid: 02a1b6094872c4940b70ac71823defae, type: 3}
       propertyPath: m_LocalPosition.x

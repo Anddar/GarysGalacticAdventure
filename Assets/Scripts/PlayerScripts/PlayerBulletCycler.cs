@@ -19,11 +19,7 @@ public class PlayerBulletCycler : MonoBehaviour
     [SerializeField] private GameObject greenBullet;
     [SerializeField] private GameObject purpleBullet;
 
-    private List<Sprite> bullet_sprite_cycler = new List<Sprite>();
-    [SerializeField] private Sprite regularSpriteBullet;
-    [SerializeField] private Sprite blueSpriteBullet;
-    [SerializeField] private Sprite greenSpriteBullet;
-    [SerializeField] private Sprite purpleSpriteBullet;
+    private List<string> bullet_color_cycler = new List<string>();
 
     // Bullet Cycler Attributes
     public static bool bulletCyclerActive;
@@ -34,10 +30,10 @@ public class PlayerBulletCycler : MonoBehaviour
     {
         bullet_cycler = new List<GameObject>();
 
-        bullet_sprite_cycler.Add(regularSpriteBullet);
-        bullet_sprite_cycler.Add(blueSpriteBullet);
-        bullet_sprite_cycler.Add(greenSpriteBullet);
-        bullet_sprite_cycler.Add(purpleSpriteBullet);
+        bullet_color_cycler.Add("Orange");
+        bullet_color_cycler.Add("Blue");
+        bullet_color_cycler.Add("Green");
+        bullet_color_cycler.Add("Purple");
 
         bulletIndex = 0;
 
@@ -96,14 +92,14 @@ public class PlayerBulletCycler : MonoBehaviour
         if (bulletIndex - 1 < 0) {
             bulletIndex = bullet_cycler.Count - 1;
         } else { --bulletIndex; }
-        PlayerUILogicScript.setUIBullet(bullet_sprite_cycler[bulletIndex]);
+        PlayerUILogicScript.setUIBullet(bullet_color_cycler[bulletIndex]);
     }
 
     private void CycleBulletRight(InputAction.CallbackContext context) {
         if (bulletIndex + 1 == bullet_cycler.Count) {
             bulletIndex = 0;
         } else { ++bulletIndex; }
-        PlayerUILogicScript.setUIBullet(bullet_sprite_cycler[bulletIndex]);
+        PlayerUILogicScript.setUIBullet(bullet_color_cycler[bulletIndex]);
     }
 
 }

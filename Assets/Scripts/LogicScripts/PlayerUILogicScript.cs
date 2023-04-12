@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
-public class PlayerUILogicScript : MonoBehaviour
+public class PlayerUILogicScript : MonoBehaviour, IPlayerDataPersistence
 {
     private PlayerDeath playerDeath;
     private int playerHealth;
@@ -17,17 +18,23 @@ public class PlayerUILogicScript : MonoBehaviour
 
     // On-Screen Bullet Cycler
     [SerializeField] private GameObject bulletCycler;
-    private static Image currentBulletInCycler;
-
+    [SerializeField] private GameObject bullet;
+    [SerializeField] private GameObject bulletBlue;
+    [SerializeField] private GameObject bulletGreen;
+    [SerializeField] private GameObject bulletPurple;
+    private static string current_color;
+    
     // Players Status
     private bool playerLivingState;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        current_color = "Orange";
+
         if (PlayerBulletCycler.bulletCyclerActive && bulletCycler != null) {
             bulletCycler.SetActive(true);
-            currentBulletInCycler = GameObject.FindGameObjectWithTag("CurrentCyclerBullet").GetComponent<Image>();
         }
         
         if (SceneManager.GetActiveScene().buildIndex != 0) {
@@ -35,7 +42,6 @@ public class PlayerUILogicScript : MonoBehaviour
         }
         playerHealth = 100;
         playerShield = 100;
-        playerScore = 0;
         playerLivingState = true;
     }
 
@@ -44,10 +50,11 @@ public class PlayerUILogicScript : MonoBehaviour
     {
         if (PlayerBulletCycler.bulletCyclerActive && bulletCycler != null) {
             bulletCycler.SetActive(true);
-            if (currentBulletInCycler == null) {
-                currentBulletInCycler = GameObject.FindGameObjectWithTag("CurrentCyclerBullet").GetComponent<Image>();
-            }
         }
+
+        updateBulletUI();
+
+
     }
 
     // This function increases the players health by a certain amount
@@ -116,9 +123,11 @@ public class PlayerUILogicScript : MonoBehaviour
         playerScoreText.text = playerScore.ToString();
     }
 
-    public static void setUIBullet(Sprite bulletSprite) {
-        if (currentBulletInCycler != null) {
-            currentBulletInCycler.sprite = bulletSprite;
+    // This function sets the score when the player data is loaded in
+    private void setScore(int amount) {
+        playerScore = amount;
+        if (playerScoreText != null) {
+            playerScoreText.text = playerScore.ToString();
         }
     }
 
@@ -135,5 +144,56 @@ public class PlayerUILogicScript : MonoBehaviour
     // Returns the current player score for the level
     public int getPlayerScore() {
         return playerScore;
+    }
+
+
+    
+    // UI FUNCTIONS
+    
+    // Changing the bullet on the players UI
+    private void updateBulletUI() {
+        if (bullet && bulletBlue && bulletGreen && bulletPurple) {
+            switch (current_color) {
+                case "Orange":
+                    setBulletActiveState(false);
+                    bullet.SetActive(true);
+                    break;
+                case "Blue":
+                    setBulletActiveState(false);
+                    bulletBlue.SetActive(true);
+                    break;
+                case "Green":
+                    setBulletActiveState(false);
+                    bulletGreen.SetActive(true);
+                    break;
+                case "Purple":
+                    setBulletActiveState(false);
+                    bulletPurple.SetActive(true);
+                    break;
+            }
+        }
+    }
+
+    public static void setUIBullet(string bulletColor) {
+        current_color = bulletColor;
+    }
+
+    private void setBulletActiveState(bool state) {
+        bullet.SetActive(state);
+        bulletBlue.SetActive(state);
+        bulletGreen.SetActive(state);
+        bulletPurple.SetActive(state);
+    }
+
+    // Player Data Persistence 
+    public void LoadData(PlayerData playerData) {
+        Debug.Log("Loading player data: Score is " + playerData.totalScore);
+        setScore(playerData.totalScore);
+    }
+
+    public void SaveData(ref PlayerData playerData) {
+        if (LevelCompletionStates.isLevelComplete() && getPlayerScore() != 0) {
+            playerData.totalScore += getPlayerScore();
+        }
     }
 }

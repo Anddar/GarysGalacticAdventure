@@ -8,6 +8,7 @@ public class RinoAttack : MonoBehaviour
     private RinoMovement rinoMovement;
     private RinoHealthLogic rinoHealthLogic;
     private PlayerUILogicScript gameLogic;
+    private EnemyWeakness weaknessObj;
     private Animator animator;
 
     // Slime Damage Values
@@ -23,6 +24,7 @@ public class RinoAttack : MonoBehaviour
         rinoHealthLogic = GetComponent<RinoHealthLogic>();
         gameLogic = GameObject.FindGameObjectWithTag("Logic").GetComponent<PlayerUILogicScript>();
         playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        weaknessObj = gameObject.GetComponentInChildren<EnemyWeakness>();
         animator = GetComponent<Animator>();
     }
 
@@ -48,7 +50,20 @@ public class RinoAttack : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision) {
         GameObject collidedObject = collision.gameObject;
         if (collidedObject.tag.Contains("Bullet")) {
-            rinoHealthLogic.enemyTakeHit();
+            if (weaknessObj.getWeakness() != "") {
+                string weakness = weaknessObj.getWeakness();
+                if (collidedObject.tag.Equals("Bullet") && weakness == "Orange") {
+                    rinoHealthLogic.enemyTakeHit();
+                } else if (collidedObject.tag.Contains("Blue") && weakness == "Blue") {
+                    rinoHealthLogic.enemyTakeHit();
+                } else if (collidedObject.tag.Contains("Green") && weakness == "Green") {
+                    rinoHealthLogic.enemyTakeHit();
+                } else if (collidedObject.tag.Contains("Purple") && weakness == "Purple") {
+                    rinoHealthLogic.enemyTakeHit();
+                }
+            } else {
+                rinoHealthLogic.enemyTakeHit();
+            }
         } else if (collidedObject.CompareTag("Player")) {
             if (rinoMovement.isRinoRolling()) {
                 animator.SetBool("Rolling", false);
