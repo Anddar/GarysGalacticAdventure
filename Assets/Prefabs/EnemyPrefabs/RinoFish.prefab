@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 4447261010718298272}
   - component: {fileID: 4447261010718298279}
   - component: {fileID: 4447261010718298274}
-  - component: {fileID: 1366101369965391183}
+  - component: {fileID: 6160261939749893479}
   m_Layer: 7
   m_Name: RinoFish
   m_TagString: Enemy
@@ -369,7 +369,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageFromBiteAttack: 25
   damageFromWalkingInto: 18
-  weaknessObject: {fileID: 1362617613228996478}
   playerMovement: {fileID: 0}
 --- !u!114 &4447261010718298274
 MonoBehaviour:
@@ -383,7 +382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98031c7ef2b4d7d48986fc4daa8a8b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1366101369965391183
+--- !u!114 &6160261939749893479
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -397,3 +396,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HealthPot: {fileID: 6394021507657393442, guid: 311540f61c30e490698cabdfe8de409c, type: 3}
   ShieldPot: {fileID: 6117906691672964201, guid: 00c83366906e34d009243e11ea3611c2, type: 3}
+  ShootSpeedUpgrade: {fileID: 6865787529685216621, guid: 4b945bebc4bef4d02a705d0ecfe156db, type: 3}
+  MovementSpeedUpgrade: {fileID: 6578906118578466709, guid: d524a30a69dd848af972accc8a41dd39, type: 3}

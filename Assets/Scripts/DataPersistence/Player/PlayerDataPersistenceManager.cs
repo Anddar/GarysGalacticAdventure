@@ -55,8 +55,6 @@ public class PlayerDataPersistenceManager : MonoBehaviour
             NewGame();
         }
 
-        Debug.Log("Player Data being loaded: " + this.playerData.level + " score: " + this.playerData.totalScore);
-
         // Loads the data into each script using the player data persistence script
         foreach (IPlayerDataPersistence playerDataPersistenceObject in playerDataPersistenceObjects) {
             playerDataPersistenceObject.LoadData(playerData);
@@ -72,8 +70,9 @@ public class PlayerDataPersistenceManager : MonoBehaviour
             playerDataPersistenceObject.SaveData(ref playerData);
         }
 
+        Debug.Log(savesDirectory);
+
         // Saving our Users Player Data to a file
-        Debug.Log("Player Data being saved: " + playerData.level + " score: " + playerData.totalScore);
         playerFileHandler.Save(playerData, player_save_num);
 
         return true;

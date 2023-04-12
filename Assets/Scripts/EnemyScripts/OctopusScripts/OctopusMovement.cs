@@ -30,6 +30,8 @@ public class OctopusMovement : MonoBehaviour
     [SerializeField] GameObject bullet;
     [SerializeField] Transform bulletPos;
     private float timer;
+
+    [SerializeField] private float shootDelay;
     
     // Start is called before the first frame update
     void Start()
@@ -81,7 +83,7 @@ public class OctopusMovement : MonoBehaviour
             if(distance < 10){
                 timer += Time.deltaTime;
 
-                if(timer > 2){
+                if(timer > shootDelay){
                     timer = 0;
                     shoot();
                 }

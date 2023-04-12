@@ -4,17 +4,38 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
+using TMPro;
 
 public class PlayerUILogicScript : MonoBehaviour, IPlayerDataPersistence
 {
     private PlayerDeath playerDeath;
+    private PlayerMovement playerMovement;
+    private PlayerShoot playerShoot;
     private int playerHealth;
     private int playerShield;
     private int playerScore;
 
+    // Player Upgrades 
+    private int totalShootSpeedUpgrades;
+    private int totalMovementSpeedUpgrades;
+    private bool upgradeDataAcquired_ShootSpeed;
+    private bool upgradeDataAcquired_MoveSpeed;
+
+    private TMP_Text totalShootSpeedUpgradeText;
+    private TMP_Text totalMovementSpeedUpgradeText;
+    [SerializeField] private float movementSpeedUpgradePercentIncrease;
+    [SerializeField] private float shootSpeedUpgradePercentIncrease;
+    [SerializeField] private GameObject movementSpeedUI;
+    [SerializeField] private GameObject shootSpeedUI;
+    
+
     [SerializeField] private Text playerHealthText;
     [SerializeField] private Text playerShieldText;
     [SerializeField] private Text playerScoreText;
+    [SerializeField] private TMP_Text playerInfoUpdateText;
+    private Queue<string> notifyPlayerQueue;
+    private bool notificationOnScreen;
+
 
     // On-Screen Bullet Cycler
     [SerializeField] private GameObject bulletCycler;
@@ -26,6 +47,9 @@ public class PlayerUILogicScript : MonoBehaviour, IPlayerDataPersistence
     
     // Players Status
     private bool playerLivingState;
+
+    // Fader Variables
+    private FadeGameObject fader;
 
 
     // Start is called before the first frame update
@@ -39,22 +63,47 @@ public class PlayerUILogicScript : MonoBehaviour, IPlayerDataPersistence
         
         if (SceneManager.GetActiveScene().buildIndex != 0) {
             playerDeath = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerDeath>();
+            playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+            playerShoot = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerShoot>();
         }
         playerHealth = 100;
         playerShield = 100;
         playerLivingState = true;
+        upgradeDataAcquired_ShootSpeed = false;
+        upgradeDataAcquired_MoveSpeed = false;
+
+        notifyPlayerQueue = new Queue<string>();
+        notificationOnScreen = false;
+        fader = playerInfoUpdateText.gameObject.GetComponent<FadeGameObject>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Turning on the upgrades UI if user acquires an upgrade
+        if (shootSpeedUI != null && !shootSpeedUI.activeSelf && totalShootSpeedUpgrades > 0) {
+            shootSpeedUI.SetActive(true);
+            totalShootSpeedUpgradeText = shootSpeedUI.GetComponentInChildren<TMP_Text>();
+            totalShootSpeedUpgradeText.text = totalShootSpeedUpgrades.ToString();
+            if (upgradeDataAcquired_ShootSpeed) { playerShoot.updateShootingDelay(); upgradeDataAcquired_ShootSpeed = false; }
+        }  
+        if (movementSpeedUI != null && !movementSpeedUI.activeSelf && totalMovementSpeedUpgrades > 0) {
+            movementSpeedUI.SetActive(true);
+            totalMovementSpeedUpgradeText = movementSpeedUI.GetComponentInChildren<TMP_Text>();
+            totalMovementSpeedUpgradeText.text = totalMovementSpeedUpgrades.ToString();
+            if (upgradeDataAcquired_MoveSpeed) { playerMovement.updateMovementSpeed(); upgradeDataAcquired_MoveSpeed = false; }
+        }
+
+        // Notify player with notification if there is still a notification in the queue
+        if (notifyPlayerQueue.Count > 0 && !notificationOnScreen) {
+            notifyPlayer(notifyPlayerQueue.Dequeue());
+        }
+
         if (PlayerBulletCycler.bulletCyclerActive && bulletCycler != null) {
             bulletCycler.SetActive(true);
         }
 
         updateBulletUI();
-
-
     }
 
     // This function increases the players health by a certain amount
@@ -146,6 +195,55 @@ public class PlayerUILogicScript : MonoBehaviour, IPlayerDataPersistence
         return playerScore;
     }
 
+    // Increase amount of acquired upgrade by 1 using ++ incrementation 
+    public void increaseTotalShootSpeedUpgrades() {
+        ++totalShootSpeedUpgrades;
+        playerShoot.updateShootingDelay();
+        if (totalShootSpeedUpgradeText == null) { totalShootSpeedUpgradeText = shootSpeedUI.GetComponentInChildren<TMP_Text>(); } 
+        totalShootSpeedUpgradeText.text = totalShootSpeedUpgrades.ToString();
+
+        notifyPlayer("Upgrade: Fire Rate Increased by " + shootSpeedUpgradePercentIncrease*100 + "%\nTotal Increase: " + totalShootSpeedUpgrades*(shootSpeedUpgradePercentIncrease*100) + "%");
+    }
+
+    public void increaseTotalMovementSpeedUpgrades() {
+        ++totalMovementSpeedUpgrades;
+        playerMovement.updateMovementSpeed();
+        if (totalMovementSpeedUpgradeText == null) { totalMovementSpeedUpgradeText = movementSpeedUI.GetComponentInChildren<TMP_Text>(); } 
+        totalMovementSpeedUpgradeText.text = totalMovementSpeedUpgrades.ToString();
+
+        notifyPlayer("Upgrade: Running Speed Increased by " + movementSpeedUpgradePercentIncrease*100 + "%\nTotal Increase: " + totalMovementSpeedUpgrades*(movementSpeedUpgradePercentIncrease*100) + "%");
+    }
+
+
+    // Getter Methods for the number of acquired upgrades
+    public float getShootSpeedUpgradeIncrease() {
+        return totalShootSpeedUpgrades * shootSpeedUpgradePercentIncrease;
+    }
+
+    public float getMovementSpeedUpgradeIncrease() {
+        return totalMovementSpeedUpgrades * movementSpeedUpgradePercentIncrease;
+    }
+
+    // Helper function to notify players of an upgrade collected or new item collected for examples
+    public void notifyPlayer(String notifyText) {
+        if (notificationOnScreen) {
+            notifyPlayerQueue.Enqueue(notifyText);
+            return;
+        }
+
+        notificationOnScreen = true;
+        fader.startFadingObjectIn(0f, true);
+        playerInfoUpdateText.text = notifyText;
+        fader.startFadingObjectOut(4.0f, false, true);
+        StartCoroutine(waitForNotification(6f));
+    }
+
+    // This enumerator waits for notification to end that is currently on screen
+    private IEnumerator waitForNotification(float notificationWaitTime) {
+        yield return new WaitForSeconds(notificationWaitTime);
+        notificationOnScreen = false;
+    }
+
 
     
     // UI FUNCTIONS
@@ -187,13 +285,25 @@ public class PlayerUILogicScript : MonoBehaviour, IPlayerDataPersistence
 
     // Player Data Persistence 
     public void LoadData(PlayerData playerData) {
-        Debug.Log("Loading player data: Score is " + playerData.totalScore);
         setScore(playerData.totalScore);
+        totalShootSpeedUpgrades = playerData.totalShootSpeedUpgrades;
+        totalMovementSpeedUpgrades = playerData.totalMovementSpeedUpgrades;
+
+        if (totalShootSpeedUpgrades > 0) {
+            upgradeDataAcquired_ShootSpeed = true;
+        } 
+        if (totalMovementSpeedUpgrades > 0) {
+            upgradeDataAcquired_MoveSpeed = true;
+        }
     }
 
     public void SaveData(ref PlayerData playerData) {
         if (LevelCompletionStates.isLevelComplete() && getPlayerScore() != 0) {
             playerData.totalScore += getPlayerScore();
+        }
+        if (LevelCompletionStates.isLevelComplete()) {
+            playerData.totalShootSpeedUpgrades = totalShootSpeedUpgrades;
+            playerData.totalMovementSpeedUpgrades = totalMovementSpeedUpgrades;
         }
     }
 }

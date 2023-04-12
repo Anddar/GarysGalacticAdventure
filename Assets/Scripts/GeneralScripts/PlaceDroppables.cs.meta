@@ -6,6 +6,8 @@ MonoImporter:
   defaultReferences:
   - HealthPot: {fileID: 6394021507657393442, guid: 311540f61c30e490698cabdfe8de409c, type: 3}
   - ShieldPot: {fileID: 6117906691672964201, guid: 00c83366906e34d009243e11ea3611c2, type: 3}
+  - ShootSpeedUpgrade: {fileID: 6865787529685216621, guid: 4b945bebc4bef4d02a705d0ecfe156db, type: 3}
+  - MovementSpeedUpgrade: {fileID: 6578906118578466709, guid: d524a30a69dd848af972accc8a41dd39, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

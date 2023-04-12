@@ -6,6 +6,7 @@ public class PickupBulletCycler : MonoBehaviour
 {
     // Bullet Cycler Sprite Render Object
     private SpriteRenderer bulletCyclerRenderer;
+    private PlayerUILogicScript gameLogic;
 
     // All Bullet Type Sprites to Rotate Through
     private List<Sprite> bulletSprites = new List<Sprite>();
@@ -23,6 +24,7 @@ public class PickupBulletCycler : MonoBehaviour
     void Start()
     {
         bulletCyclerRenderer = GetComponent<SpriteRenderer>();
+        gameLogic = GameObject.FindGameObjectWithTag("Logic").GetComponent<PlayerUILogicScript>();
 
         bulletSprites.Add(regularBullet);
         bulletSprites.Add(blueBullet);
@@ -53,6 +55,7 @@ public class PickupBulletCycler : MonoBehaviour
         GameObject collidedObject = collision.gameObject;
         if (collidedObject.CompareTag("Player")) {
             PlayerBulletCycler.turnOnBulletCycler();
+            gameLogic.notifyPlayer("New Ability: Bullet Cycler Acquired\nUse it to fight enemies with special weakness types above their heads.");
             Destroy(gameObject);
         }
     }

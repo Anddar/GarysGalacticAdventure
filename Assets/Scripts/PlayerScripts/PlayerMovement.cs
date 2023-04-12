@@ -263,6 +263,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // --------------------- Upgrade Increases ---------------------
+    public void updateMovementSpeed() {
+        movementSpeed += (movementSpeed * gameLogic.getMovementSpeedUpgradeIncrease());
+    }
+
+    public float getMovementSpeed() {
+        return movementSpeed;
+    }
+
     // --------------------- Player Actions After Input ---------------------
 
     // Makes the player jump when pressing jump control, "space" by default

@@ -66,6 +66,11 @@ public class PlayerShoot : MonoBehaviour
         return false;
     }
 
+    // --------------------- Upgrade Increases ---------------------
+    public void updateShootingDelay() {
+        shootingDelay -= (shootingDelay * gameLogic.getShootSpeedUpgradeIncrease());
+    }
+
     // --------------------- Player Actions After Input ---------------------
 
     // This function will allow the bullet to spawn and be fired from barrel of gun

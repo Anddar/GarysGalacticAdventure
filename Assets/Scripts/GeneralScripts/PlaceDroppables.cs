@@ -6,7 +6,9 @@ public class PlaceDroppables : MonoBehaviour
 {
     [SerializeField] private GameObject HealthPot;
     [SerializeField] private GameObject ShieldPot;
-    
+    [SerializeField] private GameObject ShootSpeedUpgrade;
+    [SerializeField] private GameObject MovementSpeedUpgrade;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +30,12 @@ public class PlaceDroppables : MonoBehaviour
         } else if (randValue <= 25) { 
             // 15% chance to get a Shield pot
             Instantiate(ShieldPot, position, Quaternion.identity);
+        } else if (randValue <= 32) {
+            // 7% chance to get a Shoot Speed Upgrade
+            Instantiate(ShootSpeedUpgrade, position, Quaternion.identity);
+        } else if (randValue <= 39) {
+            // 7% chance to get a Movement Speed Upgrade
+            Instantiate(MovementSpeedUpgrade, position, Quaternion.identity);
         }
     }
 }
