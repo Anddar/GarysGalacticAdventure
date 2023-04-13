@@ -1873,8 +1873,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 328a4b88b39b0c14baa2a47002bfd8da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeedUpgradePercentIncrease: 0.2
-  shootSpeedUpgradePercentIncrease: 0.15
+  movementSpeedUpgradePercentIncrease: 0.05
+  shootSpeedUpgradePercentIncrease: 0.06
   movementSpeedUI: {fileID: 4081835749989676181}
   shootSpeedUI: {fileID: 867082640641045470}
   playerHealthText: {fileID: 8403366061397925942}
