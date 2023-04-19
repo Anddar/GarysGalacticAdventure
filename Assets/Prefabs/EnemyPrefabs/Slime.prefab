@@ -202,6 +202,11 @@ MonoBehaviour:
   slimeMoveSpeed: 2
   randomAttackDelay: 3
   walkingPathDistance: 8
+  jumpOnCollision: 0
+  jumpForce: 5.5
+  jumpableGround:
+    serializedVersion: 2
+    m_Bits: 64
   isChasing: 0
   chaseDistance: 4
 --- !u!114 &678789446417901334

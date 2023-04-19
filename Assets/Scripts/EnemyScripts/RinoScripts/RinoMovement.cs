@@ -108,11 +108,11 @@ public class RinoMovement : MonoBehaviour
 
     // Enemy Helper Functions
     private bool isMoving() {
-        if (previousPosition.x < transform.position.x) {
+        if (previousPosition.x < transform.position.x && Mathf.Abs(previousPosition.x - transform.position.x) > 0.2) {
             previousPosition = transform.position;
             transform.localScale = new Vector3(1f, 1f, 1f);
             return true;
-        } else if (previousPosition.x > transform.position.x) {
+        } else if (previousPosition.x > transform.position.x && Mathf.Abs(previousPosition.x - transform.position.x) > 0.2) {
             previousPosition = transform.position;
             transform.localScale = new Vector3(-1f, 1f, 1f);
             return true;
