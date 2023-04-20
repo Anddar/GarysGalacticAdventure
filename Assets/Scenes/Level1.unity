@@ -52682,6 +52682,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 678789446417901330, guid: f670cc7b6da9f0d4f90895e5f565f71a, type: 3}
+      propertyPath: jumpOnCollision
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 678789446417901330, guid: f670cc7b6da9f0d4f90895e5f565f71a, type: 3}
       propertyPath: walkingPathDistance
       value: -8
       objectReference: {fileID: 0}
@@ -127284,6 +127288,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 678789446417901329, guid: f670cc7b6da9f0d4f90895e5f565f71a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 678789446417901330, guid: f670cc7b6da9f0d4f90895e5f565f71a, type: 3}
+      propertyPath: jumpOnCollision
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 678789446417901342, guid: f670cc7b6da9f0d4f90895e5f565f71a, type: 3}

@@ -26,6 +26,7 @@ public class PitfallRespawnScript : MonoBehaviour
         GameObject collidedObject = collision.gameObject;
         if (collidedObject.CompareTag("Player")) {
             collidedObject.transform.position = respawnLocation.position;
+            gameLogic.decreaseShield(damageToPlayer);
         } else if (collidedObject.CompareTag("Enemy")) {
             Destroy(collidedObject, 2.0f);
         }
