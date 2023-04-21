@@ -54,6 +54,11 @@ public class BulletMovement : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision) {
         GameObject collidedObject = collision.gameObject;
 
+        if (collidedObject.CompareTag("BulletIgnoreCollision")) {
+            Physics2D.IgnoreCollision(collidedObject.GetComponent<BoxCollider2D>(), gameObject.GetComponent<BoxCollider2D>());
+            return;
+        }
+
         // If the bullet collides with a wall the animation should trigger, and we should destroy the bullet object since it hits a wall
         if (collidedObject.layer != 3 && (collidedObject.layer == 8 || collidedObject.layer == 6)) {
             animator.SetBool("wall_collision", true);

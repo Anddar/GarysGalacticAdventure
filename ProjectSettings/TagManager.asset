@@ -21,6 +21,7 @@ TagManager:
   - GreenBullet
   - PurpleBullet
   - CurrentCyclerBullet
+  - BulletIgnoreCollision
   layers:
   - Default
   - TransparentFX
