@@ -21,7 +21,7 @@ public class ControlDetection : MonoBehaviour
 
 
     // All Menu Objects
-    [SerializeField] GameObject MainMenu, OptionsMenu, SaveMenu, OverwriteDialogBox, PauseMenu;
+    [SerializeField] GameObject MainMenu, OptionsMenu, SaveMenu, OverwriteDialogBox, PauseMenu, CheatMenuArea;
 
     PlayerInputActions playerInputActions;
 
@@ -173,6 +173,11 @@ public class ControlDetection : MonoBehaviour
     // For when a user presses a key on any control device it will come through here as well to determine the control type (Keyboard&Mouse or Gamepad)
     private void allInput(InputAction.CallbackContext context) {
         inputDeviceChanged(context.control.device);
+
+        switch (context.control.device.name) {
+            
+
+        }
     }
 
     private void setSelectedObject(GameObject obj, GameObject menu) {

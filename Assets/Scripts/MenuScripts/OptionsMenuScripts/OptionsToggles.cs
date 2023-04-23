@@ -26,4 +26,13 @@ public class OptionsToggles : MonoBehaviour
         }
         GameplayManager.setToggleCrouch(state);
     }
+
+    public void toggleInvicibility(bool state) {
+        // Changes between whether the player will be invicible or not invincible
+        if (state) {
+            // Turn on invicibility
+        } else {
+            // Turn off invicibility
+        }
+    }
 }
