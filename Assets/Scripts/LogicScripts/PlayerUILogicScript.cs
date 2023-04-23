@@ -47,6 +47,7 @@ public class PlayerUILogicScript : MonoBehaviour, IPlayerDataPersistence
     
     // Players Status
     private bool playerLivingState;
+    private bool playerInvincibilityState;
 
     // Fader Variables
     private FadeGameObject fader;
@@ -69,12 +70,13 @@ public class PlayerUILogicScript : MonoBehaviour, IPlayerDataPersistence
         playerHealth = 100;
         playerShield = 100;
         playerLivingState = true;
+        playerInvincibilityState = false;
         upgradeDataAcquired_ShootSpeed = false;
         upgradeDataAcquired_MoveSpeed = false;
 
         notifyPlayerQueue = new Queue<string>();
         notificationOnScreen = false;
-        fader = playerInfoUpdateText.gameObject.GetComponent<FadeGameObject>();
+        if (playerInfoUpdateText) { fader = playerInfoUpdateText.gameObject.GetComponent<FadeGameObject>(); }
     }
 
     // Update is called once per frame
@@ -118,7 +120,7 @@ public class PlayerUILogicScript : MonoBehaviour, IPlayerDataPersistence
 
     // This function decreases the players health by a certain amount
     public void decreaseHealth(int amount) {
-        if (!playerDeath.isPlayerInvincible()) {
+        if (!playerDeath.isPlayerInvincible() && !playerInvincibilityState) {
             playerDeath.tookDamage();
             if (playerHealth - amount < 0) {
                 playerHealth = 0;
@@ -144,7 +146,7 @@ public class PlayerUILogicScript : MonoBehaviour, IPlayerDataPersistence
 
     // This function decreases the players shield by a certain amount
     public void decreaseShield(int amount) {
-        if (!playerDeath.isPlayerInvincible()) {
+        if (!playerDeath.isPlayerInvincible() && !playerInvincibilityState) {
             if (playerShield - amount < 0) {
                 decreaseHealth(amount - playerShield);
                 playerShield = 0;
@@ -212,6 +214,10 @@ public class PlayerUILogicScript : MonoBehaviour, IPlayerDataPersistence
         totalMovementSpeedUpgradeText.text = totalMovementSpeedUpgrades.ToString();
 
         notifyPlayer("Upgrade: Running Speed Increased by " + movementSpeedUpgradePercentIncrease*100 + "%\nTotal Increase: " + totalMovementSpeedUpgrades*(movementSpeedUpgradePercentIncrease*100) + "%");
+    }
+
+    public void setPlayerInvicibleState(bool state) {
+        playerInvincibilityState = state;
     }
 
 

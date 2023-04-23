@@ -127,7 +127,7 @@ public class PauseMenuController : MonoBehaviour
         SceneManager.LoadScene(0); // Loads the main menu screen
     }
 
-    private void setPauseMenuButtonState(bool state) {
+    public void setPauseMenuButtonState(bool state) {
         resumeButton.interactable = state;
         optionsButton.interactable = state;
         saveAndQuitButton.interactable = state;
@@ -169,6 +169,10 @@ public class PauseMenuController : MonoBehaviour
                 return child.gameObject;
         }
         return null;
+    }
+
+    public void forceResume() {
+        resumeButtonAction();
     }
 
 }

@@ -21,10 +21,23 @@ public class OptionsMenuController : MonoBehaviour
     private static GameObject xboxOverlay;
     private static GameObject playstationOverlay;
 
+    private bool cheatMovingScenes;
+    private static Animator transition;
+    [SerializeField] private float transitionTime = 1f;
+    [SerializeField] GameObject pauseMenu;
+    private static PauseMenuController pauseController;
+
     // Start is called before the first frame update
     void Start() {
         xboxOverlay = findChildWithTag("Xbox");
         playstationOverlay = findChildWithTag("Playstation");
+
+        // Transitioner for the cheat menu to move between levels
+        if (pauseMenu) {
+            pauseController = pauseMenu.GetComponent<PauseMenuController>();
+        }
+        transition = GameObject.FindGameObjectWithTag("LevelFade").GetComponent<Animator>();
+        cheatMovingScenes = false;
     }
 
     // Update is called once per frame
@@ -32,6 +45,10 @@ public class OptionsMenuController : MonoBehaviour
         if (xboxOverlay == null || playstationOverlay == null) {
             xboxOverlay = findChildWithTag("Xbox");
             playstationOverlay = findChildWithTag("Playstation");
+        }
+
+        if (pauseMenu) {
+            pauseController = pauseMenu.GetComponent<PauseMenuController>();
         }
     }
 
@@ -64,6 +81,27 @@ public class OptionsMenuController : MonoBehaviour
 
         // Save options when closing the Options menu
         OptionsDataPersistenceManager.instance.SaveOptions();
+    }
+
+    public void moveToLevel1CheatButton() {
+        if (SceneManager.GetActiveScene().buildIndex != 1 && !cheatMovingScenes) { cheatMovingScenes = true; StartCoroutine(moveToLevel(1)); }
+    }
+
+    public void moveToLevel1_2CheatButton() {
+        if (SceneManager.GetActiveScene().buildIndex != 2 && !cheatMovingScenes) { cheatMovingScenes = true; StartCoroutine(moveToLevel(2)); }
+    }
+
+    private IEnumerator moveToLevel(int levelIndex) {
+        gameObject.SetActive(false);
+        generalButtonAction();
+
+        pauseController.setPauseMenuButtonState(false);
+        pauseController.forceResume();
+        pauseController.setPauseMenuButtonState(true);
+
+        transition.SetTrigger("Start");
+        SceneManager.LoadScene(levelIndex);
+        yield return true;
     }
     // ------------------------------------------------------
 

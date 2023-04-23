@@ -1777,9 +1777,10 @@ MonoBehaviour:
   MainMenuFirstButtonContinue: {fileID: 0}
   MainMenuFirstButtonPlay: {fileID: 0}
   OptionsMenuFirstButton: {fileID: 4115124718174621753}
-  SaveMenuFirstButton: {fileID: 0}
+  SaveMenuFirstButton: {fileID: 4121031090220609037}
   OverwriteDialogFirstButton: {fileID: 0}
   PauseMenuFirstButton: {fileID: 4115124716774392307}
+  CheatMenuFirstButton: {fileID: 4121031090220609037}
   OptionsGeneralTab: {fileID: 4115124718329218325}
   OptionsAudioTab: {fileID: 4115124718291699672}
   OptionsVideoTab: {fileID: 4115124718380768611}
@@ -3468,6 +3469,8 @@ MonoBehaviour:
   generalTab: {fileID: 4115124718329218325}
   audioTab: {fileID: 4115124718291699672}
   videoTab: {fileID: 4115124718380768611}
+  transitionTime: 1
+  pauseMenu: {fileID: 4115124717705071360}
 --- !u!1 &4115124717802429648
 GameObject:
   m_ObjectHideFlags: 0
@@ -4485,8 +4488,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crouchToggleBackground: {fileID: 4115124718781040270}
-  crouchToggleChecked: {fileID: 6702938897597797321, guid: 236587ec711348a4792e0060efb1bf73, type: 3}
-  crouchToggleUnchecked: {fileID: -162038453, guid: 28d449ec2f002564dabd9374cafee4d2, type: 3}
+  invincibilityToggleBackground: {fileID: 0}
+  toggleChecked: {fileID: 6702938897597797321, guid: 236587ec711348a4792e0060efb1bf73, type: 3}
+  toggleUnchecked: {fileID: -162038453, guid: 28d449ec2f002564dabd9374cafee4d2, type: 3}
 --- !u!1 &4115124718086735394
 GameObject:
   m_ObjectHideFlags: 0
@@ -7838,9 +7842,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b13d6eab9dfca4386b59cb5742c41e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crouchToggleBackground: {fileID: 6997794096304043756}
-  crouchToggleChecked: {fileID: 6702938897597797321, guid: 236587ec711348a4792e0060efb1bf73, type: 3}
-  crouchToggleUnchecked: {fileID: -162038453, guid: 28d449ec2f002564dabd9374cafee4d2, type: 3}
+  crouchToggleBackground: {fileID: 0}
+  invincibilityToggleBackground: {fileID: 6997794096304043756}
+  toggleChecked: {fileID: 6702938897597797321, guid: 236587ec711348a4792e0060efb1bf73, type: 3}
+  toggleUnchecked: {fileID: -162038453, guid: 28d449ec2f002564dabd9374cafee4d2, type: 3}
 --- !u!1 &4342768289436041070
 GameObject:
   m_ObjectHideFlags: 0
@@ -7965,7 +7970,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4115124717792670671}
         m_TargetAssemblyTypeName: OptionsMenuController, Assembly-CSharp
-        m_MethodName: audioButtonAction
+        m_MethodName: moveToLevel1CheatButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8179,7 +8184,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4115124717792670671}
         m_TargetAssemblyTypeName: OptionsMenuController, Assembly-CSharp
-        m_MethodName: audioButtonAction
+        m_MethodName: moveToLevel1_2CheatButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8255,7 +8260,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 6702938897597797321, guid: 236587ec711348a4792e0060efb1bf73, type: 3}
+  m_Sprite: {fileID: -162038453, guid: 28d449ec2f002564dabd9374cafee4d2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8466,7 +8471,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Cheat Menu
+  m_text: CHEAT MENU
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b354148318ad9f149bab5f21ce6d9be4, type: 2}
   m_sharedMaterial: {fileID: -4359601991108415972, guid: b354148318ad9f149bab5f21ce6d9be4, type: 2}

@@ -5,11 +5,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class ControlDetection : MonoBehaviour
 {
     // First Buttons Selected in Menu Screens
-    [SerializeField] GameObject MainMenuFirstButtonContinue, MainMenuFirstButtonPlay, OptionsMenuFirstButton, SaveMenuFirstButton, OverwriteDialogFirstButton, PauseMenuFirstButton;
+    [SerializeField] GameObject MainMenuFirstButtonContinue, MainMenuFirstButtonPlay, OptionsMenuFirstButton, SaveMenuFirstButton, OverwriteDialogFirstButton, PauseMenuFirstButton, CheatMenuFirstButton;
     GameObject MainMenuFirstButton;
 
         // Options Menu Header Buttons
@@ -18,7 +19,6 @@ public class ControlDetection : MonoBehaviour
 
         // Inner Options Menu Tabs
         [SerializeField] GameObject OptionsGeneralTab, OptionsAudioTab, OptionsVideoTab;
-
 
     // All Menu Objects
     [SerializeField] GameObject MainMenu, OptionsMenu, SaveMenu, OverwriteDialogBox, PauseMenu, CheatMenuArea;
@@ -31,6 +31,12 @@ public class ControlDetection : MonoBehaviour
 
     // Audio Menu Move Click Sound
     [SerializeField] private AudioSource menu_move_click;
+
+    // Cheat Menu Input - Variables
+    private PlayerUILogicScript gameLogic;
+    private List<KeyCode> keyboardCheatActivation;
+    private List<string> controllerCheatActivation;
+    private int cheatMenuActivationIndex;
 
     void Start()
     {
@@ -58,6 +64,24 @@ public class ControlDetection : MonoBehaviour
                 previous_selected_object = "PlayButton";
             } 
         }
+
+        // Adding Cheat Menu Activations Key Presses
+        if (GameObject.FindGameObjectWithTag("Logic")) {
+            gameLogic = GameObject.FindGameObjectWithTag("Logic").GetComponent<PlayerUILogicScript>();
+        }
+        keyboardCheatActivation = new List<KeyCode>();
+        keyboardCheatActivation.Add(KeyCode.Tab);
+        keyboardCheatActivation.Add(KeyCode.F6);
+
+        controllerCheatActivation = new List<string>();
+        controllerCheatActivation.Add("buttonWest");
+        controllerCheatActivation.Add("buttonWest");
+        controllerCheatActivation.Add("up");
+        controllerCheatActivation.Add("down");
+        controllerCheatActivation.Add("leftShoulder");
+        controllerCheatActivation.Add("rightShoulder");
+
+        cheatMenuActivationIndex = 0;
     }
 
     void Update() {
@@ -101,6 +125,24 @@ public class ControlDetection : MonoBehaviour
         } else if (OptionsVideoTab.activeInHierarchy) {
             setOptionsTabNavDown(OptionsVideoNavDown);
         }
+
+        if (CheatMenuArea != null) {
+            if (current_device != "Playstation" && current_device != "Xbox" && current_device != "Mouse" && !CheatMenuArea.activeSelf && SceneManager.GetActiveScene().buildIndex != 0) {
+                if (Input.anyKeyDown) {
+                    if (Input.GetKeyDown(keyboardCheatActivation[cheatMenuActivationIndex])) {
+                        ++cheatMenuActivationIndex; // Incrementing the indexing
+                        if (cheatMenuActivationIndex == keyboardCheatActivation.Count) {
+                            CheatMenuArea.SetActive(true);
+                            updateNavForCheatMenu();
+
+                            gameLogic.notifyPlayer("Cheat Menu Enabled in Options");
+                        }
+                    } else {
+                        cheatMenuActivationIndex = 0; // Resetting the indexing
+                    }
+                }
+            }
+        }
     } 
 
     void Awake() {
@@ -116,6 +158,7 @@ public class ControlDetection : MonoBehaviour
     }
 
     private void inputDeviceChanged(InputDevice device) {
+        string previous_name = current_device;
         string device_name = device.name;
         if (device_name == "Keyboard") {
             current_device = "Keyboard";
@@ -126,6 +169,11 @@ public class ControlDetection : MonoBehaviour
         } else if (device_name == "XInputControllerWindows") {
             current_device = "Xbox";
         }  
+
+        // Resetting cheat menu activation index to 0 if control device changes
+        if (previous_name != current_device) {
+            cheatMenuActivationIndex = 0;
+        }
     }
 
     public static string getCurrentDevice() {
@@ -174,9 +222,20 @@ public class ControlDetection : MonoBehaviour
     private void allInput(InputAction.CallbackContext context) {
         inputDeviceChanged(context.control.device);
 
-        switch (context.control.device.name) {
-            
+        if (CheatMenuArea != null) {
+            if (current_device != "Keyboard" && current_device != "Mouse" && !CheatMenuArea.activeSelf && SceneManager.GetActiveScene().buildIndex != 0) {
+                if (context.control.name == controllerCheatActivation[cheatMenuActivationIndex]) {
+                        ++cheatMenuActivationIndex; // Incrementing the indexing
+                        if (cheatMenuActivationIndex == controllerCheatActivation.Count) {
+                            CheatMenuArea.SetActive(true);
+                            updateNavForCheatMenu();
 
+                            gameLogic.notifyPlayer("Cheat Menu Enabled in Options");
+                        }
+                    } else {
+                        cheatMenuActivationIndex = 0; // Resetting the indexing
+                }
+            }
         }
     }
 
@@ -238,4 +297,16 @@ public class ControlDetection : MonoBehaviour
         OptionsExitButton.navigation = newNavigation;
     }
 
+    // Updating the navigation of buttons in the options menu to work with the cheat menu when activated
+    private void updateNavForCheatMenu() {
+        // Updating Buttons in General Menu to interact with the Cheat Menu
+        Navigation newNav = new Navigation();
+        newNav.mode = Navigation.Mode.Explicit;
+        newNav.selectOnUp = OptionsGeneralNavDown.navigation.selectOnUp;
+        newNav.selectOnDown = CheatMenuFirstButton.GetComponent<Toggle>();
+        newNav.selectOnLeft = OptionsGeneralNavDown.navigation.selectOnLeft;
+        newNav.selectOnRight = OptionsGeneralNavDown.navigation.selectOnRight;
+        OptionsGeneralNavDown.navigation = newNav;
+        OptionsGeneralNavDown.GetComponent<Toggle>().navigation = newNav;
+    }
 }
