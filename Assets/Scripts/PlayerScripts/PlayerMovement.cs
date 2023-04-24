@@ -212,14 +212,16 @@ public class PlayerMovement : MonoBehaviour
 
     // Determines if the player is running and flip the player correspondingly to the direction they are running
     public bool isRunning() {
-        Vector2 directionVector = playerInputActions.Player.Movement.ReadValue<Vector2>();
-        float dirX = directionVector.x;
-        if (dirX > 0f) {
-            playerSprite.flipX = false;
-            return true;
-        } else if (dirX < 0f) {
-            playerSprite.flipX = true;
-            return true;
+        if (!LevelCompletionStates.isLevelComplete()) {
+            Vector2 directionVector = playerInputActions.Player.Movement.ReadValue<Vector2>();
+            float dirX = directionVector.x;
+            if (dirX > 0f) {
+                playerSprite.flipX = false;
+                return true;
+            } else if (dirX < 0f) {
+                playerSprite.flipX = true;
+                return true;
+            }
         }
         return false;
     }

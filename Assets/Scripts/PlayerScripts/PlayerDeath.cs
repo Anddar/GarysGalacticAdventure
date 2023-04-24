@@ -106,5 +106,4 @@ public class PlayerDeath : MonoBehaviour
         return fadedOut;
     }
 
-
 }

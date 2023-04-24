@@ -11,7 +11,7 @@ public class LevelCompletionStates : MonoBehaviour
             case 1:
                 return FinishLevel1.isLevelComplete();
             case 2:
-                return FinishLevel1.isLevelComplete();
+                return Takeoff.isLevelComplete();
         }
         return false;
     }

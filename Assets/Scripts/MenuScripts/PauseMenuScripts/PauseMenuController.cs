@@ -65,13 +65,13 @@ public class PauseMenuController : MonoBehaviour
         if (PauseMenu != null && !savingAndQuiting && !LevelCompletionStates.isLevelComplete()) {
             if (!pauseStatus) {
                 pauseStatus = true;
-                AudioListener.pause = true; // Pauses all audio in the game
+                //AudioListener.pause = true; // Pauses all audio in the game
                 Time.timeScale = 0; // Set timescale to 0 to stop time hence stopping the game
                 PauseMenu.SetActive(true);
             } else if (pauseStatus && !OptionsMenu.activeSelf) { 
                 // If pressing escape again we will close the pause menu
                 pauseStatus = false;
-                AudioListener.pause = false; // Unpause all the audio in the game
+                //AudioListener.pause = false; // Unpause all the audio in the game
                 PauseMenu.SetActive(false);
                 Time.timeScale = 1; // Set timescale back to normal so the game starts again
             }
@@ -92,7 +92,7 @@ public class PauseMenuController : MonoBehaviour
     public void resumeButtonAction() {
         if (pauseStatus) {
             pauseStatus = false;
-            AudioListener.pause = false; // Unpause all the audio in the game
+            //AudioListener.pause = false; // Unpause all the audio in the game
             PauseMenu.SetActive(false);
             Time.timeScale = 1; // Set timescale back to normal so the game starts again
         }
@@ -120,7 +120,7 @@ public class PauseMenuController : MonoBehaviour
 
         PlayerSave.setCurrentSave("");
 
-        AudioListener.pause = false; // Turning Music back on before leaving scene
+        //AudioListener.pause = false; // Turning Music back on before leaving scene
 
         setPauseMenuButtonState(true);
 
