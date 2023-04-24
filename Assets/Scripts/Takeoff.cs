@@ -38,7 +38,7 @@ public class Takeoff : MonoBehaviour
     {
         if (continueRocketLaunch) {
             if (mainCamera.orthographicSize < maxCameraZoomOut) {
-                mainCamera.orthographicSize += 0.001f;
+                mainCamera.orthographicSize += 0.01f;
             }
 
             rocketTransform.position = new Vector3(rocketTransform.position.x, rocketTransform.position.y + rocketSpeed, rocketTransform.position.z);

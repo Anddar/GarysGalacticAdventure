@@ -52254,7 +52254,7 @@ MonoBehaviour:
   maxCameraZoomOut: 13
   smoke: {fileID: 456829853}
   fire: {fileID: 1783205354}
-  rocketSpeed: 0.02
+  rocketSpeed: 0.15
   finalScoreTMP: {fileID: 837450647}
 --- !u!4 &1304045900 stripped
 Transform:
@@ -60506,11 +60506,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4397416380340031029, guid: 0a374399284a7d7498d2372d6a996fd7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -182.14
+      value: -6.841659
       objectReference: {fileID: 0}
     - target: {fileID: 4397416380340031029, guid: 0a374399284a7d7498d2372d6a996fd7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -6.26
+      value: -3.7999995
       objectReference: {fileID: 0}
     - target: {fileID: 4397416380340031029, guid: 0a374399284a7d7498d2372d6a996fd7, type: 3}
       propertyPath: m_LocalPosition.z
