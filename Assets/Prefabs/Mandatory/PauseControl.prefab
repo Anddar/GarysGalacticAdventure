@@ -4488,7 +4488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crouchToggleBackground: {fileID: 4115124718781040270}
-  invincibilityToggleBackground: {fileID: 0}
+  invincibilityToggleBackground: {fileID: 6997794096304043756}
   toggleChecked: {fileID: 6702938897597797321, guid: 236587ec711348a4792e0060efb1bf73, type: 3}
   toggleUnchecked: {fileID: -162038453, guid: 28d449ec2f002564dabd9374cafee4d2, type: 3}
 --- !u!1 &4115124718086735394
@@ -7589,7 +7589,7 @@ GameObject:
   - component: {fileID: 4115124718781040271}
   - component: {fileID: 4115124718781040269}
   m_Layer: 5
-  m_Name: Background
+  m_Name: CrouchBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7842,7 +7842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b13d6eab9dfca4386b59cb5742c41e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crouchToggleBackground: {fileID: 0}
+  crouchToggleBackground: {fileID: 4115124718781040270}
   invincibilityToggleBackground: {fileID: 6997794096304043756}
   toggleChecked: {fileID: 6702938897597797321, guid: 236587ec711348a4792e0060efb1bf73, type: 3}
   toggleUnchecked: {fileID: -162038453, guid: 28d449ec2f002564dabd9374cafee4d2, type: 3}
@@ -8206,7 +8206,7 @@ GameObject:
   - component: {fileID: 7448366052960736039}
   - component: {fileID: 93936498954693258}
   m_Layer: 5
-  m_Name: Background
+  m_Name: InvincibleBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

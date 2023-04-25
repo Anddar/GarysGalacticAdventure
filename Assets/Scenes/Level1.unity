@@ -126573,6 +126573,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6670643914079714837, guid: 02a1b6094872c4940b70ac71823defae, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: toggleInvicibility
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02a1b6094872c4940b70ac71823defae, type: 3}
 --- !u!1001 &1666856108
